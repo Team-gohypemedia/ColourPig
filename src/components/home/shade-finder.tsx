@@ -169,7 +169,7 @@ export function ShadeFinder({
               }}
             >
               <Image
-                src="/images/hologram/model_before_grey.jpg"
+                src="/images/results/model_before.jpg"
                 alt="Before - Natural Regrowth"
                 fill
                 priority
