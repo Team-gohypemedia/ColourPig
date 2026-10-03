@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { Check, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
 
@@ -18,18 +18,17 @@ export function ShadeFinder({
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number | null>(null);
 
-  // Landing animation: smoothly sweeps 50% -> 25% -> 75% -> 50% on mount
+  // Smooth landing preview sweep: 50% -> 25% -> 75% -> 50%
   useEffect(() => {
     let startTime: number | null = null;
-    const duration = 2200; // ms
+    const duration = 2000;
 
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Smooth oscillating sine wave
-      const offset = Math.sin(progress * Math.PI * 2) * 26;
+      const offset = Math.sin(progress * Math.PI * 2) * 24;
       setSliderPos(50 + offset);
 
       if (progress < 1) {
@@ -48,7 +47,6 @@ export function ShadeFinder({
     };
   }, []);
 
-  // Stop auto-animation if user interacts
   const stopAutoAnimation = useCallback(() => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
@@ -127,20 +125,19 @@ export function ShadeFinder({
   };
 
   return (
-    <section id="shades" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
+    <section id="shades" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1400px] mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-14 space-y-2">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          REAL TRANSFORMATION • 100% GREY COVERAGE
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
+          RESULTS
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
-          BEFORE &amp; AFTER COMPARISON
+          BEFORE &amp; AFTER
         </h2>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      {/* Main Split Grid: Left = Before/After Slider, Right = 9 Case Shades Selector */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
+      {/* Main Split Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Left Column: Interactive Before & After Slider */}
         <div className="lg:col-span-7 flex flex-col items-center">
           <div
@@ -148,16 +145,10 @@ export function ShadeFinder({
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
             onDoubleClick={() => setSliderPos(50)}
-            className="relative w-full aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden border border-black/10 shadow-2xl bg-[#0F141A] select-none cursor-ew-resize group"
+            className="relative w-full aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden border border-black/10 shadow-xl bg-[#0F141A] select-none cursor-ew-resize group"
             style={{ touchAction: "none" }}
           >
-            {/* Ambient Lighting Aura matching active shade */}
-            <div
-              className="absolute -inset-10 opacity-30 blur-3xl transition-colors duration-700 pointer-events-none"
-              style={{ backgroundColor: selectedShade.hex }}
-            />
-
-            {/* 1. AFTER Image (Base Layer - Flawless ColourPig Shade) */}
+            {/* 1. AFTER Image (Clean Portrait with selected shade) */}
             <div className="absolute inset-0 w-full h-full">
               <Image
                 key={selectedShade.id}
@@ -170,7 +161,7 @@ export function ShadeFinder({
               />
             </div>
 
-            {/* 2. BEFORE Image (Clipped Overlay Layer - Grey Regrowth / Untreated) */}
+            {/* 2. BEFORE Image (Clipped Overlay - Natural Grey Roots) */}
             <div
               className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
               style={{
@@ -179,7 +170,7 @@ export function ShadeFinder({
             >
               <Image
                 src="/images/hologram/model_before_grey.jpg"
-                alt="Before - Natural Grey Roots"
+                alt="Before - Natural Regrowth"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 55vw"
@@ -187,86 +178,60 @@ export function ShadeFinder({
               />
             </div>
 
-            {/* BEFORE Badge (Top Left) */}
+            {/* BEFORE Badge */}
             <div className="absolute top-5 left-5 z-20 pointer-events-none">
-              <span className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[10px] font-mono font-bold tracking-widest text-white uppercase shadow-md">
+              <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[9px] font-mono font-medium tracking-widest text-white uppercase shadow-sm">
                 BEFORE
               </span>
             </div>
 
-            {/* AFTER Badge (Top Right) */}
+            {/* AFTER Badge */}
             <div className="absolute top-5 right-5 z-20 pointer-events-none">
-              <span className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[10px] font-mono font-bold tracking-widest text-white uppercase shadow-md">
+              <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[9px] font-mono font-medium tracking-widest text-white uppercase shadow-sm">
                 AFTER
               </span>
             </div>
 
             {/* Vertical Divider Line with Drag Handle */}
             <div
-              className="absolute top-0 bottom-0 z-30 pointer-events-none transition-transform duration-75"
+              className="absolute top-0 bottom-0 z-30 pointer-events-none"
               style={{ left: `${sliderPos}%` }}
             >
-              {/* Vertical Orange / Accent Line */}
-              <div className="w-[3px] h-full bg-[#E86C3F] shadow-[0_0_10px_rgba(232,108,63,0.8)] -translate-x-1/2" />
+              {/* Minimal White Line */}
+              <div className="w-[2px] h-full bg-white shadow-[0_0_6px_rgba(0,0,0,0.5)] -translate-x-1/2" />
 
-              {/* Circular Drag Handle with <> Arrows */}
-              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#E86C3F] border-2 border-white shadow-xl flex items-center justify-center text-white pointer-events-auto cursor-ew-resize hover:scale-110 active:scale-95 transition-transform">
-                <span className="text-xs font-black tracking-tighter select-none">
+              {/* Minimal Circular Drag Handle */}
+              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white text-obsidian shadow-lg border border-black/10 flex items-center justify-center pointer-events-auto cursor-ew-resize hover:scale-105 active:scale-95 transition-transform">
+                <span className="text-[11px] font-mono font-bold tracking-tight select-none">
                   &lt;&gt;
-                </span>
-              </div>
-            </div>
-
-            {/* Bottom Meta Overlay */}
-            <div className="absolute bottom-5 inset-x-5 z-20 flex items-center justify-between pointer-events-none">
-              <div className="px-3.5 py-1.5 rounded-2xl bg-black/70 backdrop-blur-md border border-white/15 text-left">
-                <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest block">
-                  Active Shade
-                </span>
-                <span className="text-xs font-headline font-bold text-white uppercase tracking-wider">
-                  {selectedShade.name} ({selectedShade.code})
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-black/70 backdrop-blur-md border border-white/15">
-                <span
-                  className="w-3.5 h-3.5 rounded-full border border-white/40 shadow-xs"
-                  style={{ backgroundColor: selectedShade.hex }}
-                />
-                <span className="text-[10px] font-mono text-white/90 font-medium">
-                  Formula {selectedShade.formula}
                 </span>
               </div>
             </div>
           </div>
 
           {/* Under Slider Caption */}
-          <div className="w-full flex items-center justify-between mt-3 text-[11px] font-mono text-graphite px-2">
-            <span>Drag divider • Double-click to snap 50%</span>
-            <span className="text-[#E86C3F] font-semibold flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              <span>100% Verified Coverage</span>
-            </span>
+          <div className="w-full flex items-center justify-between mt-3 text-[11px] font-mono text-graphite/80 px-2">
+            <span>Drag slider to compare</span>
+            <span>Root Regrowth vs. Permanent Finish</span>
           </div>
         </div>
 
-        {/* Right Column: Case 01 to Case 09 Grid (Reference Style) */}
+        {/* Right Column: 9 Clean Shade Cards */}
         <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-6">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-headline font-bold text-sm tracking-wider uppercase text-obsidian">
-                SELECT SHADE CASE
+              <h3 className="font-headline font-bold text-xs tracking-widest uppercase text-obsidian">
+                SELECT SHADE
               </h3>
-              <span className="text-xs font-mono text-graphite">
-                9 Formulations
+              <span className="text-[11px] font-mono text-graphite">
+                9 Shades
               </span>
             </div>
 
-            {/* 3x3 Grid of Case Shades */}
+            {/* 3x3 Grid */}
             <div className="grid grid-cols-3 gap-3">
-              {OFFICIAL_SHADES.map((shade, idx) => {
+              {OFFICIAL_SHADES.map((shade) => {
                 const isSelected = selectedShade.id === shade.id;
-                const caseNumber = `Case 0${idx + 1}`;
                 return (
                   <div
                     key={shade.id}
@@ -274,10 +239,10 @@ export function ShadeFinder({
                       setSelectedShade(shade);
                       stopAutoAnimation();
                     }}
-                    className={`p-2.5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col items-center text-center space-y-1.5 group/card ${
+                    className={`p-3 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col items-center text-center space-y-2 group/card ${
                       isSelected
-                        ? "bg-white border-[#E86C3F] shadow-lg ring-2 ring-[#E86C3F]/20 scale-102"
-                        : "bg-white/80 border-ash/30 hover:border-obsidian/40 hover:bg-white hover:shadow-sm"
+                        ? "bg-white border-obsidian shadow-md ring-1 ring-obsidian"
+                        : "bg-white/80 border-ash/40 hover:border-obsidian/40 hover:bg-white hover:shadow-xs"
                     }`}
                   >
                     {/* Swatch circular element */}
@@ -296,16 +261,13 @@ export function ShadeFinder({
                       )}
                     </div>
 
-                    <div className="w-full">
-                      <span className="text-[10px] font-mono text-[#E86C3F] font-bold block">
-                        {caseNumber}
-                      </span>
-                      <h4 className="font-headline font-bold text-[11px] text-obsidian line-clamp-1">
-                        {shade.name.replace(/No\.\S+\s*/, "")}
-                      </h4>
-                      <span className="text-[9px] font-mono text-graphite block">
+                    <div className="w-full space-y-0.5">
+                      <span className="text-[10px] font-mono text-graphite block">
                         {shade.code}
                       </span>
+                      <h4 className="font-headline font-semibold text-xs text-obsidian line-clamp-1">
+                        {shade.name.replace(/No\.\S+\s*/, "")}
+                      </h4>
                     </div>
                   </div>
                 );
@@ -314,35 +276,33 @@ export function ShadeFinder({
           </div>
 
           {/* Active Shade Order Drawer */}
-          <div className="p-5 rounded-2xl bg-white border border-ash/30 shadow-md space-y-3">
-            <div className="flex items-center gap-3">
-              <div
-                className="w-4 h-4 rounded-full border border-black/10 shadow-xs shrink-0"
-                style={{ backgroundColor: selectedShade.hex }}
-              />
-              <div className="flex-1 min-w-0">
-                <h4 className="font-headline font-bold text-sm text-obsidian uppercase truncate">
-                  {selectedShade.name} System
-                </h4>
-                <p className="text-[11px] font-mono text-graphite">
-                  Formula {selectedShade.formula} • Reusable Air-Driven Kit
-                </p>
+          <div className="p-5 rounded-2xl bg-white border border-ash/40 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 min-w-0">
+                <span
+                  className="w-4 h-4 rounded-full border border-black/10 shadow-xs shrink-0"
+                  style={{ backgroundColor: selectedShade.hex }}
+                />
+                <div className="truncate">
+                  <h4 className="font-headline font-bold text-sm text-obsidian uppercase truncate">
+                    {selectedShade.name}
+                  </h4>
+                  <span className="text-[11px] font-mono text-graphite">
+                    {selectedShade.category}
+                  </span>
+                </div>
               </div>
-              <span className="font-mono text-sm font-bold text-obsidian">
-                ${selectedShade.price} USD
+              <span className="font-mono text-sm font-semibold text-obsidian shrink-0">
+                ${selectedShade.price}
               </span>
             </div>
-
-            <p className="text-xs text-graphite leading-relaxed line-clamp-2">
-              {selectedShade.description}
-            </p>
 
             <button
               type="button"
               onClick={handleAddCurrentShade}
-              className="w-full py-3 px-6 rounded-full bg-obsidian hover:bg-black text-white text-xs font-mono font-semibold tracking-wider uppercase transition-all shadow-md active:scale-98 flex items-center justify-center gap-2"
+              className="w-full py-3.5 px-6 rounded-full bg-obsidian hover:bg-black text-white text-xs font-mono font-semibold tracking-wider uppercase transition-all shadow-sm active:scale-98 flex items-center justify-center gap-2"
             >
-              <span>{added ? "Added to Bag" : `Add ${selectedShade.code} to Bag — $${selectedShade.price}`}</span>
+              <span>{added ? "Added to Bag" : `Add to Bag — $${selectedShade.price}`}</span>
             </button>
           </div>
         </div>
