@@ -100,7 +100,7 @@ export function NewDispatches({
                 alt={item.name}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
               />
 
               {/* Top-Right Circular Wishlist Button */}
@@ -121,8 +121,8 @@ export function NewDispatches({
                 />
               </button>
 
-              {/* Floating Pill Action Button */}
-              <div className="absolute bottom-2.5 sm:bottom-4 inset-x-0 mx-auto z-20 flex justify-center px-2 sm:px-4 pointer-events-none group-hover:pointer-events-auto">
+              {/* Floating Pill Action Button (Desktop hover only) */}
+              <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -134,9 +134,9 @@ export function NewDispatches({
                       undertone: item.category,
                     });
                   }}
-                  className="w-full max-w-[140px] sm:max-w-[210px] py-1.5 sm:py-2.5 px-2.5 sm:px-4 rounded-full bg-white/95 sm:bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[9px] sm:text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform sm:translate-y-3 opacity-90 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 active:scale-95"
+                  className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
                 >
-                  <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <ShoppingBag className="w-3.5 h-3.5" />
                   <span className="truncate">SELECT OPTIONS</span>
                 </button>
               </div>
