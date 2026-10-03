@@ -6,26 +6,26 @@ import { SnoutIcon } from "@/components/brand/logo";
 const RITUAL_STEPS = [
   {
     step: "01",
-    title: "MAGNETIC DOCK",
-    desc: "Permanently lives in your shower. Always dry, always ready.",
+    title: "DISPENSE",
+    desc: "Press the canister to release pre-measured dual formulas evenly into the tray.",
     accent: "#CED1D0",
   },
   {
     step: "02",
-    title: "AIR COMPRESSION",
-    desc: "Zero propellants. Delivers exact 10-20ml dosing with a single press.",
+    title: "APPLY",
+    desc: "Use the precision brush to target roots and regrowth evenly.",
     accent: "#949FA3",
   },
   {
     step: "03",
-    title: "ROOT PRECISION",
-    desc: "Targeted wand partitions follicles without messy skin staining.",
+    title: "DEVELOP",
+    desc: "Allow 30 minutes for permanent, rich grey coverage.",
     accent: "#495B69",
   },
   {
     step: "04",
-    title: "8-WEEK FRESHNESS",
-    desc: "Dual chamber prevents oxidation until the exact millisecond of use.",
+    title: "RINSE & WIPE",
+    desc: "Rinse thoroughly with shampoo and conditioner, then wipe hairline.",
     accent: "#253744",
   },
 ];
@@ -36,10 +36,10 @@ export function InShowerRitual() {
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          APPLICATION ARCHITECTURE
+          HOW IT WORKS
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
-          THE IN-SHOWER RITUAL
+          THE 4-STEP RITUAL
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>

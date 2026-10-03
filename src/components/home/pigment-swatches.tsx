@@ -5,19 +5,19 @@ import { SnoutIcon } from "@/components/brand/logo";
 
 const TEXTURE_CARDS = [
   {
-    title: "AIR-DRIVEN DISPERSION",
-    subtitle: "Micrometric Viscosity",
-    desc: "10-20ml precision droplet formation under 1.4 bar atmospheric pressure.",
+    title: "AIR-DRIVEN DISPENSER",
+    subtitle: "Dual Chamber System",
+    desc: "Proprietary air-compression technology delivers fresh colour cream and developer with a single press.",
   },
   {
-    title: "HERMETIC DUO POD",
-    subtitle: "50ml + 50ml Isolation",
-    desc: "Zero air exposure preserves color molecules without degradation.",
+    title: "50ML + 50ML NET",
+    subtitle: "Multiple Touch-Up Uses",
+    desc: "Pre-measured dual delivery designed for ongoing root touch-ups without mixing or product waste.",
   },
   {
-    title: "SIGNATURE SNOUT EMBLEM",
-    subtitle: "Brand Geometric Matrix",
-    desc: "The universal seal of pigment precision and sustainable care.",
+    title: "COMPLETE AFTERCARE",
+    subtitle: "Shampoo & Conditioner Included",
+    desc: "Every kit includes colour cream, developer, gentle stain remover, shampoo, and conditioner.",
   },
 ];
 
@@ -27,10 +27,10 @@ export function PigmentSwatches() {
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          MATERIAL INSPECTION
+          SYSTEM DETAILS
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
-          A CLOSER LOOK
+          PRODUCT SPECIFICATIONS
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>

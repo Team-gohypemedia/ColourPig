@@ -70,7 +70,7 @@ export function NewDispatches({
       {/* Editorial Heading */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          LABORATORY DISPATCH 01
+          COLLECTION
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           NEW IN

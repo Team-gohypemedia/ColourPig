@@ -30,27 +30,27 @@ export function BehindTheScience() {
 
           <div className="relative z-10 space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">
-              01 • NORMAN &amp; BROWN ATELIER
+              01 • NORMAN &amp; BROWN
             </span>
             <h3 className="font-headline font-bold text-2xl sm:text-3xl text-white leading-tight">
-              Decades of salon mastery <br />
-              <span className="italic font-light text-ash">distilled into unoxidized dosing.</span>
+              Salon color mastery <br />
+              <span className="italic font-light text-ash">in a reusable system.</span>
             </h3>
             <p className="text-xs sm:text-sm font-light text-ash leading-relaxed max-w-md">
-              Developed by London colorist veterans. Our dual-chamber capsule isolates active pigment from air until the millisecond of release, delivering fresh vibrancy for 8 weeks in shower.
+              Formulated in Australia by Norman Brown Pty Ltd. Dual-chamber technology preserves formula freshness for multiple root touch-ups.
             </p>
             <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-platinum group-hover:text-white transition-colors">
-              <span>Read Laboratory Formulation Story</span>
+              <span>Discover The Formula</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </div>
         </div>
 
-        {/* Banner 2: Aerospace Chrome Dispenser */}
+        {/* Banner 2: Reusable Air Dispenser */}
         <div className="relative rounded-3xl overflow-hidden border border-brand/60 bg-toc min-h-[540px] flex flex-col justify-end p-8 sm:p-12 group shadow-2xl">
           <Image
             src="/images/product-dispenser.jpg"
-            alt="Aerospace Chrome Dispenser Engineering"
+            alt="Reusable Air-Driven Canister Dispenser"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -59,17 +59,17 @@ export function BehindTheScience() {
 
           <div className="relative z-10 space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">
-              02 • HARDWARE ARCHITECTURE
+              02 • AIR-DRIVEN DISPENSER
             </span>
             <h3 className="font-headline font-bold text-2xl sm:text-3xl text-white leading-tight">
-              A century of single-use waste <br />
-              <span className="italic font-light text-ash">dismantled in one press.</span>
+              No mixing. No aerosols. <br />
+              <span className="italic font-light text-ash">Just press to dispense.</span>
             </h3>
             <p className="text-xs sm:text-sm font-light text-ash leading-relaxed max-w-md">
-              Engineered with automotive precision. Proprietary air-compression replaces single-use aerosol canisters, delivering 10-20ml micrometric drops directly onto root follicles.
+              Engineered to replace single-use aerosol cans and plastic waste. Dispenses the exact ratio of colour base and developer with zero hassle.
             </p>
             <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-platinum group-hover:text-white transition-colors">
-              <span>Explore The Engineering Whitepaper</span>
+              <span>Explore The Dispenser</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </div>

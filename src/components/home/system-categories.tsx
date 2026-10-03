@@ -6,33 +6,30 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const CATEGORIES = [
   {
-    id: "hardware",
-    title: "PERMANENT HARDWARE",
-    tagline: "Aerospace Chrome Engineering",
-    desc: "Built to endure a lifetime. Air-driven compression delivers 10-20ml without aerosols.",
-    badge: "Hardware Only • $58",
-    image: "/images/behind-scenes-lab.jpg",
-  },
-  {
     id: "starter",
-    title: "THE STARTER SYSTEM",
-    tagline: "World's First Air-Driven Kit",
-    desc: "Includes permanent MK-1 dispenser, 2x 50ml unoxidized pigment pods, and root touch wand.",
-    badge: "Complete System • $89",
+    title: "The Starter System",
+    subtitle: "Complete Reusable Kit",
+    price: "$89",
     image: "/images/product-dispenser.jpg",
   },
   {
+    id: "hardware",
+    title: "Reusable Dispenser",
+    subtitle: "Permanent Canister Hardware",
+    price: "$58",
+    image: "/images/behind-scenes-lab.jpg",
+  },
+  {
     id: "refills",
-    title: "RECYCLABLE PODS",
-    tagline: "75% Less Plastic Per Session",
-    desc: "Hermetically sealed 50ml + 50ml dual cartridges. 8-week unoxidized freshness in shower.",
-    badge: "Refill Duo • $32",
+    title: "Colour Refills",
+    subtitle: "Dual-Chamber Cartridge",
+    price: "$32",
     image: "/images/model-silver.jpg",
   },
 ];
 
 export function SystemCategories() {
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const prev = () => {
     setCurrentIndex((c) => (c === 0 ? CATEGORIES.length - 1 : c - 1));
@@ -47,7 +44,7 @@ export function SystemCategories() {
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          PRECISION DISPENSING
+          COLLECTION
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           SHOP BY CATEGORY
@@ -73,13 +70,13 @@ export function SystemCategories() {
             return (
               <div
                 key={cat.id}
-                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-8 text-center group cursor-pointer shadow-2xl bg-toc ${
+                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-8 text-center group cursor-pointer shadow-xl bg-toc ${
                   isCenter
-                    ? "md:scale-105 border-platinum h-[520px] z-10"
-                    : "border-white/10 h-[440px] opacity-90 hover:opacity-100 hover:border-platinum/60"
+                    ? "md:scale-105 border-white/20 h-[500px] z-10"
+                    : "border-white/10 h-[440px] opacity-95 hover:opacity-100 hover:border-white/30"
                 }`}
               >
-                {/* Real Photographic Background */}
+                {/* Photographic Background */}
                 <Image
                   src={cat.image}
                   alt={cat.title}
@@ -88,34 +85,22 @@ export function SystemCategories() {
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
 
-                {/* Image 2 (#142431) Table of Contents Deep Petrol Navy Scrim Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#142431] via-[#142431]/85 to-black/30 group-hover:via-[#142431]/70 transition-all duration-300" />
+                {/* Subtle Luxury Scrim Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-all duration-300" />
 
-                {/* Content */}
-                <div className="relative z-10 space-y-3">
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">
-                    {cat.badge}
-                  </span>
-
-                  <h3
-                    className={`font-headline font-bold uppercase tracking-tight text-white drop-shadow-md ${
-                      isCenter ? "text-2xl sm:text-3xl" : "text-xl"
-                    }`}
-                  >
+                {/* Clean, Minimal Card Content */}
+                <div className="relative z-10 space-y-2">
+                  <h3 className="font-headline font-bold text-2xl uppercase tracking-wider text-white">
                     {cat.title}
                   </h3>
 
-                  <p className="text-xs font-mono text-platinum/90 tracking-wide">
-                    {cat.tagline}
+                  <p className="text-xs font-mono text-platinum/80 tracking-wider uppercase">
+                    {cat.subtitle} • {cat.price}
                   </p>
 
-                  <p className="text-xs font-light text-ash max-w-xs mx-auto line-clamp-2">
-                    {cat.desc}
-                  </p>
-
-                  <div className="pt-2">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-headline font-semibold text-white group-hover:underline">
-                      <span>Explore Category</span>
+                  <div className="pt-3">
+                    <span className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/90 group-hover:text-white group-hover:underline">
+                      <span>Explore</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
