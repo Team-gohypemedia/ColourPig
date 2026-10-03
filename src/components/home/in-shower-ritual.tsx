@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { SnoutIcon } from "@/components/brand/logo";
 
 const RITUAL_STEPS = [
@@ -9,24 +10,28 @@ const RITUAL_STEPS = [
     title: "DISPENSE",
     desc: "Press the canister to release pre-measured dual formulas evenly into the tray.",
     accent: "#CED1D0",
+    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
   },
   {
     step: "02",
     title: "APPLY",
     desc: "Use the precision brush to target roots and regrowth evenly.",
     accent: "#949FA3",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80",
   },
   {
     step: "03",
     title: "DEVELOP",
     desc: "Allow 30 minutes for permanent, rich grey coverage.",
     accent: "#495B69",
+    image: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=800&q=80",
   },
   {
     step: "04",
     title: "RINSE & WIPE",
     desc: "Rinse thoroughly with shampoo and conditioner, then wipe hairline.",
     accent: "#253744",
+    image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -48,25 +53,25 @@ export function InShowerRitual() {
         {RITUAL_STEPS.map((item) => (
           <div
             key={item.step}
-            className="group relative rounded-xl sm:rounded-2xl bg-white border border-ash/30 p-4 sm:p-6 flex flex-col justify-between h-[280px] sm:h-[360px] overflow-hidden hover:border-obsidian hover:shadow-xl transition-all duration-300"
+            className="group relative rounded-xl sm:rounded-2xl bg-white border border-ash/30 p-3 sm:p-5 flex flex-col justify-between h-auto min-h-[300px] sm:min-h-[380px] overflow-hidden hover:border-obsidian hover:shadow-xl transition-all duration-300"
           >
             {/* Step Number Top */}
             <div className="flex justify-between items-center z-10">
-              <span className="font-mono text-xl sm:text-2xl font-black text-obsidian/25 group-hover:text-obsidian transition-colors">
+              <span className="font-mono text-lg sm:text-xl font-black text-obsidian/30 group-hover:text-obsidian transition-colors">
                 {item.step}
               </span>
               <SnoutIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-30 group-hover:opacity-80 transition-opacity" color="#0D151C" />
             </div>
 
-            {/* Central Graphic Element */}
-            <div className="w-full flex items-center justify-center my-auto">
-              <div
-                className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-black/10 flex items-center justify-center transition-transform group-hover:scale-110 duration-500 shadow-xs sm:shadow-md bg-platinum/30"
-              >
-                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-ash/40 flex items-center justify-center">
-                  <div className="w-2.5 h-2.5 sm:w-4 sm:h-4 rounded-full bg-obsidian" />
-                </div>
-              </div>
+            {/* Photographic Image Frame */}
+            <div className="relative w-full aspect-[4/3] rounded-lg sm:rounded-xl overflow-hidden my-2 sm:my-3 shadow-xs bg-[#EAECEB]">
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                sizes="(max-width: 640px) 50vw, 25vw"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
 
             {/* Bottom Meta */}
@@ -74,7 +79,7 @@ export function InShowerRitual() {
               <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian truncate">
                 {item.title}
               </h3>
-              <p className="text-[11px] sm:text-xs font-normal text-graphite leading-relaxed line-clamp-3 sm:line-clamp-none">
+              <p className="text-[10px] sm:text-xs font-normal text-graphite leading-relaxed line-clamp-3">
                 {item.desc}
               </p>
             </div>
