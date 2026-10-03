@@ -12,14 +12,14 @@ export function PressTicker() {
   ];
 
   return (
-    <div className="w-full bg-steel/30 border-y border-brand/50 py-8 px-6 overflow-hidden">
+    <div className="w-full bg-[#E5E8E7] border-y border-ash/30 py-8 px-6 overflow-hidden">
       <div className="max-w-[1600px] mx-auto flex flex-wrap items-center justify-around gap-8 text-center">
         {publications.map((p, idx) => (
           <div key={idx} className="space-y-1">
-            <span className="font-headline font-black text-base sm:text-lg tracking-widest uppercase text-platinum/90">
+            <span className="font-headline font-black text-base sm:text-lg tracking-widest uppercase text-obsidian">
               {p.name}
             </span>
-            <p className="text-[10px] font-mono text-ash tracking-wide italic">
+            <p className="text-[10px] font-mono text-graphite tracking-wide italic font-medium">
               &ldquo;{p.quote}&rdquo;
             </p>
           </div>

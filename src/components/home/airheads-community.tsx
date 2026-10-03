@@ -35,44 +35,44 @@ const COMMUNITY_POSTS = [
 
 export function AirheadsCommunity() {
   return (
-    <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto border-t border-brand/40">
+    <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-ash">
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           REAL RESULTS • #AIRHEADS
         </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-tight uppercase">
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           COMMUNITY ARCHIVE
         </h2>
-        <div className="w-8 h-[1px] bg-platinum/40 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      {/* Grid */}
+      {/* Grid with Clean Light Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {COMMUNITY_POSTS.map((post) => (
           <div
             key={post.id}
-            className="group relative aspect-square rounded-2xl bg-midnight border border-brand/50 overflow-hidden cursor-pointer flex flex-col justify-between p-4 transition-all duration-300 hover:border-platinum/60"
+            className="group relative aspect-square rounded-2xl bg-white border border-ash/30 overflow-hidden cursor-pointer flex flex-col justify-between p-4 transition-all duration-300 hover:border-obsidian hover:shadow-lg"
           >
-            {/* Visual gradient backdrop simulating user portrait / hair pigment */}
+            {/* Visual gradient backdrop simulating user portrait / hair pigment on clean light base */}
             <div
-              className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity"
+              className="absolute inset-0 opacity-20 group-hover:opacity-35 transition-opacity"
               style={{
-                background: `radial-gradient(circle at 60% 40%, ${post.hex} 0%, #0D151C 90%)`,
+                background: `radial-gradient(circle at 60% 40%, ${post.hex} 0%, #CED1D0 90%)`,
               }}
             />
 
-            <div className="relative z-10 flex justify-between items-center text-[10px] font-mono text-ash">
+            <div className="relative z-10 flex justify-between items-center text-[10px] font-mono text-graphite font-semibold">
               <span>{post.shade}</span>
-              <InstagramIcon className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+              <InstagramIcon className="w-3.5 h-3.5 text-obsidian opacity-60 group-hover:opacity-100 transition-opacity" />
             </div>
 
             <div className="relative z-10 flex items-center justify-center my-auto">
-              <SnoutIcon className="w-8 h-8 opacity-20 group-hover:opacity-60 transition-opacity" color="#CED1D0" />
+              <SnoutIcon className="w-8 h-8 opacity-20 group-hover:opacity-60 transition-opacity" color="#0D151C" />
             </div>
 
             <div className="relative z-10 text-center">
-              <span className="font-mono text-xs text-platinum font-medium">
+              <span className="font-mono text-xs text-obsidian font-bold">
                 {post.user}
               </span>
             </div>

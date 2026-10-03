@@ -46,10 +46,13 @@ export function SystemCategories() {
     <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-wider uppercase">
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
+          PRECISION DISPENSING
+        </span>
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           SHOP BY CATEGORY
         </h2>
-        <div className="w-10 h-[1.5px] bg-platinum/40 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
       {/* 3-Card Carousel Container with Arrow Navigation */}
@@ -57,7 +60,7 @@ export function SystemCategories() {
         {/* Left Arrow */}
         <button
           onClick={prev}
-          className="absolute -left-2 sm:left-2 z-20 w-11 h-11 rounded-full bg-black/70 backdrop-blur border border-white/20 text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-2xl"
+          className="absolute -left-2 sm:left-2 z-20 w-11 h-11 rounded-full bg-white/95 backdrop-blur border border-ash/40 text-obsidian hover:bg-obsidian hover:text-white transition-all flex items-center justify-center shadow-xl active:scale-95"
           aria-label="Previous Category"
         >
           <ChevronLeft className="w-5 h-5" />
@@ -125,7 +128,7 @@ export function SystemCategories() {
         {/* Right Arrow */}
         <button
           onClick={next}
-          className="absolute -right-2 sm:right-2 z-20 w-11 h-11 rounded-full bg-black/70 backdrop-blur border border-white/20 text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-2xl"
+          className="absolute -right-2 sm:right-2 z-20 w-11 h-11 rounded-full bg-white/95 backdrop-blur border border-ash/40 text-obsidian hover:bg-obsidian hover:text-white transition-all flex items-center justify-center shadow-xl active:scale-95"
           aria-label="Next Category"
         >
           <ChevronRight className="w-5 h-5" />

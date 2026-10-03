@@ -77,7 +77,7 @@ export default function Home() {
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="min-h-screen w-full bg-obsidian text-platinum flex flex-col overflow-x-hidden selection:bg-steel selection:text-white">
+    <div className="min-h-screen w-full bg-[#F5F6F6] text-obsidian flex flex-col overflow-x-hidden selection:bg-steel selection:text-white">
       {/* Slide-out Cart Drawer */}
       <CartMini
         isOpen={cartOpen}
@@ -87,67 +87,67 @@ export default function Home() {
         onRemove={handleRemove}
       />
 
-      {/* 1. E-Commerce Navbar (Preserved exact style) */}
+      {/* 1. E-Commerce Navbar */}
       <Navbar
         cartCount={totalCartCount}
         wishlistCount={1}
         onOpenCart={() => setCartOpen(true)}
       />
 
-      {/* 2. 100vh Hero Section with Image 1 Luminous Spotlight Background */}
+      {/* 2. 100vh Hero Section (Dark Section 1 - Image 1 Luminous Spotlight) */}
       <div className="w-full bg-hero-spotlight border-b border-brand/40">
         <HeroSection onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 3. NEW IN Product Grid (Image 3: #CED1D0 Light Platinum Section Background) */}
-      <div className="w-full bg-platinum text-obsidian border-b border-obsidian/10">
+      {/* 3. NEW IN Product Grid (Light Theme - Platinum #CED1D0) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <NewDispatches onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 4. THE PRECISION SYSTEM (Image 2: #142431 Table of Contents Deep Petrol Navy Section Background) */}
-      <div className="w-full bg-toc text-platinum border-b border-white/10">
+      {/* 4. THE PRECISION SYSTEM (Light Theme - Crisp White with Ash Grey Accents) */}
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <SystemCategories />
       </div>
 
-      {/* 5. BESTSELLERS 4-Card Grid (Image 3: #CED1D0 Light Platinum Section Background) */}
-      <div className="w-full bg-platinum text-obsidian border-b border-obsidian/10">
+      {/* 5. BESTSELLERS 4-Card Grid (Light Theme - Platinum #CED1D0) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <Bestsellers onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 6. DISCOVER YOUR SHADE Lookbook Carousel */}
-      <div className="w-full bg-obsidian text-platinum border-b border-brand/40">
+      {/* 6. DISCOVER YOUR SHADE Lookbook (Light Theme - Crisp White) */}
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <ShadeFinder onSelectShade={handleAddToCart} />
       </div>
 
-      {/* 7. Press & Editorial Bar */}
+      {/* 7. Press & Editorial Bar (Light Theme - Ash Grey & Platinum) */}
       <PressTicker />
 
-      {/* 8. THE IN-SHOWER RITUAL Editorial Steps */}
-      <div className="w-full bg-midnight text-platinum border-b border-brand/40">
+      {/* 8. THE IN-SHOWER RITUAL Editorial Steps (Light Theme - Platinum #CED1D0) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <InShowerRitual />
       </div>
 
-      {/* 9. COMMUNITY ARCHIVE (#AIRHEADS) */}
-      <div className="w-full bg-obsidian text-platinum border-b border-brand/40">
+      {/* 9. COMMUNITY ARCHIVE (#AIRHEADS) (Light Theme - Crisp White) */}
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <AirheadsCommunity />
       </div>
 
-      {/* 10. BEHIND THE SCIENCE (Image 2: #142431 Table of Contents Deep Petrol Navy Section Background) */}
+      {/* 10. BEHIND THE SCIENCE (Dark Section 2 - Table of Contents #142431 Deep Petrol Navy) */}
       <div className="w-full bg-toc text-platinum border-b border-white/10">
         <BehindTheScience />
       </div>
 
-      {/* 11. A CLOSER LOOK (Material Swatches) */}
-      <div className="w-full bg-midnight text-platinum border-b border-brand/40">
+      {/* 11. A CLOSER LOOK (Light Theme - Crisp White with Ash Grey Specs) */}
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <PigmentSwatches />
       </div>
 
-      {/* 12. WHAT OUR CLIENTS SAY (Image 3: #CED1D0 Light Platinum Section Background) */}
-      <div className="w-full bg-platinum text-obsidian border-b border-obsidian/10">
+      {/* 12. WHAT OUR CLIENTS SAY (Light Theme - Platinum #CED1D0) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <CustomerReviews />
       </div>
 
-      {/* 13. Luxury E-Commerce Footer */}
+      {/* 13. Luxury E-Commerce Footer (Dark Section 3 - Obsidian #0D151C) */}
       <EcommFooter />
     </div>
   );
