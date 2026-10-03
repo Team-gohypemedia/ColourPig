@@ -210,6 +210,7 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
 
   return (
     <section
+      id="hero-section"
       ref={containerRef}
       className="relative w-full h-[250vh] bg-[#070D12] select-none"
     >

@@ -87,14 +87,14 @@ export default function Home() {
         onRemove={handleRemove}
       />
 
-      {/* 1. E-Commerce Navbar */}
+      {/* 1. E-Commerce Navbar — fixed position, transparent over hero */}
       <Navbar
         cartCount={totalCartCount}
         wishlistCount={1}
         onOpenCart={() => setCartOpen(true)}
       />
 
-      {/* 2. 250vh Scroll-Driven Frame Animation Hero Section */}
+      {/* 2. 250vh Scroll-Driven Frame Animation Hero Section — starts at top-0 (no top margin, navbar overlays it transparently) */}
       <HeroSection onAddToCart={handleAddToCart} />
 
       {/* 3. NEW IN Product Grid (Light Theme - Platinum #CED1D0) */}

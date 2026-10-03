@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ColourpigLogo } from "@/components/brand/logo";
 import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
@@ -18,11 +18,40 @@ export function Navbar({
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Stay transparent while hero section is visible; turn solid once it's fully scrolled past
+  useEffect(() => {
+    const hero = document.getElementById("hero-section");
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // isIntersecting = hero is still (at least partially) in viewport → keep transparent
+        setIsScrolled(!entry.isIntersecting);
+      },
+      { threshold: 0 } // fires as soon as ANY pixel of hero leaves/enters viewport
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+
+  const navBg = isScrolled
+    ? "bg-obsidian/95 backdrop-blur-md border-b border-white/10 shadow-lg"
+    : "bg-transparent border-b border-transparent";
+
+  const announcementBg = isScrolled
+    ? "bg-black border-b border-white/10"
+    : "bg-transparent border-b border-transparent";
 
   return (
-    <div className="w-full relative z-50">
+    <div className="w-full fixed top-0 left-0 right-0 z-50">
       {/* 1. Top Announcement Bar */}
-      <div className="bg-black text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum border-b border-white/10 px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden">
+      <div
+        className={`text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden transition-colors duration-500 ${announcementBg}`}
+      >
         <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4">
           <div className="hidden lg:block text-left whitespace-nowrap flex-1">
             <span>INTERNATIONAL SHIPPING AVAILABLE</span>
@@ -36,8 +65,10 @@ export function Navbar({
         </div>
       </div>
 
-      {/* 2. Main Navigation Bar with Responsive Mobile Layout */}
-      <header className="w-full bg-obsidian/85 backdrop-blur-md border-b border-white/10 px-4 sm:px-10 lg:px-14">
+      {/* 2. Main Navigation Bar */}
+      <header
+        className={`w-full px-4 sm:px-10 lg:px-14 transition-all duration-500 ${navBg}`}
+      >
         <div className="max-w-[1600px] mx-auto h-16 sm:h-20 flex items-center justify-between">
           
           {/* Left Navigation Links / Mobile Menu Toggle */}
@@ -72,7 +103,7 @@ export function Navbar({
             </nav>
           </div>
 
-          {/* Center Brand Wordmark - Responsively Sized to prevent mobile overlap */}
+          {/* Center Brand Wordmark */}
           <div className="flex items-center justify-center flex-1 lg:w-1/3 min-w-0 px-2">
             <Link
               href="/"
@@ -87,7 +118,7 @@ export function Navbar({
 
           {/* Right Action Icons */}
           <div className="flex items-center justify-end gap-3 sm:gap-6 text-platinum lg:w-1/3">
-            {/* Search Icon (Desktop/Tablet only; moved to mobile drawer on small screens) */}
+            {/* Search Icon (Desktop/Tablet only) */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               className="p-1 hover:text-white transition-transform active:scale-95 hidden sm:block"
@@ -104,7 +135,7 @@ export function Navbar({
               <User className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
             </button>
 
-            {/* Wishlist Heart (Desktop/Tablet only; moved to mobile drawer on small screens) */}
+            {/* Wishlist Heart (Desktop/Tablet only) */}
             <button
               className="p-1 hover:text-white transition-transform active:scale-95 relative hidden sm:block"
               aria-label="Wishlist"
@@ -117,7 +148,7 @@ export function Navbar({
               )}
             </button>
 
-            {/* Shopping Bag with Pill Badge - Always visible on mobile and desktop */}
+            {/* Shopping Bag - Always visible */}
             <button
               onClick={onOpenCart}
               className="p-1.5 hover:text-white transition-transform active:scale-95 relative -mr-1 sm:mr-0"
@@ -156,7 +187,7 @@ export function Navbar({
 
         {/* Mobile Navigation Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-white/10 py-5 px-1 space-y-4 text-xs font-mono tracking-widest uppercase text-platinum">
+          <div className="lg:hidden border-t border-white/10 py-5 px-1 space-y-4 text-xs font-mono tracking-widest uppercase text-platinum bg-obsidian/95 backdrop-blur-md">
             {/* Search Input inside mobile menu */}
             <div className="relative pb-1">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ash" />
@@ -172,28 +203,28 @@ export function Navbar({
               <Link
                 href="#system"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block hover:text-white py-2 px-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="block py-2 px-2 rounded-lg transition-colors"
               >
                 The System
               </Link>
               <Link
                 href="#shades"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block hover:text-white py-2 px-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="block py-2 px-2 rounded-lg transition-colors"
               >
                 Shades
               </Link>
               <Link
                 href="#bestsellers"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block hover:text-white py-2 px-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="block py-2 px-2 rounded-lg transition-colors"
               >
                 Bestsellers
               </Link>
               <Link
                 href="#shade-finder"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block hover:text-white py-2 px-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="block py-2 px-2 rounded-lg transition-colors"
               >
                 Before &amp; After
               </Link>
@@ -203,7 +234,7 @@ export function Navbar({
             <div className="pt-3 border-t border-white/10 space-y-2.5 text-[11px] text-ash">
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg transition-colors"
               >
                 <span className="flex items-center gap-2.5">
                   <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
@@ -216,7 +247,7 @@ export function Navbar({
 
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg transition-colors"
               >
                 <span className="flex items-center gap-2.5">
                   <User className="w-4 h-4 text-ash" />
