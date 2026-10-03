@@ -12,118 +12,175 @@ interface NavbarProps {
 }
 
 export function Navbar({
-  cartCount = 1,
-  wishlistCount = 0,
+  cartCount = 2,
+  wishlistCount = 1,
   onOpenCart,
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
-    <>
-      {/* Sleek Announcement Strip */}
-      <div className="bg-obsidian border-b border-brand/50 text-[10px] font-mono text-ash tracking-widest uppercase py-1.5 px-6 text-center select-none">
-        <span>WORLD&apos;S FIRST REUSABLE AIR-DRIVEN SYSTEM • 90% LESS WASTE</span>
+    <div className="w-full relative z-50">
+      {/* 1. Top 3-Column Black Announcement Bar */}
+      <div className="bg-black text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum border-b border-white/10 px-4 sm:px-8 py-2">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between text-center">
+          <div className="hidden md:block w-1/3 text-left">
+            <span>INTERNATIONAL SHIPPING AVAILABLE</span>
+          </div>
+          <div className="w-full md:w-1/3 text-center">
+            <span>FREE SHIPPING ON ORDERS ABOVE $75 | LAUNCH ALLOCATION OPEN</span>
+          </div>
+          <div className="hidden md:block w-1/3 text-right">
+            <span>30-DAY IN-SHOWER TRIAL &amp; EASY RETURNS</span>
+          </div>
+        </div>
       </div>
 
-      {/* Main Minimal Header */}
-      <header className="sticky top-0 z-40 bg-obsidian/95 backdrop-blur-md border-b border-brand/50 h-14 flex items-center">
-        <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-          {/* Brand Wordmark */}
-          <Link href="/" className="flex items-center group">
-            <ColourpigLogo color="#CED1D0" className="h-5 sm:h-6" />
-          </Link>
+      {/* 2. Main Navigation Bar with Left Links, Center Logo, Right Icons */}
+      <header className="w-full bg-obsidian/80 backdrop-blur-md border-b border-white/10 px-6 sm:px-10 lg:px-14">
+        <div className="max-w-[1600px] mx-auto h-20 flex items-center justify-between">
+          
+          {/* Left Navigation Links */}
+          <div className="flex items-center gap-6 w-1/3">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-1 text-platinum hover:text-white"
+              aria-label="Toggle Navigation"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
 
-          {/* Clean Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-[11px] font-mono tracking-widest uppercase text-ash">
-            <Link href="#shop" className="hover:text-platinum transition-colors">
-              The System
-            </Link>
-            <Link href="#shades" className="hover:text-platinum transition-colors">
-              Shade Lab
-            </Link>
-            <Link href="#engineering" className="hover:text-platinum transition-colors">
-              Engineering
-            </Link>
-            <Link href="#about" className="hover:text-platinum transition-colors">
-              Norman &amp; Brown
-            </Link>
-          </nav>
+            <nav className="hidden lg:flex items-center gap-8 text-[12px] font-mono font-medium tracking-[0.16em] uppercase text-platinum/90">
+              <Link
+                href="#system"
+                className="hover:text-white transition-opacity duration-200"
+              >
+                The System
+              </Link>
+              <Link
+                href="#shades"
+                className="hover:text-white transition-opacity duration-200"
+              >
+                Shades
+              </Link>
+              <Link
+                href="#bestsellers"
+                className="hover:text-white transition-opacity duration-200"
+              >
+                Bestsellers
+              </Link>
+            </nav>
+          </div>
 
-          {/* Right: Clean E-Commerce Utility Icons */}
-          <div className="flex items-center gap-4 text-ash">
-            {/* Search */}
+          {/* Center Brand Wordmark */}
+          <div className="flex items-center justify-center w-1/3">
+            <Link href="/" className="inline-flex items-center group">
+              <ColourpigLogo color="#FFFFFF" className="h-7 sm:h-8" />
+            </Link>
+          </div>
+
+          {/* Right Action Icons */}
+          <div className="flex items-center justify-end gap-5 sm:gap-6 text-platinum w-1/3">
+            {/* Search Icon */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="hover:text-platinum transition-colors p-1"
-              aria-label="Search products"
+              className="p-1 hover:text-white transition-transform active:scale-95"
+              aria-label="Search"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
             </button>
 
-            {/* Account Profile */}
+            {/* Account Icon */}
             <button
-              className="hover:text-platinum transition-colors p-1 hidden sm:block"
+              className="p-1 hover:text-white transition-transform active:scale-95 hidden sm:block"
               aria-label="Account"
             >
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
             </button>
 
-            {/* Wishlist */}
+            {/* Wishlist Heart with Pill Badge */}
             <button
-              className="hover:text-platinum transition-colors p-1 relative hidden sm:block"
+              className="p-1 hover:text-white transition-transform active:scale-95 relative"
               aria-label="Wishlist"
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-steel text-[8px] font-mono text-platinum flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 rounded-full bg-white text-black text-[9px] font-mono font-bold flex items-center justify-center shadow-md">
                   {wishlistCount}
                 </span>
               )}
             </button>
 
-            {/* Bag Button */}
+            {/* Shopping Bag with Pill Badge */}
             <button
               onClick={onOpenCart}
-              className="flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-steel/50 border border-brand/60 text-platinum hover:bg-steel transition-all"
-              aria-label="Cart"
+              className="p-1 hover:text-white transition-transform active:scale-95 relative"
+              aria-label="Shopping Bag"
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span className="font-mono text-xs font-medium">{cartCount}</span>
-            </button>
-
-            {/* Mobile Menu */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-1 text-ash hover:text-platinum"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              <ShoppingBag className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 rounded-full bg-white text-black text-[9px] font-mono font-bold flex items-center justify-center shadow-md">
+                  {cartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
-        {/* Search Flyout */}
+        {/* Expandable Search Flyout */}
         {searchOpen && (
-          <div className="absolute top-14 left-0 right-0 border-b border-brand bg-midnight px-6 py-2.5 z-50">
+          <div className="border-t border-white/10 py-3 transition-all">
             <div className="max-w-2xl mx-auto flex items-center gap-3">
-              <Search className="w-3.5 h-3.5 text-ash" />
+              <Search className="w-4 h-4 text-ash" />
               <input
                 type="text"
-                placeholder="Search shades (#1903 Ash Blond, #2401 Brunette), refills, tools..."
-                className="w-full bg-transparent border-none text-xs font-mono text-platinum placeholder:text-ash/50 focus:outline-none"
+                placeholder="Search shades, refill pods, or precision tools..."
+                className="w-full bg-transparent border-none text-xs font-mono text-white placeholder:text-ash/60 focus:outline-none"
                 autoFocus
               />
               <button
                 onClick={() => setSearchOpen(false)}
-                className="text-[10px] font-mono text-ash hover:text-platinum"
+                className="text-[10px] font-mono text-ash hover:text-white"
               >
-                CLOSE
+                ESC
               </button>
             </div>
           </div>
         )}
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-white/10 py-5 space-y-4 text-xs font-mono tracking-widest uppercase text-platinum">
+            <Link
+              href="#system"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block hover:text-white py-1"
+            >
+              The System
+            </Link>
+            <Link
+              href="#shades"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block hover:text-white py-1"
+            >
+              Shades
+            </Link>
+            <Link
+              href="#bestsellers"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block hover:text-white py-1"
+            >
+              Bestsellers
+            </Link>
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-ash">
+              <span className="flex items-center gap-1.5">
+                <User className="w-3.5 h-3.5" /> Account
+              </span>
+              <span>USD ($)</span>
+            </div>
+          </div>
+        )}
       </header>
-    </>
+    </div>
   );
 }
