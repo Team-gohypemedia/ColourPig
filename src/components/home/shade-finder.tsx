@@ -16,35 +16,36 @@ export function ShadeFinder({
   const [isDragging, setIsDragging] = useState(false);
   const [added, setAdded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const animFrameRef = useRef<number | null>(null);
 
-  // Smooth landing preview sweep: 50% -> 25% -> 75% -> 50%
-  useEffect(() => {
+  // Smooth, elegant sinusoidal sweep animation with zero-velocity entry and exit
+  const triggerSweepAnimation = useCallback((duration = 1800) => {
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+    }
     let startTime: number | null = null;
-    const duration = 2000;
 
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const offset = Math.sin(progress * Math.PI * 2) * 24;
+      // Smooth envelope: reaches ~77% (After), sweeps to ~23% (Before roots), settles back at 50%
+      const envelope = Math.sin(progress * Math.PI);
+      const wave = Math.sin(progress * Math.PI * 2);
+      const offset = wave * envelope * 38;
       setSliderPos(50 + offset);
 
       if (progress < 1) {
         animFrameRef.current = requestAnimationFrame(step);
       } else {
         setSliderPos(50);
+        animFrameRef.current = null;
       }
     };
 
     animFrameRef.current = requestAnimationFrame(step);
-
-    return () => {
-      if (animFrameRef.current) {
-        cancelAnimationFrame(animFrameRef.current);
-      }
-    };
   }, []);
 
   const stopAutoAnimation = useCallback(() => {
@@ -53,6 +54,36 @@ export function ShadeFinder({
       animFrameRef.current = null;
     }
   }, []);
+
+  // 1. Trigger sweep on initial page load / mount
+  useEffect(() => {
+    triggerSweepAnimation(2000);
+    return () => stopAutoAnimation();
+  }, [triggerSweepAnimation, stopAutoAnimation]);
+
+  // 2. Trigger sweep whenever user scrolls into this section
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    let wasIntersecting = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !wasIntersecting) {
+            triggerSweepAnimation(1800);
+            wasIntersecting = true;
+          } else if (!entry.isIntersecting) {
+            wasIntersecting = false;
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [triggerSweepAnimation]);
 
   const handlePointerMove = useCallback(
     (clientX: number) => {
@@ -125,7 +156,7 @@ export function ShadeFinder({
   };
 
   return (
-    <section id="shades" className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto">
+    <section id="shades" ref={sectionRef} className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
@@ -237,7 +268,7 @@ export function ShadeFinder({
                     key={shade.id}
                     onClick={() => {
                       setSelectedShade(shade);
-                      stopAutoAnimation();
+                      triggerSweepAnimation(1600);
                     }}
                     className={`p-2 sm:p-2.5 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col items-center text-center space-y-1.5 group/card ${
                       isSelected
