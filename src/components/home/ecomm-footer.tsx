@@ -30,10 +30,10 @@ function YoutubeIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export function EcommFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#0B1015] text-ash pt-16 sm:pt-20 pb-6 sm:pb-10 px-6 sm:px-10 lg:px-14 relative overflow-hidden">
-      <div className="max-w-[1600px] mx-auto space-y-14 sm:space-y-16">
+    <footer className="border-t border-white/10 bg-[#0B1015] text-ash pt-12 sm:pt-14 pb-2 sm:pb-3 px-6 sm:px-10 lg:px-14 relative overflow-hidden">
+      <div className="max-w-[1600px] mx-auto">
         {/* Main 4-Column Grid matching reference design */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
           {/* Column 1: Brand Logo, Bio & Circular Social Buttons */}
           <div className="lg:col-span-4 space-y-5">
             <div className="space-y-1.5">
@@ -182,7 +182,7 @@ export function EcommFooter() {
         </div>
 
         {/* Divider Bar & Legal Line */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-ash/60">
+        <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-ash/60">
           <p className="text-center md:text-left">
             © 2026 ColourPig Australia. All rights reserved. Registered Norman Brown Pty Ltd ABN 34 114 474 153.
           </p>
@@ -194,8 +194,8 @@ export function EcommFooter() {
         </div>
 
         {/* Massive Hollow Outlined Brand Typography matching reference bottom banner */}
-        <div className="pt-2 sm:pt-6 pb-2 overflow-hidden w-full select-none pointer-events-none flex justify-center">
-          <span className="font-headline font-black uppercase tracking-tight text-transparent leading-none text-[13.5vw] sm:text-[14.5vw] whitespace-nowrap [-webkit-text-stroke:1.5px_rgba(206,209,208,0.22)] sm:[-webkit-text-stroke:2px_rgba(206,209,208,0.28)] transition-all">
+        <div className="mt-2 sm:mt-3 overflow-hidden w-full select-none pointer-events-none flex justify-center">
+          <span className="font-headline font-black uppercase tracking-tight text-transparent leading-[0.85] text-[13.5vw] sm:text-[14.5vw] whitespace-nowrap [-webkit-text-stroke:1.5px_rgba(206,209,208,0.22)] sm:[-webkit-text-stroke:2px_rgba(206,209,208,0.28)] transition-all">
             COLOURPIG
           </span>
         </div>
