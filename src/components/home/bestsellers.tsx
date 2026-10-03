@@ -94,7 +94,7 @@ export function Bestsellers({
             }
           >
             {/* Portrait Image Container with Soft Rounded Corners */}
-            <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-xl transition-all duration-300">
+            <div className="relative aspect-[2/3] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-xl transition-all duration-300">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -104,7 +104,7 @@ export function Bestsellers({
               />
 
               {/* Reviews rating pill on top left */}
-              <div className="absolute top-2 left-2 sm:top-3.5 sm:left-3.5 z-10 flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur text-obsidian text-[9px] sm:text-[10px] font-mono shadow-xs">
+              <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-10 flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur text-obsidian text-[9px] sm:text-[10px] font-mono shadow-xs">
                 <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-amber-500 text-amber-500" />
                 <span className="font-bold">{item.rating}</span>
                 <span className="text-graphite hidden xs:inline sm:inline">({item.reviews})</span>
@@ -114,7 +114,7 @@ export function Bestsellers({
               <button
                 type="button"
                 onClick={(e) => toggleWishlist(item.id, e)}
-                className={`absolute top-2 right-2 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
                   wishlist[item.id]
                     ? "opacity-100 text-rose-600"
                     : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
