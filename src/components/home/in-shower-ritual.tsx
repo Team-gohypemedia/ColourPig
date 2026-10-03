@@ -32,9 +32,9 @@ const RITUAL_STEPS = [
 
 export function InShowerRitual() {
   return (
-    <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
+    <section className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
+      <div className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           HOW IT WORKS
         </span>
@@ -44,37 +44,37 @@ export function InShowerRitual() {
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {RITUAL_STEPS.map((item) => (
           <div
             key={item.step}
-            className="group relative rounded-2xl bg-white border border-ash/30 p-6 flex flex-col justify-between h-[360px] overflow-hidden hover:border-obsidian hover:shadow-xl transition-all duration-300"
+            className="group relative rounded-xl sm:rounded-2xl bg-white border border-ash/30 p-4 sm:p-6 flex flex-col justify-between h-[280px] sm:h-[360px] overflow-hidden hover:border-obsidian hover:shadow-xl transition-all duration-300"
           >
             {/* Step Number Top */}
             <div className="flex justify-between items-center z-10">
-              <span className="font-mono text-2xl font-black text-obsidian/25 group-hover:text-obsidian transition-colors">
+              <span className="font-mono text-xl sm:text-2xl font-black text-obsidian/25 group-hover:text-obsidian transition-colors">
                 {item.step}
               </span>
-              <SnoutIcon className="w-4 h-4 opacity-30 group-hover:opacity-80 transition-opacity" color="#0D151C" />
+              <SnoutIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-30 group-hover:opacity-80 transition-opacity" color="#0D151C" />
             </div>
 
             {/* Central Graphic Element */}
             <div className="w-full flex items-center justify-center my-auto">
               <div
-                className="w-24 h-24 rounded-full border border-black/10 flex items-center justify-center transition-transform group-hover:scale-110 duration-500 shadow-md bg-platinum/30"
+                className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-black/10 flex items-center justify-center transition-transform group-hover:scale-110 duration-500 shadow-xs sm:shadow-md bg-platinum/30"
               >
-                <div className="w-12 h-12 rounded-full border border-ash/40 flex items-center justify-center">
-                  <div className="w-4 h-4 rounded-full bg-obsidian" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-ash/40 flex items-center justify-center">
+                  <div className="w-2.5 h-2.5 sm:w-4 sm:h-4 rounded-full bg-obsidian" />
                 </div>
               </div>
             </div>
 
             {/* Bottom Meta */}
-            <div className="space-y-1.5 z-10 text-center">
-              <h3 className="font-headline font-bold text-sm tracking-wider uppercase text-obsidian">
+            <div className="space-y-1 z-10 text-center">
+              <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian truncate">
                 {item.title}
               </h3>
-              <p className="text-xs font-normal text-graphite leading-relaxed">
+              <p className="text-[11px] sm:text-xs font-normal text-graphite leading-relaxed line-clamp-3 sm:line-clamp-none">
                 {item.desc}
               </p>
             </div>

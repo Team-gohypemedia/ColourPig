@@ -41,9 +41,9 @@ const REVIEWS = [
 
 export function CustomerReviews() {
   return (
-    <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
+    <section className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
+      <div className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           WHAT OUR CLIENTS SAY
         </h2>
@@ -53,16 +53,16 @@ export function CustomerReviews() {
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      {/* 4 Cards Grid with Crisp White Cards floating on Image 3 (#CED1D0) Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Swipeable on Mobile, 4 Cards Grid on Desktop */}
+      <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory scrollbar-none pb-2 sm:pb-0 px-2 sm:px-0">
         {REVIEWS.map((rev, idx) => (
           <div
             key={idx}
-            className="p-8 rounded-2xl bg-white text-obsidian border border-black/5 flex flex-col justify-between space-y-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+            className="w-[82vw] max-w-[320px] shrink-0 snap-center sm:w-auto p-6 sm:p-8 rounded-2xl bg-white text-obsidian border border-black/5 flex flex-col justify-between space-y-5 sm:space-y-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
             {/* Header with Real Portrait Avatar and Stars */}
             <div className="flex flex-col items-center text-center space-y-3">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-black/10 shadow-sm">
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-black/10 shadow-sm">
                 <Image
                   src={rev.avatar}
                   alt={rev.name}
@@ -89,7 +89,7 @@ export function CustomerReviews() {
             </p>
 
             {/* Footer Client Details */}
-            <div className="pt-4 border-t border-black/10 text-center space-y-1">
+            <div className="pt-3 sm:pt-4 border-t border-black/10 text-center space-y-1">
               <div className="flex items-center justify-center gap-1.5">
                 <span className="font-headline font-bold text-xs text-obsidian">
                   {rev.name}

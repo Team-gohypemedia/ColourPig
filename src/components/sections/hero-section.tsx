@@ -62,14 +62,14 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative w-full h-[calc(100vh-80px)] flex flex-col justify-between px-6 sm:px-10 max-w-7xl mx-auto overflow-hidden">
+    <section className="relative w-full min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] flex flex-col justify-between px-4 sm:px-10 py-6 lg:py-0 max-w-7xl mx-auto overflow-hidden">
       {/* Subtle ambient lighting */}
       <div
         className="absolute top-1/2 left-1/3 w-80 h-80 rounded-full blur-[130px] opacity-10 pointer-events-none transition-colors duration-700"
         style={{ backgroundColor: activeShade.hex }}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-1 my-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-1 my-auto py-4 lg:py-0">
         {/* Left Column: Minimal Typography & Action */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -86,7 +86,7 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
           </div>
 
           {/* Slogan from Page 32 of Brand Guide */}
-          <h1 className="font-headline font-black text-4xl sm:text-5xl xl:text-6xl tracking-tighter text-platinum leading-[1.05]">
+          <h1 className="font-headline font-black text-3xl sm:text-5xl xl:text-6xl tracking-tighter text-platinum leading-[1.05]">
             Single-use <br />
             <span className="text-ash font-light italic">is over.</span>
           </h1>
@@ -133,16 +133,16 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
           </div>
 
           {/* Clean E-Commerce Action */}
-          <div className="flex items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
               onClick={handleOrder}
-              className="py-3 px-6 rounded-xl bg-platinum text-obsidian font-headline font-bold text-xs tracking-wider uppercase hover:bg-white active:scale-[0.99] transition-all flex items-center gap-2 shadow-lg"
+              className="py-3 px-5 sm:px-6 rounded-xl bg-platinum text-obsidian font-headline font-bold text-xs tracking-wider uppercase hover:bg-white active:scale-[0.99] transition-all flex items-center gap-2 shadow-lg"
             >
               <span>{added ? "Dispatched" : "Order Starter System — $89"}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
 
-            <span className="text-[10px] font-mono text-ash flex items-center gap-1.5 pl-2">
+            <span className="text-[10px] font-mono text-ash flex items-center gap-1.5 pl-1 sm:pl-2">
               <ShieldCheck className="w-3.5 h-3.5 text-ash" />
               <span>30-Day Guarantee</span>
             </span>
@@ -154,7 +154,7 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="lg:col-span-6 h-[340px] sm:h-[400px] lg:h-[460px] w-full relative flex items-center justify-center"
+          className="lg:col-span-6 h-[280px] sm:h-[380px] lg:h-[460px] w-full relative flex items-center justify-center"
         >
           {/* 3D Dispenser Canvas */}
           <div className="w-full h-full relative">
@@ -169,7 +169,7 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
       </div>
 
       {/* Clean Bottom Ticker Line */}
-      <div className="py-3 border-t border-brand/40 flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] text-ash tracking-wider uppercase select-none">
+      <div className="py-3 border-t border-brand/40 flex flex-wrap items-center justify-center sm:justify-between gap-x-4 gap-y-2 font-mono text-[9px] sm:text-[10px] text-ash tracking-wider uppercase select-none text-center">
         <span>90% LESS CHEMICAL WASTE</span>
         <span className="hidden sm:inline">•</span>
         <span>75% LESS PLASTIC</span>
