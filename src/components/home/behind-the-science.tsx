@@ -26,7 +26,7 @@ export function BehindTheScience() {
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#142431] via-[#142431]/90 to-black/25" />
 
           <div className="relative z-10 space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">
@@ -55,7 +55,7 @@ export function BehindTheScience() {
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#142431] via-[#142431]/90 to-black/25" />
 
           <div className="relative z-10 space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">

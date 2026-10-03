@@ -62,13 +62,16 @@ export function NewDispatches({
     <section id="system" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto border-t border-brand/40">
       {/* Editorial Heading */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-ash font-semibold">
+          LABORATORY DISPATCH 01
+        </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-wider uppercase">
           NEW IN
         </h2>
         <div className="w-10 h-[1.5px] bg-platinum/40 mx-auto mt-3" />
       </div>
 
-      {/* 4-Card Luxury Photo Grid using Image 3 (#CED1D0) Light Platinum Background */}
+      {/* 4-Card Luxury Photo Grid using Image 3 (#CED1D0) Light Platinum Inside Card */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
         {NEW_ARRIVALS.map((item) => (
           <div
@@ -135,7 +138,7 @@ export function NewDispatches({
       <div className="text-center mt-14">
         <Link
           href="#shades"
-          className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-platinum border-b border-platinum/60 pb-1 hover:border-white hover:text-white transition-all"
+          className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-platinum border-b border-platinum/60 pb-1 hover:border-white hover:text-white transition-all font-semibold"
         >
           <span>VIEW ALL PRODUCTS</span>
           <ArrowRight className="w-3.5 h-3.5" />

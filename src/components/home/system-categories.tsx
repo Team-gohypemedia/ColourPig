@@ -85,8 +85,8 @@ export function SystemCategories() {
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
 
-                {/* Dark Vignette / Scrim Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30 group-hover:via-black/30 transition-all duration-300" />
+                {/* Image 2 (#142431) Table of Contents Deep Petrol Navy Scrim Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#142431] via-[#142431]/85 to-black/30 group-hover:via-[#142431]/70 transition-all duration-300" />
 
                 {/* Content */}
                 <div className="relative z-10 space-y-3">
