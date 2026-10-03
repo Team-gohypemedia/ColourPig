@@ -8,6 +8,7 @@ export interface ShadeProduct {
   price: number;
   swatchImage: string;
   cardImage: string;
+  modelImage: string;
   description: string;
   undertone: string;
   rating: number;
@@ -25,6 +26,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_1_swatch.png",
     cardImage: "/images/products/cards/shade_card_1.jpg",
+    modelImage: "/images/hologram/model_shade_1.jpg",
     description: "Air-driven permanent clear formula for multi-dimensional shine and gray translucency.",
     undertone: "Neutral Translucent",
     rating: 4.9,
@@ -40,6 +42,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_2_swatch.png",
     cardImage: "/images/products/cards/shade_card_2.jpg",
+    modelImage: "/images/hologram/model_shade_2.jpg",
     description: "Ultra-pigmented pure black with 100% resistant grey root coverage.",
     undertone: "Deep Cool Mineral",
     rating: 5.0,
@@ -55,6 +58,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_3_swatch.png",
     cardImage: "/images/products/cards/shade_card_3.jpg",
+    modelImage: "/images/hologram/model_shade_3.jpg",
     description: "Intense deep espresso brown with natural velvet depth and zero brassiness.",
     undertone: "Cool Espresso",
     rating: 4.9,
@@ -70,6 +74,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_4_swatch.png",
     cardImage: "/images/products/cards/shade_card_4.jpg",
+    modelImage: "/images/hologram/model_shade_4.jpg",
     description: "Balanced natural medium brown offering seamless root touch-up blending.",
     undertone: "Neutral Brown",
     rating: 4.9,
@@ -85,6 +90,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_5_swatch.png",
     cardImage: "/images/products/cards/shade_card_5.jpg",
+    modelImage: "/images/hologram/model_shade_5.jpg",
     description: "Luminous light brown with delicate warm undertones for effortless regrowth coverage.",
     undertone: "Warm Amber",
     rating: 4.8,
@@ -100,6 +106,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_6_swatch.png",
     cardImage: "/images/products/cards/shade_card_6.jpg",
+    modelImage: "/images/hologram/model_shade_6.jpg",
     description: "Sophisticated dark blonde sitting perfectly between light brunette and rich caramel.",
     undertone: "Honey Neutral",
     rating: 4.9,
@@ -115,6 +122,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_7_swatch.png",
     cardImage: "/images/products/cards/shade_card_7.jpg",
+    modelImage: "/images/hologram/model_shade_7.jpg",
     description: "Radiant golden medium blonde designed for natural multi-tonal highlights.",
     undertone: "Warm Golden",
     rating: 4.9,
@@ -130,6 +138,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_8_swatch.png",
     cardImage: "/images/products/cards/shade_card_8.jpg",
+    modelImage: "/images/hologram/model_shade_8.jpg",
     description: "Bright sunlit blonde delivering pristine clarity without yellow undertones.",
     undertone: "Sunlit Neutral",
     rating: 4.8,
@@ -145,6 +154,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_9_swatch.png",
     cardImage: "/images/products/cards/shade_card_9.jpg",
+    modelImage: "/images/hologram/model_shade_9.jpg",
     description: "Ultra-light champagne blonde with maximum luminescence and zero damage.",
     undertone: "Pale Champagne",
     rating: 5.0,

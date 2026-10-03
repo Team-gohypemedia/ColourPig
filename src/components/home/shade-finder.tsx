@@ -16,7 +16,7 @@ export function ShadeFinder({
   return (
     <section id="shades" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
+      <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           9-SHADE PRECISION SYSTEM
         </span>
@@ -24,6 +24,84 @@ export function ShadeFinder({
           DISCOVER YOUR SHADE
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
+      </div>
+
+      {/* Interactive Model Face Hologram Viewport */}
+      <div className="mb-14 flex flex-col items-center">
+        <div className="relative w-full max-w-[420px] aspect-[3/4] rounded-3xl overflow-hidden border border-black/10 bg-[#0F141A] shadow-2xl group">
+          {/* Ambient Lighting Aura matching active shade */}
+          <div
+            className="absolute -inset-10 opacity-35 blur-3xl transition-colors duration-700 pointer-events-none"
+            style={{ backgroundColor: selectedShade.hex }}
+          />
+
+          {/* Model Portrait with Smooth Transition */}
+          <div className="relative w-full h-full">
+            <Image
+              key={selectedShade.id}
+              src={selectedShade.modelImage}
+              alt={`${selectedShade.name} on Model`}
+              fill
+              priority
+              sizes="(max-width: 640px) 100vw, 420px"
+              className="object-cover object-center transition-all duration-500 ease-out"
+            />
+          </div>
+
+          {/* Corner Viewfinder Reticles */}
+          <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-white/60 pointer-events-none" />
+          <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-white/60 pointer-events-none" />
+          <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-white/60 pointer-events-none" />
+          <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-white/60 pointer-events-none" />
+
+          {/* Top HUD Bar */}
+          <div className="absolute top-4 inset-x-5 z-20 flex items-center justify-between pointer-events-none">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-mono text-emerald-400 font-semibold tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>LIVE SHADE HOLOGRAM</span>
+            </div>
+
+            <div className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-mono text-white/90 font-semibold tracking-wider uppercase">
+              {selectedShade.code}
+            </div>
+          </div>
+
+          {/* Animated Holographic Laser Scan Line */}
+          <div
+            key={selectedShade.id}
+            className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-300 to-transparent opacity-75 shadow-[0_0_12px_#38bdf8] pointer-events-none"
+            style={{
+              animation: "hologramScan 2.4s ease-in-out infinite",
+            }}
+          />
+
+          {/* Bottom HUD Bar */}
+          <div className="absolute bottom-4 inset-x-5 z-20 flex items-center justify-between pointer-events-none">
+            <div className="px-3.5 py-1.5 rounded-2xl bg-black/70 backdrop-blur-md border border-white/15 text-left">
+              <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest block">
+                Hair Tone Simulation
+              </span>
+              <span className="text-xs font-headline font-bold text-white uppercase tracking-wider">
+                {selectedShade.name}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-black/70 backdrop-blur-md border border-white/15">
+              <span
+                className="w-3.5 h-3.5 rounded-full border border-white/40 shadow-xs"
+                style={{ backgroundColor: selectedShade.hex }}
+              />
+              <span className="text-[10px] font-mono text-white/90 font-medium">
+                {selectedShade.hex}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Minimal subtitle under hologram */}
+        <p className="mt-4 text-xs font-mono text-graphite uppercase tracking-widest text-center">
+          Select a shade below to update the holographic model preview
+        </p>
       </div>
 
       {/* 9-Swatch Grid with High-Res Hair Texture Images */}

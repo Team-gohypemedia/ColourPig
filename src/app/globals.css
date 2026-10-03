@@ -73,3 +73,20 @@ html.lenis, html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+@keyframes hologramScan {
+  0% {
+    top: 4%;
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.85;
+  }
+  75% {
+    opacity: 0.85;
+  }
+  100% {
+    top: 94%;
+    opacity: 0;
+  }
+}
