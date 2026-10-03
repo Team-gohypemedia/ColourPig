@@ -99,35 +99,53 @@ export default function Home() {
         <HeroSection onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 3. NEW IN Product Grid */}
-      <NewDispatches onAddToCart={handleAddToCart} />
+      {/* 3. NEW IN Product Grid (Image 3: #CED1D0 Light Platinum Section Background) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-obsidian/10">
+        <NewDispatches onAddToCart={handleAddToCart} />
+      </div>
 
-      {/* 4. THE PRECISION SYSTEM (3-Card Carousel) */}
-      <SystemCategories />
+      {/* 4. THE PRECISION SYSTEM (Image 2: #142431 Table of Contents Deep Petrol Navy Section Background) */}
+      <div className="w-full bg-toc text-platinum border-b border-white/10">
+        <SystemCategories />
+      </div>
 
-      {/* 5. BESTSELLERS 4-Card Grid */}
-      <Bestsellers onAddToCart={handleAddToCart} />
+      {/* 5. BESTSELLERS 4-Card Grid (Image 3: #CED1D0 Light Platinum Section Background) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-obsidian/10">
+        <Bestsellers onAddToCart={handleAddToCart} />
+      </div>
 
       {/* 6. DISCOVER YOUR SHADE Lookbook Carousel */}
-      <ShadeFinder onSelectShade={handleAddToCart} />
+      <div className="w-full bg-obsidian text-platinum border-b border-brand/40">
+        <ShadeFinder onSelectShade={handleAddToCart} />
+      </div>
 
       {/* 7. Press & Editorial Bar */}
       <PressTicker />
 
       {/* 8. THE IN-SHOWER RITUAL Editorial Steps */}
-      <InShowerRitual />
+      <div className="w-full bg-midnight text-platinum border-b border-brand/40">
+        <InShowerRitual />
+      </div>
 
       {/* 9. COMMUNITY ARCHIVE (#AIRHEADS) */}
-      <AirheadsCommunity />
+      <div className="w-full bg-obsidian text-platinum border-b border-brand/40">
+        <AirheadsCommunity />
+      </div>
 
-      {/* 10. BEHIND THE SCIENCE (Split Dual Banners) */}
-      <BehindTheScience />
+      {/* 10. BEHIND THE SCIENCE (Image 2: #142431 Table of Contents Deep Petrol Navy Section Background) */}
+      <div className="w-full bg-toc text-platinum border-b border-white/10">
+        <BehindTheScience />
+      </div>
 
       {/* 11. A CLOSER LOOK (Material Swatches) */}
-      <PigmentSwatches />
+      <div className="w-full bg-midnight text-platinum border-b border-brand/40">
+        <PigmentSwatches />
+      </div>
 
-      {/* 12. WHAT OUR CLIENTS SAY (Reviews & Avatars) */}
-      <CustomerReviews />
+      {/* 12. WHAT OUR CLIENTS SAY (Image 3: #CED1D0 Light Platinum Section Background) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-obsidian/10">
+        <CustomerReviews />
+      </div>
 
       {/* 13. Luxury E-Commerce Footer */}
       <EcommFooter />

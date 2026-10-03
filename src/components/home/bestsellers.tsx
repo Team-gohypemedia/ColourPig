@@ -59,24 +59,24 @@ export function Bestsellers({
   onAddToCart?: (shade: ShadeItem) => void;
 }) {
   return (
-    <section id="bestsellers" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto border-t border-brand/40">
+    <section id="bestsellers" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-wider uppercase">
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           BESTSELLERS
         </h2>
-        <div className="w-10 h-[1.5px] bg-platinum/40 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      {/* Grid with Image 3 (#CED1D0) Light Platinum Product Cards */}
+      {/* Grid with Crisp White Cards on Image 3 (#CED1D0) Light Platinum Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
         {BESTSELLER_ITEMS.map((item) => (
           <div
             key={item.id}
-            className="group rounded-2xl bg-platinum text-obsidian border border-platinum/90 overflow-hidden shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+            className="group rounded-2xl bg-white text-obsidian border border-black/5 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
           >
             {/* Image Portrait Box */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-200">
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-100">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -93,8 +93,8 @@ export function Bestsellers({
               </div>
             </div>
 
-            {/* Meta on Light Platinum Background */}
-            <div className="p-5 space-y-3 bg-platinum text-obsidian">
+            {/* Meta on White Background */}
+            <div className="p-5 space-y-3 bg-white text-obsidian">
               <div className="space-y-1 text-center">
                 <span className="text-[10px] font-mono text-graphite uppercase tracking-widest block font-semibold">
                   {item.category}
@@ -105,7 +105,7 @@ export function Bestsellers({
               </div>
 
               {/* Price and Add button */}
-              <div className="pt-2 border-t border-obsidian/15 flex items-center justify-between">
+              <div className="pt-2 border-t border-black/10 flex items-center justify-between">
                 <span className="font-mono text-xs font-bold text-obsidian">
                   ${item.price} USD
                 </span>
@@ -132,7 +132,7 @@ export function Bestsellers({
       <div className="text-center mt-14">
         <Link
           href="#shades"
-          className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-platinum border-b border-platinum/60 pb-1 hover:border-white hover:text-white transition-all"
+          className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-obsidian border-b border-obsidian/40 pb-1 hover:border-obsidian hover:text-black transition-all font-semibold"
         >
           <span>VIEW ALL BESTSELLERS</span>
           <ArrowRight className="w-3.5 h-3.5" />

@@ -43,7 +43,7 @@ export function SystemCategories() {
   };
 
   return (
-    <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto border-t border-brand/40">
+    <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-wider uppercase">
