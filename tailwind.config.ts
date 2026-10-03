@@ -19,9 +19,9 @@ const config: Config = {
         platinum: "#CED1D0", // HEX: #CED1D0, RGB: 206, 209, 208
       },
       fontFamily: {
-        headline: ["var(--font-headline)", "sans-serif"], // PP Agrandir equivalent
-        body: ["var(--font-body)", "sans-serif"],         // PP Neue Montreal equivalent
-        mono: ["var(--font-mono)", "monospace"],          // Intel Mono equivalent
+        headline: ["'Space Grotesk'", "sans-serif"],
+        body: ["'Inter'", "sans-serif"],
+        mono: ["'JetBrains Mono'", "monospace"],
       },
       letterSpacing: {
         tightest: "-0.04em",

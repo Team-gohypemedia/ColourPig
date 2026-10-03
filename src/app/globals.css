@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,17 +17,17 @@
   body {
     background-color: var(--color-obsidian);
     color: var(--color-platinum);
-    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-headline {
-    font-family: var(--font-headline), sans-serif;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: -0.02em;
   }
 
   .font-mono {
-    font-family: var(--font-mono), monospace;
+    font-family: 'JetBrains Mono', monospace;
   }
 }
 
