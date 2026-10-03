@@ -77,7 +77,7 @@ export default function Home() {
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="min-h-screen w-full bg-[#F5F6F6] text-obsidian flex flex-col overflow-x-hidden selection:bg-steel selection:text-white">
+    <div className="min-h-screen w-full bg-[#F5F6F6] text-obsidian flex flex-col overflow-x-clip selection:bg-steel selection:text-white">
       {/* Slide-out Cart Drawer */}
       <CartMini
         isOpen={cartOpen}
@@ -94,10 +94,8 @@ export default function Home() {
         onOpenCart={() => setCartOpen(true)}
       />
 
-      {/* 2. 100vh Hero Section (Dark Section 1 - Image 1 Luminous Spotlight) */}
-      <div className="w-full bg-hero-spotlight border-b border-brand/40">
-        <HeroSection onAddToCart={handleAddToCart} />
-      </div>
+      {/* 2. 250vh Scroll-Driven Frame Animation Hero Section */}
+      <HeroSection onAddToCart={handleAddToCart} />
 
       {/* 3. NEW IN Product Grid (Light Theme - Platinum #CED1D0) */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">

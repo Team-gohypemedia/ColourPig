@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { HeroDispenserWrapper } from "@/components/canvas/hero-dispenser-wrapper";
-import { ArrowRight, Check, ShieldCheck } from "lucide-react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { ChevronDown } from "lucide-react";
 
 export interface ShadeItem {
   code: string;
@@ -45,138 +43,194 @@ export const CORE_SHADES: ShadeItem[] = [
   },
 ];
 
+const TOTAL_FRAMES = 240;
+
+const getFrameSrc = (frameIndex: number) => {
+  const padded = String(frameIndex).padStart(6, "0");
+  return `/hero%20frames/frame_${padded}.webp`;
+};
+
 interface HeroSectionProps {
   onAddToCart?: (shade: ShadeItem) => void;
 }
 
 export function HeroSection({ onAddToCart }: HeroSectionProps) {
-  const [activeShade, setActiveShade] = useState<ShadeItem>(CORE_SHADES[0]);
-  const [added, setAdded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES).fill(null));
+  const currentFrameRef = useRef<number>(1);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+  const animationFrameIdRef = useRef<number | null>(null);
 
-  const handleOrder = () => {
-    if (onAddToCart) {
-      onAddToCart(activeShade);
+  // Draw target frame onto canvas with aspect-ratio preserving cover/contain
+  const drawFrame = useCallback((frameNumber: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let img = imagesRef.current[frameNumber - 1];
+    if (!img || !img.complete) {
+      // Find closest loaded frame to keep display smooth
+      for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+        const prevImg = imagesRef.current[frameNumber - 1 - offset];
+        if (prevImg && prevImg.complete) {
+          img = prevImg;
+          break;
+        }
+        const nextImg = imagesRef.current[frameNumber - 1 + offset];
+        if (nextImg && nextImg.complete) {
+          img = nextImg;
+          break;
+        }
+      }
     }
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
+
+    if (!img || !img.complete) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Preserving 1280x720 aspect ratio (16:9)
+    const imgAspect = img.naturalWidth / img.naturalHeight;
+    const canvasAspect = width / height;
+
+    let drawWidth: number;
+    let drawHeight: number;
+    let offsetX: number;
+    let offsetY: number;
+
+    if (canvasAspect > imgAspect) {
+      drawWidth = width;
+      drawHeight = width / imgAspect;
+      offsetX = 0;
+      offsetY = (height - drawHeight) / 2;
+    } else {
+      drawWidth = height * imgAspect;
+      drawHeight = height;
+      offsetX = (width - drawWidth) / 2;
+      offsetY = 0;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    currentFrameRef.current = frameNumber;
+  }, []);
+
+  // Update canvas resolution with devicePixelRatio for ultra-sharp Retina rendering
+  const updateCanvasSize = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+
+    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      drawFrame(currentFrameRef.current);
+    }
+  }, [drawFrame]);
+
+  // Preload initial frames instantly, then progressively buffer all 240 frames
+  useEffect(() => {
+    let isCancelled = false;
+
+    // Load Frame 1 immediately
+    const firstImg = new window.Image();
+    firstImg.src = getFrameSrc(1);
+    firstImg.onload = () => {
+      if (isCancelled) return;
+      imagesRef.current[0] = firstImg;
+      updateCanvasSize();
+      drawFrame(1);
+    };
+
+    // Buffer remaining frames in small batches
+    const loadRemainingFrames = () => {
+      for (let i = 2; i <= TOTAL_FRAMES; i++) {
+        const img = new window.Image();
+        img.src = getFrameSrc(i);
+        img.onload = () => {
+          if (isCancelled) return;
+          imagesRef.current[i - 1] = img;
+          if (currentFrameRef.current === i) {
+            drawFrame(i);
+          }
+        };
+      }
+    };
+
+    const timer = setTimeout(loadRemainingFrames, 30);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(timer);
+    };
+  }, [drawFrame, updateCanvasSize]);
+
+  // 250vh Scroll animation tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const scrollableDistance = rect.height - window.innerHeight;
+      if (scrollableDistance <= 0) return;
+
+      const scrolled = -rect.top;
+      const progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1);
+      setScrollProgress(progress);
+
+      const targetFrame = Math.min(
+        Math.max(Math.floor(progress * (TOTAL_FRAMES - 1)) + 1, 1),
+        TOTAL_FRAMES
+      );
+
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+      }
+
+      animationFrameIdRef.current = requestAnimationFrame(() => {
+        drawFrame(targetFrame);
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", updateCanvasSize, { passive: true });
+    handleScroll();
+    updateCanvasSize();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateCanvasSize);
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+      }
+    };
+  }, [drawFrame, updateCanvasSize]);
 
   return (
-    <section className="relative w-full min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] flex flex-col justify-between px-4 sm:px-10 py-6 lg:py-0 max-w-7xl mx-auto overflow-hidden">
-      {/* Subtle ambient lighting */}
-      <div
-        className="absolute top-1/2 left-1/3 w-80 h-80 rounded-full blur-[130px] opacity-10 pointer-events-none transition-colors duration-700"
-        style={{ backgroundColor: activeShade.hex }}
-      />
+    <section
+      ref={containerRef}
+      className="relative w-full h-[250vh] bg-[#070D12] select-none"
+    >
+      {/* Sticky Fullscreen Canvas Viewport playing all 240 frames on scroll */}
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden bg-[#070D12]">
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full object-cover block"
+        />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-1 my-auto py-4 lg:py-0">
-        {/* Left Column: Minimal Typography & Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="lg:col-span-6 space-y-4 text-left"
+        {/* Minimal Scroll Cue */}
+        <div
+          className={`absolute bottom-8 inset-x-0 mx-auto flex flex-col items-center justify-center gap-2 pointer-events-none transition-opacity duration-500 z-20 ${
+            scrollProgress > 0.06 ? "opacity-0" : "opacity-80"
+          }`}
         >
-          {/* Subtle Tagline */}
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[10px] font-mono tracking-widest uppercase text-ash">
-              Air-Driven Precision System • Est. 2025
-            </span>
-          </div>
-
-          {/* Slogan from Page 32 of Brand Guide */}
-          <h1 className="font-headline font-black text-3xl sm:text-5xl xl:text-6xl tracking-tighter text-platinum leading-[1.05]">
-            Single-use <br />
-            <span className="text-ash font-light italic">is over.</span>
-          </h1>
-
-          {/* Brand Narrative from Page 3 */}
-          <p className="text-ash text-xs sm:text-sm leading-relaxed max-w-md font-light">
-            Colourpig by Norman &amp; Brown is the world&apos;s first reusable, air-driven hair colour system. Eliminating 90% of product waste and 75% of plastic through proprietary air-compression technology.
-          </p>
-
-          {/* Clean Inline Shade Selector */}
-          <div className="pt-1 space-y-2">
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-ash">
-                Selected Shade:
-              </span>
-              <span className="text-xs font-mono font-medium text-platinum">
-                {activeShade.name} <span className="text-ash">({activeShade.code})</span>
-              </span>
-            </div>
-
-            {/* Clean Swatch Circles */}
-            <div className="flex items-center gap-2.5">
-              {CORE_SHADES.map((shade) => {
-                const isSelected = activeShade.code === shade.code;
-                return (
-                  <button
-                    key={shade.code}
-                    onClick={() => setActiveShade(shade)}
-                    className={`relative w-8 h-8 rounded-full transition-all flex items-center justify-center ${
-                      isSelected
-                        ? "ring-2 ring-platinum ring-offset-2 ring-offset-obsidian scale-110"
-                        : "opacity-70 hover:opacity-100"
-                    }`}
-                    style={{ backgroundColor: shade.hex }}
-                    aria-label={shade.name}
-                  >
-                    {isSelected && (
-                      <Check className="w-3.5 h-3.5 text-white drop-shadow" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Clean E-Commerce Action */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <button
-              onClick={handleOrder}
-              className="py-3 px-5 sm:px-6 rounded-xl bg-platinum text-obsidian font-headline font-bold text-xs tracking-wider uppercase hover:bg-white active:scale-[0.99] transition-all flex items-center gap-2 shadow-lg"
-            >
-              <span>{added ? "Dispatched" : "Order Starter System — $89"}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-
-            <span className="text-[10px] font-mono text-ash flex items-center gap-1.5 pl-1 sm:pl-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-ash" />
-              <span>30-Day Guarantee</span>
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Right Column: Clean Frameless 3D Product Canvas */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="lg:col-span-6 h-[280px] sm:h-[380px] lg:h-[460px] w-full relative flex items-center justify-center"
-        >
-          {/* 3D Dispenser Canvas */}
-          <div className="w-full h-full relative">
-            <HeroDispenserWrapper shadeHex={activeShade.hex} />
-          </div>
-
-          {/* Minimal Drag Notice */}
-          <div className="absolute bottom-2 right-2 text-[9px] font-mono text-ash/60 uppercase tracking-widest pointer-events-none">
-            360° Drag Orbit
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Clean Bottom Ticker Line */}
-      <div className="py-3 border-t border-brand/40 flex flex-wrap items-center justify-center sm:justify-between gap-x-4 gap-y-2 font-mono text-[9px] sm:text-[10px] text-ash tracking-wider uppercase select-none text-center">
-        <span>90% LESS CHEMICAL WASTE</span>
-        <span className="hidden sm:inline">•</span>
-        <span>75% LESS PLASTIC</span>
-        <span className="hidden sm:inline">•</span>
-        <span>8-WEEK SHOWER FRESHNESS</span>
-        <span className="hidden sm:inline">•</span>
-        <span>10-20ML ROOT PRECISION</span>
+          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-platinum/70">
+            Scroll to play
+          </span>
+          <ChevronDown className="w-4 h-4 text-platinum/70 animate-bounce" />
+        </div>
       </div>
     </section>
   );
