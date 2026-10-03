@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ColourpigLogo } from "@/components/brand/logo";
-import { Phone, Mail, MapPin, Clock, Globe } from "lucide-react";
+import { Mail, MapPin, Globe } from "lucide-react";
 
 function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -119,77 +119,58 @@ export function EcommFooter() {
             </ul>
           </div>
 
-          {/* Column 4: Contact Us & Concierge Hours Box */}
-          <div className="lg:col-span-4 space-y-5">
+          {/* Column 4: Client Care & Head Office (Colourpig Real Content) */}
+          <div className="lg:col-span-3 space-y-4">
             <span className="text-[11px] font-mono font-bold tracking-[0.22em] uppercase text-platinum block">
-              CONTACT US
+              CLIENT CARE
             </span>
 
-            <div className="space-y-3.5 text-xs sm:text-[13px] text-ash/90">
-              {/* Phone */}
-              <a
-                href="tel:0292677777"
-                className="flex items-center gap-3 group hover:text-white transition-colors"
-              >
-                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-platinum group-hover:border-platinum/40 group-hover:bg-white/10 transition-all flex-shrink-0">
-                  <Phone className="w-3.5 h-3.5" />
-                </div>
-                <span className="font-mono font-medium tracking-wide">02 9267 7777</span>
-              </a>
-
-              {/* Email */}
-              <a
-                href="mailto:info@colourpig.com.au"
-                className="flex items-center gap-3 group hover:text-white transition-colors"
-              >
-                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-platinum group-hover:border-platinum/40 group-hover:bg-white/10 transition-all flex-shrink-0">
-                  <Mail className="w-3.5 h-3.5" />
-                </div>
-                <span>info@colourpig.com.au</span>
-              </a>
-
+            <div className="space-y-3 text-xs sm:text-[13px] text-ash/80">
               {/* Location Address */}
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-platinum flex-shrink-0 mt-0.5">
                   <MapPin className="w-3.5 h-3.5" />
                 </div>
                 <div className="text-ash/80 leading-relaxed text-xs">
-                  <span>Suite 403, Level 4/307 Pitt St,</span>
+                  <span className="text-white font-medium block">Norman Brown Pty Ltd</span>
+                  <span>46 Oxford Street, Paddington</span>
                   <br />
-                  <span>Sydney NSW 2000, Australia</span>
+                  <span>NSW 2021, Sydney, Australia</span>
                 </div>
               </div>
+
+              {/* Email */}
+              <a
+                href="mailto:concierge@colourpig.com"
+                className="flex items-center gap-3 group hover:text-white transition-colors"
+              >
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-platinum group-hover:border-platinum/40 group-hover:bg-white/10 transition-all flex-shrink-0">
+                  <Mail className="w-3.5 h-3.5" />
+                </div>
+                <span className="font-mono text-xs">concierge@colourpig.com</span>
+              </a>
             </div>
 
-            {/* Practice / Concierge Hours Box matching reference design */}
-            <div className="rounded-xl border border-white/10 bg-[#142431]/70 p-4 space-y-2.5 backdrop-blur-sm shadow-inner">
-              <div className="flex items-center gap-2 text-platinum text-[10px] font-mono font-bold uppercase tracking-wider">
-                <Clock className="w-3.5 h-3.5 text-platinum" />
-                <span>PRACTICE &amp; CONCIERGE HOURS</span>
-              </div>
-              <div className="space-y-1.5 text-xs">
-                <div className="flex justify-between items-center text-ash/80">
-                  <span>Mon – Fri:</span>
-                  <span className="font-mono text-platinum font-semibold">8:00 AM – 6:00 PM</span>
-                </div>
-                <div className="flex justify-between items-center text-ash/80">
-                  <span>Saturday:</span>
-                  <span className="font-mono text-platinum font-semibold">9:00 AM – 2:00 PM</span>
-                </div>
-              </div>
-            </div>
+            {/* Service & Guarantee Links */}
+            <ul className="space-y-2.5 text-xs sm:text-[13px] text-ash/80 pt-2 border-t border-white/10">
+              <li><a href="#bestsellers" className="hover:text-white transition-colors">30-Day In-Shower Trial</a></li>
+              <li><a href="#bestsellers" className="hover:text-white transition-colors">Global Express Dispatch</a></li>
+              <li><a href="#system" className="hover:text-white transition-colors">Order &amp; Refill Tracking</a></li>
+              <li><a href="#about" className="hover:text-white transition-colors">Salon Concierge &amp; FAQ</a></li>
+            </ul>
           </div>
         </div>
 
         {/* Divider Bar & Legal Line */}
         <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-ash/60">
           <p className="text-center md:text-left">
-            © 2026 ColourPig Australia. All rights reserved. Registered Norman Brown Pty Ltd ABN 34 114 474 153.
+            © 2026 ColourPig by Norman &amp; Brown. All rights reserved. Registered Norman Brown Pty Ltd.
           </p>
           <div className="flex items-center gap-4 sm:gap-6 text-ash/70">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Treatment</a>
-            <a href="#" className="hover:text-white transition-colors">Patient Charter</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors">Shipping &amp; Returns</a>
+            <a href="#" className="hover:text-white transition-colors">Refund Policy</a>
           </div>
         </div>
 
