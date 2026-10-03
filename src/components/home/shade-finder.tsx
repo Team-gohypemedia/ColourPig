@@ -7,11 +7,25 @@ import { ShadeItem } from "@/components/sections/hero-section";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
 
 export function ShadeFinder({
-  onSelectShade,
+  onAddToCart,
 }: {
-  onSelectShade?: (shade: ShadeItem) => void;
+  onAddToCart?: (shade: ShadeItem) => void;
 }) {
   const [selectedShade, setSelectedShade] = useState<ShadeProduct>(OFFICIAL_SHADES[3]); // Default No.4 Medium Brown
+  const [added, setAdded] = useState(false);
+
+  const handleAddCurrentShade = () => {
+    if (onAddToCart) {
+      onAddToCart({
+        code: selectedShade.code,
+        name: selectedShade.name,
+        hex: selectedShade.hex,
+        undertone: selectedShade.category,
+      });
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1800);
+    }
+  };
 
   return (
     <section id="shades" className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
@@ -111,15 +125,7 @@ export function ShadeFinder({
           return (
             <div
               key={shade.id}
-              onClick={() => {
-                setSelectedShade(shade);
-                onSelectShade?.({
-                  code: shade.code,
-                  name: shade.name,
-                  hex: shade.hex,
-                  undertone: shade.category,
-                });
-              }}
+              onClick={() => setSelectedShade(shade)}
               className={`p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col items-center text-center space-y-3 ${
                 isSelected
                   ? "bg-platinum/50 border-obsidian shadow-lg scale-105"
@@ -189,17 +195,10 @@ export function ShadeFinder({
         </div>
         <button
           type="button"
-          onClick={() =>
-            onSelectShade?.({
-              code: selectedShade.code,
-              name: selectedShade.name,
-              hex: selectedShade.hex,
-              undertone: selectedShade.category,
-            })
-          }
-          className="shrink-0 px-6 py-3 rounded-full bg-obsidian hover:bg-black text-white text-xs font-mono font-semibold tracking-wider uppercase transition-all shadow-md active:scale-95"
+          onClick={handleAddCurrentShade}
+          className="shrink-0 px-6 py-3 rounded-full bg-obsidian hover:bg-black text-white text-xs font-mono font-semibold tracking-wider uppercase transition-all shadow-md active:scale-95 flex items-center gap-2"
         >
-          Select Shade
+          <span>{added ? "Added to Bag" : `Add to Bag — $${selectedShade.price}`}</span>
         </button>
       </div>
     </section>

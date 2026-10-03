@@ -116,7 +116,7 @@ export default function Home() {
 
       {/* 6. DISCOVER YOUR SHADE Lookbook (Light Theme - Crisp White) */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <ShadeFinder onSelectShade={handleAddToCart} />
+        <ShadeFinder onAddToCart={handleAddToCart} />
       </div>
 
       {/* 7. Press & Editorial Bar (Light Theme - Ash Grey & Platinum) */}
