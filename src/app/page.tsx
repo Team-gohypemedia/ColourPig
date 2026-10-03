@@ -109,14 +109,14 @@ export default function Home() {
         <SystemCategories />
       </div>
 
-      {/* 5. BESTSELLERS 4-Card Grid (Light Theme - Platinum #CED1D0) */}
-      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
-        <Bestsellers onAddToCart={handleAddToCart} />
-      </div>
-
-      {/* 6. DISCOVER YOUR SHADE Lookbook (Light Theme - Crisp White) */}
+      {/* 5. BEFORE & AFTER RESULTS (Light Theme - Crisp White) */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <ShadeFinder onAddToCart={handleAddToCart} />
+      </div>
+
+      {/* 6. BESTSELLERS 4-Card Grid (Light Theme - Platinum #CED1D0) */}
+      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
+        <Bestsellers onAddToCart={handleAddToCart} />
       </div>
 
       {/* 7. Press & Editorial Bar (Light Theme - Ash Grey & Platinum) */}
