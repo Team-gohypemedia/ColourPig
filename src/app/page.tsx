@@ -64,7 +64,7 @@ export default function Home() {
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="h-screen w-full bg-obsidian text-platinum flex flex-col overflow-x-hidden selection:bg-steel selection:text-white">
+    <div className="h-screen w-full bg-obsidian text-platinum flex flex-col overflow-y-auto lg:overflow-hidden selection:bg-steel selection:text-white">
       {/* Slide-out Cart Drawer */}
       <CartMini
         isOpen={cartOpen}
