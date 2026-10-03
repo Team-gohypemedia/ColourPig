@@ -1,33 +1,33 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { SnoutIcon } from "@/components/brand/logo";
 
 const CATEGORIES = [
   {
     id: "hardware",
-    title: "AEROSPACE HARDWARE",
-    tagline: "Engineered to endure a lifetime",
-    desc: "Permanent chrome dispenser with air-compression pump chamber. 0 aerosol gases.",
+    title: "PERMANENT HARDWARE",
+    tagline: "Aerospace Chrome Engineering",
+    desc: "Built to endure a lifetime. Air-driven compression delivers 10-20ml without aerosols.",
     badge: "Hardware Only • $58",
-    imageAccent: "#253744",
+    image: "/images/behind-scenes-lab.jpg",
   },
   {
     id: "starter",
     title: "THE STARTER SYSTEM",
-    tagline: "The world's first air-driven kit",
-    desc: "Includes the permanent chrome MK-1 dispenser, 2x 50ml unoxidized pigment pods, and root wand.",
+    tagline: "World's First Air-Driven Kit",
+    desc: "Includes permanent MK-1 dispenser, 2x 50ml unoxidized pigment pods, and root touch wand.",
     badge: "Complete System • $89",
-    imageAccent: "#C9A77D",
+    image: "/images/product-dispenser.jpg",
   },
   {
     id: "refills",
     title: "RECYCLABLE PODS",
-    tagline: "75% less plastic per touch-up",
-    desc: "Hermetically sealed 50ml + 50ml dual cartridges. Fresh unoxidized pigment ready in your shower.",
+    tagline: "75% Less Plastic Per Session",
+    desc: "Hermetically sealed 50ml + 50ml dual cartridges. 8-week unoxidized freshness in shower.",
     badge: "Refill Duo • $32",
-    imageAccent: "#495B69",
+    image: "/images/model-silver.jpg",
   },
 ];
 
@@ -46,13 +46,10 @@ export function SystemCategories() {
     <section className="py-24 px-6 sm:px-10 lg:px-14 max-w-[1600px] mx-auto border-t border-brand/40">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-16 space-y-2">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-ash">
-          CURATED ESSENTIALS
-        </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-tight uppercase">
-          THE PRECISION SYSTEM
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-wider uppercase">
+          SHOP BY CATEGORY
         </h2>
-        <div className="w-8 h-[1px] bg-platinum/40 mx-auto mt-3" />
+        <div className="w-10 h-[1.5px] bg-platinum/40 mx-auto mt-3" />
       </div>
 
       {/* 3-Card Carousel Container with Arrow Navigation */}
@@ -60,7 +57,7 @@ export function SystemCategories() {
         {/* Left Arrow */}
         <button
           onClick={prev}
-          className="absolute -left-2 sm:left-4 z-20 w-10 h-10 rounded-full bg-steel/80 border border-brand text-platinum hover:bg-white hover:text-obsidian transition-all flex items-center justify-center shadow-xl"
+          className="absolute -left-2 sm:left-2 z-20 w-11 h-11 rounded-full bg-black/70 backdrop-blur border border-white/20 text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-2xl"
           aria-label="Previous Category"
         >
           <ChevronLeft className="w-5 h-5" />
@@ -73,49 +70,49 @@ export function SystemCategories() {
             return (
               <div
                 key={cat.id}
-                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-8 text-center group cursor-pointer ${
+                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-8 text-center group cursor-pointer shadow-2xl ${
                   isCenter
-                    ? "md:scale-105 border-platinum/60 bg-gradient-to-b from-steel/60 via-midnight to-obsidian h-[480px] shadow-2xl z-10"
-                    : "border-brand/40 bg-midnight/50 h-[420px] opacity-80 hover:opacity-100 hover:border-ash"
+                    ? "md:scale-105 border-platinum bg-midnight h-[520px] z-10"
+                    : "border-brand/50 bg-midnight/70 h-[440px] opacity-85 hover:opacity-100 hover:border-ash"
                 }`}
               >
-                {/* Background graphic motif */}
-                <div
-                  className="absolute inset-0 opacity-15 pointer-events-none transition-opacity group-hover:opacity-30"
-                  style={{
-                    background: `radial-gradient(circle at 50% 30%, ${cat.imageAccent} 0%, transparent 70%)`,
-                  }}
+                {/* Real Photographic Background */}
+                <Image
+                  src={cat.image}
+                  alt={cat.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
 
-                <div className="absolute top-6 right-6">
-                  <SnoutIcon className="w-5 h-5 opacity-30 group-hover:opacity-80 transition-opacity" color="#CED1D0" />
-                </div>
+                {/* Dark Vignette / Scrim Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30 group-hover:via-black/30 transition-all duration-300" />
 
                 {/* Content */}
                 <div className="relative z-10 space-y-3">
-                  <span className="inline-block px-3 py-1 rounded-full bg-obsidian/70 border border-brand text-[10px] font-mono tracking-wider uppercase text-platinum">
+                  <span className="inline-block px-3.5 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">
                     {cat.badge}
                   </span>
 
                   <h3
-                    className={`font-headline font-bold uppercase tracking-tight text-white ${
+                    className={`font-headline font-bold uppercase tracking-tight text-white drop-shadow-md ${
                       isCenter ? "text-2xl sm:text-3xl" : "text-xl"
                     }`}
                   >
                     {cat.title}
                   </h3>
 
-                  <p className="text-xs font-mono text-ash tracking-wide">
+                  <p className="text-xs font-mono text-platinum/90 tracking-wide">
                     {cat.tagline}
                   </p>
 
-                  <p className="text-xs font-light text-ash/80 max-w-xs mx-auto line-clamp-2">
+                  <p className="text-xs font-light text-ash max-w-xs mx-auto line-clamp-2">
                     {cat.desc}
                   </p>
 
                   <div className="pt-2">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-headline font-semibold text-platinum group-hover:text-white transition-colors">
-                      <span>Explore Configuration</span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-headline font-semibold text-white group-hover:underline">
+                      <span>Explore Category</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
@@ -128,7 +125,7 @@ export function SystemCategories() {
         {/* Right Arrow */}
         <button
           onClick={next}
-          className="absolute -right-2 sm:right-4 z-20 w-10 h-10 rounded-full bg-steel/80 border border-brand text-platinum hover:bg-white hover:text-obsidian transition-all flex items-center justify-center shadow-xl"
+          className="absolute -right-2 sm:right-2 z-20 w-11 h-11 rounded-full bg-black/70 backdrop-blur border border-white/20 text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-2xl"
           aria-label="Next Category"
         >
           <ChevronRight className="w-5 h-5" />
