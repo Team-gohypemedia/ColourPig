@@ -2,7 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Lenis smooth scrolling base rules */
+@layer base {
+  :root {
+    --color-obsidian: #0D151C;
+    --color-midnight: #13212E;
+    --color-steel: #253744;
+    --color-graphite: #495B69;
+    --color-ash: #949FA3;
+    --color-platinum: #CED1D0;
+  }
+
+  body {
+    background-color: var(--color-obsidian);
+    color: var(--color-platinum);
+    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-headline {
+    font-family: var(--font-headline), sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono), monospace;
+  }
+}
+
+/* Subtle micro-snout brand pattern (Pages 28-29) */
+.brand-snout-pattern {
+  background-image: radial-gradient(circle at center, rgba(148, 159, 163, 0.12) 1.5px, transparent 1.5px),
+                    radial-gradient(circle at 6px 0px, rgba(148, 159, 163, 0.12) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Chrome metallic reflections for device container (Page 39) */
+.metallic-chrome {
+  background: linear-gradient(
+    135deg,
+    #e2e8f0 0%,
+    #94a3b8 25%,
+    #f8fafc 45%,
+    #64748b 65%,
+    #cbd5e1 85%,
+    #475569 100%
+  );
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.metallic-cylinder {
+  background: linear-gradient(
+    90deg,
+    #0D151C 0%,
+    #13212E 25%,
+    #253744 50%,
+    #13212E 75%,
+    #0D151C 100%
+  );
+}
+
+/* Clean border highlights */
+.border-brand {
+  border-color: rgba(148, 159, 163, 0.18);
+}
+
+/* Lenis smooth scrolling rules */
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -17,8 +81,4 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
 }
