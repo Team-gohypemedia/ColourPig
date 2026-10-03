@@ -22,15 +22,15 @@ export function Navbar({
   return (
     <div className="w-full relative z-50">
       {/* 1. Top 3-Column Black Announcement Bar */}
-      <div className="bg-black text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum border-b border-white/10 px-4 sm:px-8 py-2">
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between text-center">
-          <div className="hidden md:block w-1/3 text-left">
+      <div className="bg-black text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum border-b border-white/10 px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4">
+          <div className="hidden lg:block text-left whitespace-nowrap flex-1">
             <span>INTERNATIONAL SHIPPING AVAILABLE</span>
           </div>
-          <div className="w-full md:w-1/3 text-center">
+          <div className="text-center whitespace-nowrap flex-shrink-0 mx-auto lg:mx-0">
             <span>FREE SHIPPING ON ORDERS ABOVE $75 | LAUNCH ALLOCATION OPEN</span>
           </div>
-          <div className="hidden md:block w-1/3 text-right">
+          <div className="hidden lg:block text-right whitespace-nowrap flex-1">
             <span>30-DAY IN-SHOWER TRIAL &amp; EASY RETURNS</span>
           </div>
         </div>
