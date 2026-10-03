@@ -70,10 +70,10 @@ export function SystemCategories() {
             return (
               <div
                 key={cat.id}
-                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-8 text-center group cursor-pointer shadow-2xl ${
+                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-8 text-center group cursor-pointer shadow-2xl bg-toc ${
                   isCenter
-                    ? "md:scale-105 border-platinum bg-midnight h-[520px] z-10"
-                    : "border-brand/50 bg-midnight/70 h-[440px] opacity-85 hover:opacity-100 hover:border-ash"
+                    ? "md:scale-105 border-platinum h-[520px] z-10"
+                    : "border-white/10 h-[440px] opacity-90 hover:opacity-100 hover:border-platinum/60"
                 }`}
               >
                 {/* Real Photographic Background */}

@@ -53,16 +53,16 @@ export function CustomerReviews() {
         <div className="w-10 h-[1.5px] bg-platinum/40 mx-auto mt-3" />
       </div>
 
-      {/* 4 Cards Grid */}
+      {/* 4 Cards Grid using Image 3 (#CED1D0) Light Platinum Background */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {REVIEWS.map((rev, idx) => (
           <div
             key={idx}
-            className="p-8 rounded-2xl bg-midnight/90 border border-brand/60 flex flex-col justify-between space-y-6 hover:border-platinum transition-all duration-300 shadow-xl"
+            className="p-8 rounded-2xl bg-platinum text-obsidian border border-platinum/90 flex flex-col justify-between space-y-6 shadow-2xl transition-all duration-300 hover:-translate-y-1"
           >
             {/* Header with Real Portrait Avatar and Stars */}
             <div className="flex flex-col items-center text-center space-y-3">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-platinum/60 shadow-lg">
+              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-obsidian/20 shadow-md">
                 <Image
                   src={rev.avatar}
                   alt={rev.name}
@@ -77,28 +77,28 @@ export function CustomerReviews() {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                    className="w-3.5 h-3.5 fill-amber-500 text-amber-500"
                   />
                 ))}
               </div>
             </div>
 
             {/* Review Quote */}
-            <p className="text-xs font-light text-platinum/90 leading-relaxed text-center italic">
+            <p className="text-xs font-normal text-obsidian/90 leading-relaxed text-center italic">
               &ldquo;{rev.review}&rdquo;
             </p>
 
             {/* Footer Client Details */}
-            <div className="pt-4 border-t border-white/10 text-center space-y-1">
+            <div className="pt-4 border-t border-obsidian/15 text-center space-y-1">
               <div className="flex items-center justify-center gap-1.5">
-                <span className="font-headline font-bold text-xs text-white">
+                <span className="font-headline font-bold text-xs text-obsidian">
                   {rev.name}
                 </span>
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
               </div>
-              <p className="text-[10px] font-mono text-ash">{rev.role}</p>
-              <p className="text-[9px] font-mono text-ash/80">
-                Verified Shade: {rev.shade}
+              <p className="text-[10px] font-mono text-graphite font-medium">{rev.role}</p>
+              <p className="text-[9px] font-mono text-graphite/80">
+                Verified: {rev.shade}
               </p>
             </div>
           </div>

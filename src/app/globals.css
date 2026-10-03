@@ -8,10 +8,11 @@
   :root {
     --color-obsidian: #0D151C;
     --color-midnight: #13212E;
+    --color-toc: #142431;      /* Image 2 Table of Contents Steel-Petrol Blue */
     --color-steel: #253744;
     --color-graphite: #495B69;
     --color-ash: #949FA3;
-    --color-platinum: #CED1D0;
+    --color-platinum: #CED1D0; /* Image 3 Light Platinum Grey */
   }
 
   body {
@@ -31,41 +32,29 @@
   }
 }
 
+/* Image 1: Iconic Hero Luminous Spotlight Background (Page 1 & 5) */
+.bg-hero-spotlight {
+  background: 
+    radial-gradient(ellipse 75% 65% at 35% 85%, rgba(206, 209, 208, 0.42) 0%, rgba(73, 91, 105, 0.28) 42%, transparent 75%),
+    linear-gradient(135deg, #13212E 0%, #0D151C 65%, #080E13 100%);
+}
+
+/* Image 2: Deep Steel Petrol Navy Background for Banners & Collection Cards (Page 4 TOC) */
+.bg-banner-toc {
+  background-color: #142431;
+}
+
+/* Image 3: Light Platinum Ash Grey for Product Cards (Page 2) */
+.bg-product-card-light {
+  background-color: #CED1D0;
+  color: #0D151C;
+}
+
 /* Subtle micro-snout brand pattern (Pages 28-29) */
 .brand-snout-pattern {
   background-image: radial-gradient(circle at center, rgba(148, 159, 163, 0.12) 1.5px, transparent 1.5px),
                     radial-gradient(circle at 6px 0px, rgba(148, 159, 163, 0.12) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
-}
-
-/* Chrome metallic reflections for device container (Page 39) */
-.metallic-chrome {
-  background: linear-gradient(
-    135deg,
-    #e2e8f0 0%,
-    #94a3b8 25%,
-    #f8fafc 45%,
-    #64748b 65%,
-    #cbd5e1 85%,
-    #475569 100%
-  );
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 12px 30px rgba(0, 0, 0, 0.45);
-}
-
-.metallic-cylinder {
-  background: linear-gradient(
-    90deg,
-    #0D151C 0%,
-    #13212E 25%,
-    #253744 50%,
-    #13212E 75%,
-    #0D151C 100%
-  );
-}
-
-/* Clean border highlights */
-.border-brand {
-  border-color: rgba(148, 159, 163, 0.18);
 }
 
 /* Lenis smooth scrolling rules */

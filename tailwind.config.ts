@@ -17,6 +17,7 @@ const config: Config = {
         graphite: "#495B69", // HEX: #495B69, RGB: 73, 91, 105
         ash: "#949FA3",      // HEX: #949FA3, RGB: 148, 159, 163
         platinum: "#CED1D0", // HEX: #CED1D0, RGB: 206, 209, 208
+        toc: "#142431",      // Image 2 Table of Contents Petrol Navy
       },
       fontFamily: {
         headline: ["'Space Grotesk'", "sans-serif"],

@@ -94,8 +94,8 @@ export default function Home() {
         onOpenCart={() => setCartOpen(true)}
       />
 
-      {/* 2. 100vh Hero Section (Preserved exact style) */}
-      <div className="w-full">
+      {/* 2. 100vh Hero Section with Image 1 Luminous Spotlight Background */}
+      <div className="w-full bg-hero-spotlight border-b border-brand/40">
         <HeroSection onAddToCart={handleAddToCart} />
       </div>
 

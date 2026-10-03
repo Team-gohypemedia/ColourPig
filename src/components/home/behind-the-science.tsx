@@ -18,7 +18,7 @@ export function BehindTheScience() {
       {/* Dual Split Full-Bleed Editorial Banners */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Banner 1: Norman & Brown Formulation Atelier */}
-        <div className="relative rounded-3xl overflow-hidden border border-brand/60 min-h-[540px] flex flex-col justify-end p-8 sm:p-12 group shadow-2xl">
+        <div className="relative rounded-3xl overflow-hidden border border-brand/60 bg-toc min-h-[540px] flex flex-col justify-end p-8 sm:p-12 group shadow-2xl">
           <Image
             src="/images/behind-scenes-lab.jpg"
             alt="Norman & Brown Formulation Laboratory"
@@ -47,7 +47,7 @@ export function BehindTheScience() {
         </div>
 
         {/* Banner 2: Aerospace Chrome Dispenser */}
-        <div className="relative rounded-3xl overflow-hidden border border-brand/60 min-h-[540px] flex flex-col justify-end p-8 sm:p-12 group shadow-2xl">
+        <div className="relative rounded-3xl overflow-hidden border border-brand/60 bg-toc min-h-[540px] flex flex-col justify-end p-8 sm:p-12 group shadow-2xl">
           <Image
             src="/images/product-dispenser.jpg"
             alt="Aerospace Chrome Dispenser Engineering"
