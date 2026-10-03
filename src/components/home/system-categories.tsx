@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const CATEGORIES = [
@@ -11,6 +12,7 @@ const CATEGORIES = [
     subtitle: "Complete Reusable Kit",
     price: "$89",
     image: "/images/product-dispenser.jpg",
+    link: "#bestsellers",
   },
   {
     id: "hardware",
@@ -18,6 +20,7 @@ const CATEGORIES = [
     subtitle: "Permanent Canister Hardware",
     price: "$58",
     image: "/images/behind-scenes-lab.jpg",
+    link: "#engineering",
   },
   {
     id: "refills",
@@ -25,51 +28,51 @@ const CATEGORIES = [
     subtitle: "Dual-Chamber Cartridge",
     price: "$32",
     image: "/images/model-silver.jpg",
+    link: "#shades",
   },
 ];
 
 export function SystemCategories() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = useCallback(() => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, clientWidth } = scrollRef.current;
-    if (clientWidth > 0) {
-      const index = Math.round(scrollLeft / (clientWidth * 0.85));
-      setActiveIndex(Math.max(0, Math.min(CATEGORIES.length - 1, index)));
-    }
-  }, []);
-
-  const scrollToCard = (index: number) => {
-    if (!scrollRef.current) return;
-    const cardWidth = scrollRef.current.clientWidth * 0.85;
-    scrollRef.current.scrollTo({
-      left: index * cardWidth,
-      behavior: "smooth",
-    });
-    setActiveIndex(index);
-  };
+  // Default to index 1 (Reusable Dispenser in the center spotlight)
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   const prev = () => {
-    const newIdx = activeIndex === 0 ? CATEGORIES.length - 1 : activeIndex - 1;
-    scrollToCard(newIdx);
+    setActiveIndex((curr) => (curr === 0 ? CATEGORIES.length - 1 : curr - 1));
   };
 
   const next = () => {
-    const newIdx = activeIndex === CATEGORIES.length - 1 ? 0 : activeIndex + 1;
-    scrollToCard(newIdx);
+    setActiveIndex((curr) => (curr === CATEGORIES.length - 1 ? 0 : curr + 1));
   };
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (diff > 40) {
+      next();
+    } else if (diff < -40) {
+      prev();
+    }
+    setTouchStart(null);
+  };
+
+  // Determine the 3 displayed items: left, center, right
+  const leftIdx = (activeIndex - 1 + CATEGORIES.length) % CATEGORIES.length;
+  const centerIdx = activeIndex;
+  const rightIdx = (activeIndex + 1) % CATEGORIES.length;
+
+  const displayedSlots = [
+    { cat: CATEGORIES[leftIdx], slot: "left" },
+    { cat: CATEGORIES[centerIdx], slot: "center" },
+    { cat: CATEGORIES[rightIdx], slot: "right" },
+  ];
 
   return (
-    <section className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
+    <section id="system" className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
@@ -81,32 +84,33 @@ export function SystemCategories() {
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      {/* 3-Card Carousel: One-Line Swipeable on Mobile, 3-Col on Desktop */}
-      <div className="relative flex items-center justify-center">
-        {/* Left Arrow */}
+      {/* Carousel Container with dedicated outer margins for the navigation arrows */}
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-14 lg:px-16">
+        {/* Left Arrow - Positioned in the clean gutter outside the cards */}
         <button
+          type="button"
           onClick={prev}
-          className="absolute -left-1 sm:left-2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur border border-ash/40 text-obsidian hover:bg-obsidian hover:text-white transition-all flex items-center justify-center shadow-lg active:scale-95"
+          className="absolute -left-2 sm:left-0 lg:-left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white text-obsidian hover:bg-obsidian hover:text-white border border-ash/30 transition-all duration-300 flex items-center justify-center shadow-xl active:scale-95 cursor-pointer"
           aria-label="Previous Category"
         >
-          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-        {/* Horizontal Scroll / Grid Container */}
-        <div
-          ref={scrollRef}
-          className="flex md:grid md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full max-w-6xl items-center overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-none pb-2 sm:pb-0 px-2 sm:px-0"
-        >
-          {CATEGORIES.map((cat, idx) => {
-            const isCenter = idx === 1;
+        {/* Desktop View: 3 Animated Cards (Center is Spotlight) */}
+        <div className="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8 items-center justify-items-center">
+          {displayedSlots.map(({ cat, slot }) => {
+            const isCenter = slot === "center";
             return (
               <div
-                key={cat.id}
-                onClick={() => scrollToCard(idx)}
-                className={`relative rounded-2xl sm:rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-6 sm:p-8 text-center group cursor-pointer shadow-lg bg-toc shrink-0 snap-center w-[82vw] max-w-[340px] md:w-auto h-[400px] sm:h-[440px] ${
+                key={`${cat.id}-${slot}`}
+                onClick={() => {
+                  if (slot === "left") prev();
+                  else if (slot === "right") next();
+                }}
+                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-7 sm:p-8 text-center group cursor-pointer shadow-lg bg-toc w-full ${
                   isCenter
-                    ? "md:scale-105 border-white/20 md:h-[500px] z-10"
-                    : "border-white/10 opacity-95 hover:opacity-100 hover:border-white/30"
+                    ? "scale-105 border-white/25 h-[500px] z-20 shadow-2xl opacity-100"
+                    : "scale-95 border-white/10 h-[430px] z-10 opacity-75 hover:opacity-95 hover:border-white/20"
                 }`}
               >
                 {/* Photographic Background */}
@@ -119,23 +123,33 @@ export function SystemCategories() {
                 />
 
                 {/* Subtle Luxury Scrim Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-all duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent transition-all duration-300" />
 
-                {/* Clean, Minimal Card Content */}
-                <div className="relative z-10 space-y-1.5 sm:space-y-2">
+                {/* Card Content */}
+                <div className="relative z-10 space-y-2">
                   <h3 className="font-headline font-bold text-xl sm:text-2xl uppercase tracking-wider text-white">
                     {cat.title}
                   </h3>
 
-                  <p className="text-[11px] sm:text-xs font-mono text-platinum/80 tracking-wider uppercase">
+                  <p className="text-xs font-mono text-platinum/80 tracking-wider uppercase">
                     {cat.subtitle} • {cat.price}
                   </p>
 
-                  <div className="pt-2 sm:pt-3">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tracking-widest uppercase text-white/90 group-hover:text-white group-hover:underline">
+                  <div className="pt-2">
+                    <Link
+                      href={cat.link}
+                      onClick={(e) => {
+                        if (!isCenter) {
+                          e.preventDefault();
+                          if (slot === "left") prev();
+                          else if (slot === "right") next();
+                        }
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs font-mono tracking-widest uppercase text-white/90 group-hover:text-white group-hover:underline"
+                    >
                       <span>Explore</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </span>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -143,26 +157,67 @@ export function SystemCategories() {
           })}
         </div>
 
-        {/* Right Arrow */}
+        {/* Mobile View: Swipeable Single Active Card */}
+        <div
+          className="md:hidden w-full flex justify-center px-4"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          <div
+            className="relative rounded-2xl overflow-hidden border border-white/20 transition-all duration-300 flex flex-col justify-end p-6 text-center shadow-xl bg-toc w-[82vw] max-w-[340px] h-[430px]"
+          >
+            <Image
+              src={CATEGORIES[activeIndex].image}
+              alt={CATEGORIES[activeIndex].title}
+              fill
+              sizes="85vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+
+            <div className="relative z-10 space-y-2">
+              <h3 className="font-headline font-bold text-xl uppercase tracking-wider text-white">
+                {CATEGORIES[activeIndex].title}
+              </h3>
+
+              <p className="text-xs font-mono text-platinum/80 tracking-wider uppercase">
+                {CATEGORIES[activeIndex].subtitle} • {CATEGORIES[activeIndex].price}
+              </p>
+
+              <div className="pt-2">
+                <Link
+                  href={CATEGORIES[activeIndex].link}
+                  className="inline-flex items-center gap-1.5 text-xs font-mono tracking-widest uppercase text-white/90"
+                >
+                  <span>Explore</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Arrow - Positioned in the clean gutter outside the cards */}
         <button
+          type="button"
           onClick={next}
-          className="absolute -right-1 sm:right-2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur border border-ash/40 text-obsidian hover:bg-obsidian hover:text-white transition-all flex items-center justify-center shadow-lg active:scale-95"
+          className="absolute -right-2 sm:right-0 lg:-right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white text-obsidian hover:bg-obsidian hover:text-white border border-ash/30 transition-all duration-300 flex items-center justify-center shadow-xl active:scale-95 cursor-pointer"
           aria-label="Next Category"
         >
-          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
 
-      {/* Mobile Dot Indicators */}
-      <div className="flex md:hidden items-center justify-center gap-1.5 mt-5">
-        {CATEGORIES.map((_, i) => (
+      {/* Dot Indicators */}
+      <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
+        {CATEGORIES.map((cat, i) => (
           <button
-            key={i}
-            onClick={() => scrollToCard(i)}
-            className={`h-1.5 transition-all duration-300 rounded-full ${
-              activeIndex === i ? "w-6 bg-obsidian" : "w-1.5 bg-obsidian/30"
+            key={cat.id}
+            onClick={() => setActiveIndex(i)}
+            className={`h-2 transition-all duration-300 rounded-full cursor-pointer ${
+              activeIndex === i ? "w-7 bg-obsidian" : "w-2 bg-obsidian/25 hover:bg-obsidian/50"
             }`}
-            aria-label={`Go to category ${i + 1}`}
+            aria-label={`Go to category ${cat.title}`}
           />
         ))}
       </div>
