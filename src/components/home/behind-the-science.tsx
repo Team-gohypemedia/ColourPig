@@ -10,7 +10,7 @@ export function BehindTheScience() {
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-platinum tracking-wider uppercase">
-          BEHIND THE SCIENCE
+          THE SYSTEM
         </h2>
         <div className="w-10 h-[1.5px] bg-platinum/40 mx-auto mt-3" />
       </div>
@@ -33,14 +33,14 @@ export function BehindTheScience() {
               01 • NORMAN &amp; BROWN
             </span>
             <h3 className="font-headline font-bold text-xl sm:text-3xl text-white leading-tight">
-              Salon color mastery <br />
-              <span className="italic font-light text-ash">in a reusable system.</span>
+              Salon color. <br />
+              <span className="font-light text-ash">Made in Sydney, Australia.</span>
             </h3>
             <p className="text-xs sm:text-sm font-light text-ash leading-relaxed max-w-md">
-              Formulated in Australia by Norman Brown Pty Ltd. Dual-chamber technology preserves formula freshness for multiple root touch-ups.
+              Formulated by Norman Brown for professional salon results at home. Gentle on roots with natural shine and zero brassiness.
             </p>
             <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-platinum group-hover:text-white transition-colors">
-              <span>Discover The Formula</span>
+              <span>Learn About The Formula</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </div>
@@ -59,17 +59,17 @@ export function BehindTheScience() {
 
           <div className="relative z-10 space-y-3 sm:space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-[10px] font-mono tracking-wider uppercase text-platinum">
-              02 • AIR-DRIVEN DISPENSER
+              02 • REUSABLE DISPENSER
             </span>
             <h3 className="font-headline font-bold text-xl sm:text-3xl text-white leading-tight">
-              No mixing. No aerosols. <br />
-              <span className="italic font-light text-ash">Just press to dispense.</span>
+              Ready to use. <br />
+              <span className="font-light text-ash">No mixing. No mess.</span>
             </h3>
             <p className="text-xs sm:text-sm font-light text-ash leading-relaxed max-w-md">
-              Engineered to replace single-use aerosol cans and plastic waste. Dispenses the exact ratio of colour base and developer with zero hassle.
+              Air-driven canister dispenses the exact ratio of color and developer at the touch of a button. Multiple applications in one system.
             </p>
             <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-platinum group-hover:text-white transition-colors">
-              <span>Explore The Dispenser</span>
+              <span>See The Dispenser</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </div>
