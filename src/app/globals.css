@@ -74,6 +74,30 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
+/* Custom branded drawer scrollbar */
+.custom-drawer-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #CED1D0 transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-drawer-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-drawer-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-drawer-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #CED1D0;
+  border-radius: 9999px;
+}
+
+.custom-drawer-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #949FA3;
+}
+
 @keyframes hologramScan {
   0% {
     top: 4%;

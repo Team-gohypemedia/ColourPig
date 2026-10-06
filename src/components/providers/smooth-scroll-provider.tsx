@@ -26,6 +26,20 @@ export function SmoothScrollProvider({
       ScrollTrigger.update();
     });
 
+    // Pause Lenis when modal/drawers lock body scroll, resume when unlocked
+    const bodyObserver = new MutationObserver(() => {
+      if (document.body.style.overflow === "hidden") {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+
+    bodyObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+
     const update = (time: number) => {
       lenis.raf(time * 1000);
     };
@@ -34,6 +48,7 @@ export function SmoothScrollProvider({
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      bodyObserver.disconnect();
       gsap.ticker.remove(update);
       lenis.destroy();
     };
