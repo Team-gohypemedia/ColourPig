@@ -176,7 +176,7 @@ export function ShadeFinder({
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
             onDoubleClick={() => setSliderPos(50)}
-            className="relative w-full max-w-[360px] aspect-[3/4] max-h-[460px] rounded-2xl overflow-hidden border border-black/10 shadow-lg bg-[#0F141A] select-none cursor-ew-resize group"
+            className="relative w-full max-w-[360px] aspect-[3/4] max-h-[460px] rounded-md overflow-hidden border border-black/10 shadow-lg bg-[#0F141A] select-none cursor-ew-resize group"
             style={{ touchAction: "none" }}
           >
             {/* 1. AFTER Image (Clean Portrait with selected shade) */}
@@ -270,7 +270,7 @@ export function ShadeFinder({
                       setSelectedShade(shade);
                       triggerSweepAnimation(1600);
                     }}
-                    className={`p-2 sm:p-2.5 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col items-center text-center space-y-1.5 group/card ${
+                    className={`p-2 sm:p-2.5 rounded-md border transition-all duration-150 cursor-pointer flex flex-col items-center text-center space-y-1.5 group/card ${
                       isSelected
                         ? "bg-white border-obsidian shadow-sm ring-1 ring-obsidian"
                         : "bg-white/80 border-ash/40 hover:border-obsidian/40 hover:bg-white hover:shadow-xs"
@@ -307,7 +307,7 @@ export function ShadeFinder({
           </div>
 
           {/* Active Shade Order Drawer */}
-          <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-ash/40 shadow-xs space-y-3">
+          <div className="p-3.5 sm:p-4 rounded-md bg-white border border-ash/40 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 min-w-0">
                 <span

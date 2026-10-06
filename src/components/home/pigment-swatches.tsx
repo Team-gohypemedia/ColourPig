@@ -8,16 +8,22 @@ const TEXTURE_CARDS = [
     title: "AIR-DRIVEN DISPENSER",
     subtitle: "Dual Chamber System",
     desc: "Proprietary air-compression technology delivers fresh colour cream and developer with a single press.",
+    pantone: "299C",
+    hex: "#00A3E0",
   },
   {
     title: "50ML + 50ML NET",
     subtitle: "Multiple Touch-Up Uses",
     desc: "Pre-measured dual delivery designed for ongoing root touch-ups without mixing or product waste.",
+    pantone: "165C",
+    hex: "#FF671F",
   },
   {
     title: "COMPLETE AFTERCARE",
     subtitle: "Shampoo & Conditioner Included",
     desc: "Every kit includes colour cream, developer, gentle stain remover, shampoo, and conditioner.",
+    pantone: "375C",
+    hex: "#7AC142",
   },
 ];
 
@@ -39,16 +45,30 @@ export function PigmentSwatches() {
         {TEXTURE_CARDS.map((card, idx) => (
           <div
             key={idx}
-            className="group relative rounded-2xl bg-white border border-ash/30 p-8 h-[340px] flex flex-col justify-between overflow-hidden hover:border-obsidian hover:shadow-xl transition-all duration-300"
+            className="group relative rounded-md bg-white border border-ash/30 p-8 h-[340px] flex flex-col justify-between overflow-hidden hover:border-obsidian hover:shadow-lg transition-all duration-300"
           >
+            {/* Top accent stripe */}
+            <div
+              className="absolute top-0 inset-x-0 h-1 sm:h-1.5 transition-all duration-300 group-hover:h-2"
+              style={{ backgroundColor: card.hex }}
+            />
+
             {/* Background Texture Pattern */}
             <div className="absolute inset-0 brand-snout-pattern opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none" />
 
-            <div className="flex justify-between items-center z-10">
-              <span className="font-mono text-xs text-graphite font-semibold tracking-widest uppercase">
-                SPEC 0{idx + 1}
+            <div className="flex justify-between items-center z-10 pt-1">
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase border"
+                style={{
+                  backgroundColor: `${card.hex}15`,
+                  color: card.hex,
+                  borderColor: `${card.hex}40`,
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: card.hex }} />
+                SPEC 0{idx + 1} • {card.pantone}
               </span>
-              <SnoutIcon className="w-5 h-5 opacity-40 group-hover:opacity-90 transition-opacity" color="#0D151C" />
+              <SnoutIcon className="w-5 h-5 opacity-40 group-hover:opacity-100 transition-opacity" color={card.hex} />
             </div>
 
             <div className="space-y-2 z-10">

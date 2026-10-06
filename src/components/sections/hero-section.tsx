@@ -221,6 +221,7 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
           className="w-full h-full object-cover block"
         />
 
+
         {/* Minimal Scroll Cue */}
         <div
           className={`absolute bottom-8 inset-x-0 mx-auto flex flex-col items-center justify-center gap-2 pointer-events-none transition-opacity duration-500 z-20 ${

@@ -13,6 +13,9 @@ const CATEGORIES = [
     price: "$89",
     image: "/images/product-dispenser.jpg",
     link: "#bestsellers",
+    pantone: "123C",
+    hex: "#FFC72C",
+    badge: "COMPLETE STARTER",
   },
   {
     id: "hardware",
@@ -21,6 +24,9 @@ const CATEGORIES = [
     price: "$58",
     image: "/images/behind-scenes-lab.jpg",
     link: "#engineering",
+    pantone: "299C",
+    hex: "#00A3E0",
+    badge: "PERMANENT HARDWARE",
   },
   {
     id: "refills",
@@ -29,6 +35,9 @@ const CATEGORIES = [
     price: "$32",
     image: "/images/model-silver.jpg",
     link: "#shades",
+    pantone: "1905C",
+    hex: "#F08EAB",
+    badge: "DUAL-CHAMBER",
   },
 ];
 
@@ -107,7 +116,7 @@ export function SystemCategories() {
                   if (slot === "left") prev();
                   else if (slot === "right") next();
                 }}
-                className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-end p-7 sm:p-8 text-center group cursor-pointer shadow-lg bg-toc w-full ${
+                className={`relative rounded-lg overflow-hidden border transition-all duration-500 flex flex-col justify-end p-7 sm:p-8 text-center group cursor-pointer shadow-lg bg-toc w-full ${
                   isCenter
                     ? "scale-105 border-white/25 h-[500px] z-20 shadow-2xl opacity-100"
                     : "scale-95 border-white/10 h-[430px] z-10 opacity-75 hover:opacity-95 hover:border-white/20"
@@ -125,8 +134,22 @@ export function SystemCategories() {
                 {/* Subtle Luxury Scrim Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent transition-all duration-300" />
 
+                {/* Top colored accent stripe */}
+                <div
+                  className="absolute top-0 inset-x-0 h-1 z-20"
+                  style={{ backgroundColor: cat.hex }}
+                />
+
                 {/* Card Content */}
                 <div className="relative z-10 space-y-2">
+                  {/* Category Pantone Badge */}
+                  <div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/80 text-white backdrop-blur-md border border-white/20 text-[9px] font-mono tracking-widest uppercase font-bold shadow-md">
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cat.hex }} />
+                      <span className="text-white font-bold">{cat.badge} • {cat.pantone}</span>
+                    </span>
+                  </div>
+
                   <h3 className="font-headline font-bold text-xl sm:text-2xl uppercase tracking-wider text-white">
                     {cat.title}
                   </h3>
@@ -164,7 +187,7 @@ export function SystemCategories() {
           onTouchEnd={onTouchEnd}
         >
           <div
-            className="relative rounded-2xl overflow-hidden border border-white/20 transition-all duration-300 flex flex-col justify-end p-6 text-center shadow-xl bg-toc w-[82vw] max-w-[340px] h-[430px]"
+            className="relative rounded-lg overflow-hidden border border-white/20 transition-all duration-300 flex flex-col justify-end p-6 text-center shadow-xl bg-toc w-[82vw] max-w-[340px] h-[430px]"
           >
             <Image
               src={CATEGORIES[activeIndex].image}
@@ -175,7 +198,20 @@ export function SystemCategories() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
 
+            {/* Top colored accent stripe */}
+            <div
+              className="absolute top-0 inset-x-0 h-1 z-20"
+              style={{ backgroundColor: CATEGORIES[activeIndex].hex }}
+            />
+
             <div className="relative z-10 space-y-2">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/80 text-white backdrop-blur-md border border-white/20 text-[9px] font-mono tracking-widest uppercase font-bold shadow-md">
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: CATEGORIES[activeIndex].hex }} />
+                  <span className="text-white font-bold">{CATEGORIES[activeIndex].badge} • {CATEGORIES[activeIndex].pantone}</span>
+                </span>
+              </div>
+
               <h3 className="font-headline font-bold text-xl uppercase tracking-wider text-white">
                 {CATEGORIES[activeIndex].title}
               </h3>
@@ -214,8 +250,11 @@ export function SystemCategories() {
           <button
             key={cat.id}
             onClick={() => setActiveIndex(i)}
+            style={{
+              backgroundColor: activeIndex === i ? cat.hex : undefined,
+            }}
             className={`h-2 transition-all duration-300 rounded-full cursor-pointer ${
-              activeIndex === i ? "w-7 bg-obsidian" : "w-2 bg-obsidian/25 hover:bg-obsidian/50"
+              activeIndex === i ? "w-8 shadow-sm" : "w-2 bg-obsidian/25 hover:bg-obsidian/50"
             }`}
             aria-label={`Go to category ${cat.title}`}
           />

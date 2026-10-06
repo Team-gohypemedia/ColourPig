@@ -8,29 +8,37 @@ const RITUAL_STEPS = [
   {
     step: "01",
     title: "DISPENSE",
+    pantone: "165C",
+    pantoneName: "Tangerine",
+    hex: "#FF671F",
     desc: "Press the canister to release pre-measured dual formulas evenly into the tray.",
-    accent: "#CED1D0",
     image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
   },
   {
     step: "02",
     title: "APPLY",
+    pantone: "299C",
+    pantoneName: "Cyan",
+    hex: "#00A3E0",
     desc: "Use the precision brush to target roots and regrowth evenly.",
-    accent: "#949FA3",
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80",
   },
   {
     step: "03",
     title: "DEVELOP",
+    pantone: "375C",
+    pantoneName: "Lime",
+    hex: "#7AC142",
     desc: "Allow 30 minutes for permanent, rich grey coverage.",
-    accent: "#495B69",
     image: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=800&q=80",
   },
   {
     step: "04",
     title: "RINSE & WIPE",
+    pantone: "2572C",
+    pantoneName: "Lilac",
+    hex: "#B584C4",
     desc: "Rinse thoroughly with shampoo and conditioner, then wipe hairline.",
-    accent: "#253744",
     image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=800&q=80",
   },
 ];
@@ -53,18 +61,39 @@ export function InShowerRitual() {
         {RITUAL_STEPS.map((item) => (
           <div
             key={item.step}
-            className="group relative rounded-xl sm:rounded-2xl bg-white border border-ash/30 p-3 sm:p-5 flex flex-col justify-between h-auto min-h-[300px] sm:min-h-[380px] overflow-hidden hover:border-obsidian hover:shadow-xl transition-all duration-300"
+            className="group relative rounded-md bg-white border border-ash/30 p-3 sm:p-5 flex flex-col justify-between h-auto min-h-[300px] sm:min-h-[380px] overflow-hidden hover:border-obsidian hover:shadow-lg transition-all duration-300"
           >
-            {/* Step Number Top */}
-            <div className="flex justify-between items-center z-10">
-              <span className="font-mono text-lg sm:text-xl font-black text-obsidian/30 group-hover:text-obsidian transition-colors">
-                {item.step}
-              </span>
-              <SnoutIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-30 group-hover:opacity-80 transition-opacity" color="#0D151C" />
+            {/* Colored Top Accent Stripe */}
+            <div
+              className="absolute top-0 inset-x-0 h-1 sm:h-1.5 transition-all duration-300 group-hover:h-2"
+              style={{ backgroundColor: item.hex }}
+            />
+
+            {/* Step Number & Pantone Tag Top */}
+            <div className="flex justify-between items-center z-10 pt-1">
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="font-mono text-base sm:text-lg font-black transition-colors"
+                  style={{ color: item.hex }}
+                >
+                  {item.step}
+                </span>
+                <span
+                  className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[8px] font-mono font-bold tracking-wider uppercase border"
+                  style={{
+                    backgroundColor: `${item.hex}15`,
+                    color: item.hex,
+                    borderColor: `${item.hex}40`,
+                  }}
+                >
+                  {item.pantone}
+                </span>
+              </div>
+              <SnoutIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-30 group-hover:opacity-100 transition-opacity" color={item.hex} />
             </div>
 
             {/* Photographic Image Frame */}
-            <div className="relative w-full aspect-[4/3] rounded-lg sm:rounded-xl overflow-hidden my-2 sm:my-3 shadow-xs bg-[#EAECEB]">
+            <div className="relative w-full aspect-[4/3] rounded overflow-hidden my-2 sm:my-3 shadow-xs bg-[#EAECEB]">
               <Image
                 src={item.image}
                 alt={item.title}

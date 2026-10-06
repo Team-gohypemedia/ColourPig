@@ -18,6 +18,16 @@ const config: Config = {
         ash: "#949FA3",      // HEX: #949FA3, RGB: 148, 159, 163
         platinum: "#CED1D0", // HEX: #CED1D0, RGB: 206, 209, 208
         toc: "#142431",      // Image 2 Table of Contents Petrol Navy
+
+        // Official System Accent Palette (Pantone Brand Swatches)
+        pantone: {
+          yellow: "#FFC72C", // PANTONE 123C
+          pink: "#F08EAB",   // PANTONE 1905C
+          blue: "#00A3E0",   // PANTONE 299C
+          orange: "#FF671F", // PANTONE 165C
+          green: "#7AC142",  // PANTONE 375C
+          purple: "#B584C4", // PANTONE 2572C
+        },
       },
       fontFamily: {
         headline: ["'Space Grotesk'", "sans-serif"],

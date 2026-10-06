@@ -4,18 +4,30 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ColourpigLogo } from "@/components/brand/logo";
 import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { useStore } from "@/context/store-context";
 
 interface NavbarProps {
   cartCount?: number;
   wishlistCount?: number;
   onOpenCart?: () => void;
+  onOpenWishlist?: () => void;
+  onOpenMenu?: () => void;
 }
 
 export function Navbar({
-  cartCount = 2,
-  wishlistCount = 1,
-  onOpenCart,
+  cartCount: propCartCount,
+  wishlistCount: propWishlistCount,
+  onOpenCart: propOpenCart,
+  onOpenWishlist: propOpenWishlist,
+  onOpenMenu: propOpenMenu,
 }: NavbarProps) {
+  const store = useStore();
+  const cartCount = propCartCount ?? store.cartCount;
+  const wishlistCount = propWishlistCount ?? store.wishlistCount;
+  const handleOpenCart = propOpenCart ?? store.openCart;
+  const handleOpenWishlist = propOpenWishlist ?? store.openWishlist;
+  const handleOpenMenu = propOpenMenu ?? store.openMenu;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,25 +54,32 @@ export function Navbar({
     ? "bg-obsidian/95 backdrop-blur-md border-b border-white/10 shadow-lg"
     : "bg-transparent border-b border-transparent";
 
-  const announcementBg = isScrolled
-    ? "bg-black border-b border-white/10"
-    : "bg-transparent border-b border-transparent";
+  const announcementBg = "bg-black border-b border-white/10";
 
   return (
     <div className="w-full fixed top-0 left-0 right-0 z-50">
-      {/* 1. Top Announcement Bar */}
+      {/* Spectrum Ribbon Line */}
+      <div className="w-full h-[2.5px] bg-gradient-to-r from-[#FFC72C] via-[#F08EAB] via-[#00A3E0] via-[#FF671F] via-[#7AC142] to-[#B584C4]" />
+
+      {/* 1. Top Announcement Bar - Solid Black */}
       <div
-        className={`text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden transition-colors duration-500 ${announcementBg}`}
+        className={`text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden ${announcementBg}`}
       >
         <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4">
-          <div className="hidden lg:block text-left whitespace-nowrap flex-1">
+          <div className="hidden lg:flex items-center gap-2 text-left whitespace-nowrap flex-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#7AC142] animate-pulse" />
             <span>INTERNATIONAL SHIPPING AVAILABLE</span>
           </div>
-          <div className="text-center whitespace-nowrap flex-shrink-0 mx-auto lg:mx-0 truncate max-w-full">
-            <span>FREE SHIPPING ON ORDERS ABOVE $75 | LAUNCH ALLOCATION OPEN</span>
+          <div className="text-center whitespace-nowrap flex-shrink-0 mx-auto lg:mx-0 truncate max-w-full flex items-center justify-center gap-2">
+            <span>FREE SHIPPING OVER $75</span>
+            <span className="text-[#FFC72C] text-xs">◆</span>
+            <span className="text-[#F08EAB]">PANTONE SYSTEM LAUNCH</span>
+            <span className="text-[#00A3E0] text-xs">◆</span>
+            <span>30-DAY TRIAL</span>
           </div>
-          <div className="hidden lg:block text-right whitespace-nowrap flex-1">
-            <span>30-DAY IN-SHOWER TRIAL &amp; EASY RETURNS</span>
+          <div className="hidden lg:flex items-center justify-end gap-2 text-right whitespace-nowrap flex-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00A3E0]" />
+            <span>AIR-DRIVEN DISPENSER ALLOCATION OPEN</span>
           </div>
         </div>
       </div>
@@ -74,11 +93,11 @@ export function Navbar({
           {/* Left Navigation Links / Mobile Menu Toggle */}
           <div className="flex items-center gap-3 sm:gap-6 lg:w-1/3">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={handleOpenMenu}
               className="lg:hidden p-2 -ml-2 text-platinum hover:text-white transition-colors"
               aria-label="Toggle Navigation"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <Menu className="w-5 h-5" />
             </button>
 
             <nav className="hidden lg:flex items-center gap-8 text-[12px] font-mono font-medium tracking-[0.16em] uppercase text-platinum/90">
@@ -129,15 +148,17 @@ export function Navbar({
 
             {/* Account Icon (Desktop/Tablet only) */}
             <button
+              onClick={handleOpenMenu}
               className="p-1 hover:text-white transition-transform active:scale-95 hidden sm:block"
               aria-label="Account"
             >
               <User className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
             </button>
 
-            {/* Wishlist Heart (Desktop/Tablet only) */}
+            {/* Wishlist Heart - Accessible on desktop & mobile */}
             <button
-              className="p-1 hover:text-white transition-transform active:scale-95 relative hidden sm:block"
+              onClick={handleOpenWishlist}
+              className="p-1 hover:text-white transition-transform active:scale-95 relative"
               aria-label="Wishlist"
             >
               <Heart className="w-4 h-4 sm:w-[18px] sm:h-[18px] stroke-[1.5]" />
@@ -150,7 +171,7 @@ export function Navbar({
 
             {/* Shopping Bag - Always visible */}
             <button
-              onClick={onOpenCart}
+              onClick={handleOpenCart}
               className="p-1.5 hover:text-white transition-transform active:scale-95 relative -mr-1 sm:mr-0"
               aria-label="Shopping Bag"
             >

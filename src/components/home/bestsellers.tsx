@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart, Star } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
+import { useStore } from "@/context/store-context";
 
 const BESTSELLER_ITEMS = [
   {
@@ -58,11 +59,18 @@ export function Bestsellers({
 }: {
   onAddToCart?: (shade: ShadeItem) => void;
 }) {
-  const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
+  const store = useStore();
 
-  const toggleWishlist = (id: string, e: React.MouseEvent) => {
+  const handleToggleWishlist = (item: (typeof BESTSELLER_ITEMS)[0], e: React.MouseEvent) => {
     e.stopPropagation();
-    setWishlist((prev) => ({ ...prev, [id]: !prev[id] }));
+    store.toggleWishlist({
+      id: item.id,
+      name: item.name,
+      category: item.category,
+      price: item.price,
+      image: item.image,
+      shadeCode: item.shadeCode,
+    });
   };
 
   return (
@@ -93,8 +101,8 @@ export function Bestsellers({
               })
             }
           >
-            {/* Portrait Image Container with Soft Rounded Corners */}
-            <div className="relative aspect-[2/3] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-xl transition-all duration-300">
+            {/* Portrait Image Container with Minimal Corners */}
+            <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -113,9 +121,9 @@ export function Bestsellers({
               {/* Top-Right Circular Wishlist Button */}
               <button
                 type="button"
-                onClick={(e) => toggleWishlist(item.id, e)}
+                onClick={(e) => handleToggleWishlist(item, e)}
                 className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
-                  wishlist[item.id]
+                  store.isInWishlist(item.id)
                     ? "opacity-100 text-rose-600"
                     : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
                 }`}
@@ -123,7 +131,7 @@ export function Bestsellers({
               >
                 <Heart
                   className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
-                    wishlist[item.id] ? "fill-rose-600 text-rose-600" : ""
+                    store.isInWishlist(item.id) ? "fill-rose-600 text-rose-600" : ""
                   }`}
                 />
               </button>

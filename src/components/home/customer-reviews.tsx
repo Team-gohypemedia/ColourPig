@@ -58,7 +58,7 @@ export function CustomerReviews() {
         {REVIEWS.map((rev, idx) => (
           <div
             key={idx}
-            className="w-[82vw] max-w-[320px] shrink-0 snap-center sm:w-auto p-6 sm:p-8 rounded-2xl bg-white text-obsidian border border-black/5 flex flex-col justify-between space-y-5 sm:space-y-6 shadow-md hover:shadow-xl transition-all duration-300"
+            className="w-[82vw] max-w-[320px] shrink-0 snap-center sm:w-auto p-6 sm:p-8 rounded-md bg-white text-obsidian border border-black/5 flex flex-col justify-between space-y-5 sm:space-y-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
             {/* Header with Real Portrait Avatar and Stars */}
             <div className="flex flex-col items-center text-center space-y-3">
@@ -77,7 +77,7 @@ export function CustomerReviews() {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-3.5 h-3.5 fill-amber-500 text-amber-500"
+                    className="w-3.5 h-3.5 fill-[#FFC72C] text-[#FFC72C]"
                   />
                 ))}
               </div>
@@ -94,12 +94,14 @@ export function CustomerReviews() {
                 <span className="font-headline font-bold text-xs text-obsidian">
                   {rev.name}
                 </span>
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                <CheckCircle className="w-3.5 h-3.5 text-[#7AC142]" />
               </div>
               <p className="text-[10px] font-mono text-graphite font-medium">{rev.role}</p>
-              <p className="text-[9px] font-mono text-graphite/80">
-                Verified: {rev.shade}
-              </p>
+              <div className="pt-0.5">
+                <span className="inline-block px-2 py-0.5 rounded-full bg-[#13212E]/5 border border-black/10 text-[9px] font-mono text-graphite font-semibold">
+                  Verified: {rev.shade}
+                </span>
+              </div>
             </div>
           </div>
         ))}

@@ -92,7 +92,7 @@ export function AirheadsCommunity() {
         {COMMUNITY_POSTS.map((post) => (
           <div
             key={post.id}
-            className="group relative aspect-square rounded-xl sm:rounded-2xl bg-[#EAECEB] border border-ash/30 overflow-hidden cursor-pointer flex flex-col justify-between p-3 sm:p-4 transition-all duration-300 hover:border-obsidian hover:shadow-xl shadow-xs"
+            className="group relative aspect-square rounded-md bg-[#EAECEB] border border-ash/30 overflow-hidden cursor-pointer flex flex-col justify-between p-3 sm:p-4 transition-all duration-300 hover:border-obsidian hover:shadow-md shadow-xs"
           >
             {/* Photographic Image */}
             <Image

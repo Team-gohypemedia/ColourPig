@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
+import { useStore } from "@/context/store-context";
 
 const NEW_ARRIVALS = [
   {
@@ -16,6 +17,8 @@ const NEW_ARRIVALS = [
     shadeHex: "#4E4136",
     price: 89,
     tag: "Most Popular",
+    pantoneColor: "#FFC72C",
+    pantoneCode: "123C",
     image: "/images/products/cards/shade_card_4.jpg",
   },
   {
@@ -27,6 +30,8 @@ const NEW_ARRIVALS = [
     shadeHex: "#BE966C",
     price: 89,
     tag: "High Demand",
+    pantoneColor: "#FF671F",
+    pantoneCode: "165C",
     image: "/images/products/cards/shade_card_7.jpg",
   },
   {
@@ -38,6 +43,8 @@ const NEW_ARRIVALS = [
     shadeHex: "#2D2C2D",
     price: 89,
     tag: "Intense Pigment",
+    pantoneColor: "#00A3E0",
+    pantoneCode: "299C",
     image: "/images/products/cards/shade_card_2.jpg",
   },
   {
@@ -49,6 +56,8 @@ const NEW_ARRIVALS = [
     shadeHex: "#F2EFF0",
     price: 89,
     tag: "Multi-Use",
+    pantoneColor: "#B584C4",
+    pantoneCode: "2572C",
     image: "/images/products/cards/shade_card_1.jpg",
   },
 ];
@@ -58,11 +67,18 @@ export function NewDispatches({
 }: {
   onAddToCart?: (shade: ShadeItem) => void;
 }) {
-  const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
+  const store = useStore();
 
-  const toggleWishlist = (id: string, e: React.MouseEvent) => {
+  const handleToggleWishlist = (item: (typeof NEW_ARRIVALS)[0], e: React.MouseEvent) => {
     e.stopPropagation();
-    setWishlist((prev) => ({ ...prev, [id]: !prev[id] }));
+    store.toggleWishlist({
+      id: item.id,
+      name: item.name,
+      category: item.category,
+      price: item.price,
+      image: item.image,
+      shadeCode: item.shadeCode,
+    });
   };
 
   return (
@@ -93,8 +109,8 @@ export function NewDispatches({
               })
             }
           >
-            {/* Portrait Image Container with Soft Rounded Corners */}
-            <div className="relative aspect-[2/3] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-xl transition-all duration-300">
+            {/* Portrait Image Container with Minimal Corners */}
+            <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -103,12 +119,23 @@ export function NewDispatches({
                 className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
               />
 
+              {/* Top-Left Pantone Tag Badge (High contrast solid pill) */}
+              <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-20">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-obsidian backdrop-blur-md border border-black/10 text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase shadow-md">
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0 shadow-xs"
+                    style={{ backgroundColor: item.pantoneColor }}
+                  />
+                  <span className="text-obsidian font-bold">{item.tag}</span>
+                </span>
+              </div>
+
               {/* Top-Right Circular Wishlist Button */}
               <button
                 type="button"
-                onClick={(e) => toggleWishlist(item.id, e)}
+                onClick={(e) => handleToggleWishlist(item, e)}
                 className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
-                  wishlist[item.id]
+                  store.isInWishlist(item.id)
                     ? "opacity-100 text-rose-600"
                     : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
                 }`}
@@ -116,7 +143,7 @@ export function NewDispatches({
               >
                 <Heart
                   className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
-                    wishlist[item.id] ? "fill-rose-600 text-rose-600" : ""
+                    store.isInWishlist(item.id) ? "fill-rose-600 text-rose-600" : ""
                   }`}
                 />
               </button>

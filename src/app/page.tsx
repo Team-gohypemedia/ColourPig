@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Navbar } from "@/components/navigation/navbar";
-import { HeroSection, CORE_SHADES, ShadeItem } from "@/components/sections/hero-section";
-import { CartMini, CartProduct } from "@/components/cart/cart-mini";
+import { HeroSection, ShadeItem } from "@/components/sections/hero-section";
+import { CartDrawer } from "@/components/cart/cart-drawer";
+import { WishlistDrawer } from "@/components/wishlist/wishlist-drawer";
+import { HamburgerMenu } from "@/components/navigation/hamburger-menu";
+import { StoreProvider, useStore } from "@/context/store-context";
 
 // UI Inspiration Sections
+import { ColorfulMarquee } from "@/components/home/colorful-marquee";
 import { NewDispatches } from "@/components/home/new-dispatches";
 import { SystemCategories } from "@/components/home/system-categories";
 import { Bestsellers } from "@/components/home/bestsellers";
@@ -18,135 +22,99 @@ import { PigmentSwatches } from "@/components/home/pigment-swatches";
 import { CustomerReviews } from "@/components/home/customer-reviews";
 import { EcommFooter } from "@/components/home/ecomm-footer";
 
-export default function Home() {
-  const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartProduct[]>([
-    {
-      id: "starter-system-1903",
-      name: "Colourpig Starter System",
-      shade: CORE_SHADES[0],
-      price: 89,
-      quantity: 1,
-    },
-  ]);
+function HomeContent() {
+  const { addToCart } = useStore();
 
   const handleAddToCart = (shade: ShadeItem) => {
-    const existingIndex = cartItems.findIndex(
-      (item) => item.shade.code === shade.code
-    );
+    const codeNum = shade.code.replace("No.", "").replace("/0", "1");
+    const imagePath = `/images/products/cards/shade_card_${codeNum}.jpg`;
 
-    if (existingIndex > -1) {
-      setCartItems((prev) =>
-        prev.map((item, i) =>
-          i === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setCartItems((prev) => [
-        ...prev,
-        {
-          id: `starter-system-${shade.code.replace("#", "")}-${Date.now()}`,
-          name: `Colourpig System (${shade.name})`,
-          shade,
-          price: 89,
-          quantity: 1,
-        },
-      ]);
-    }
-    setCartOpen(true);
+    addToCart({
+      id: `system-${shade.code.replace("#", "").replace("/", "-")}`,
+      name: `Colourpig Starter System (${shade.name})`,
+      variant: `${shade.undertone} • Air-Driven Touch Up`,
+      price: 2499,
+      originalPrice: 3499,
+      image: imagePath,
+      shadeCode: shade.code,
+      shadeHex: shade.hex,
+    });
   };
-
-  const handleUpdateQuantity = (id: string, delta: number) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) => {
-          if (item.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartProduct[]
-    );
-  };
-
-  const handleRemove = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div className="min-h-screen w-full bg-[#F5F6F6] text-obsidian flex flex-col overflow-x-clip selection:bg-steel selection:text-white">
-      {/* Slide-out Cart Drawer */}
-      <CartMini
-        isOpen={cartOpen}
-        onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemove={handleRemove}
-      />
+      {/* Side-Page Drawers */}
+      <CartDrawer />
+      <WishlistDrawer />
+      <HamburgerMenu />
 
-      {/* 1. E-Commerce Navbar — fixed position, transparent over hero */}
-      <Navbar
-        cartCount={totalCartCount}
-        wishlistCount={1}
-        onOpenCart={() => setCartOpen(true)}
-      />
+      {/* 1. E-Commerce Navbar */}
+      <Navbar />
 
-      {/* 2. 250vh Scroll-Driven Frame Animation Hero Section — starts at top-0 (no top margin, navbar overlays it transparently) */}
+      {/* 2. 250vh Scroll-Driven Frame Animation Hero Section */}
       <HeroSection onAddToCart={handleAddToCart} />
 
-      {/* 3. NEW IN Product Grid (Light Theme - Platinum #CED1D0) */}
+      {/* Brand Colorful Infinite Marquee */}
+      <ColorfulMarquee />
+
+      {/* 3. NEW IN Product Grid */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <NewDispatches onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 4. THE PRECISION SYSTEM (Light Theme - Crisp White with Ash Grey Accents) */}
+      {/* 4. THE PRECISION SYSTEM */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <SystemCategories />
       </div>
 
-      {/* 5. BEFORE & AFTER RESULTS (Light Theme - Crisp White) */}
+      {/* 5. BEFORE & AFTER RESULTS */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <ShadeFinder onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 6. BESTSELLERS 4-Card Grid (Light Theme - Platinum #CED1D0) */}
+      {/* 6. BESTSELLERS 4-Card Grid */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <Bestsellers onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 7. Press & Editorial Bar (Light Theme - Ash Grey & Platinum) */}
+      {/* 7. Press & Editorial Bar */}
       <PressTicker />
 
-      {/* 8. THE IN-SHOWER RITUAL Editorial Steps (Light Theme - Platinum #CED1D0) */}
+      {/* 8. THE IN-SHOWER RITUAL */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <InShowerRitual />
       </div>
 
-      {/* 9. COMMUNITY ARCHIVE (#AIRHEADS) (Light Theme - Crisp White) */}
+      {/* 9. COMMUNITY ARCHIVE (#AIRHEADS) */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <AirheadsCommunity />
       </div>
 
-      {/* 10. BEHIND THE SCIENCE (Dark Section 2 - Table of Contents #142431 Deep Petrol Navy) */}
+      {/* 10. BEHIND THE SCIENCE */}
       <div className="w-full bg-toc text-platinum border-b border-white/10">
         <BehindTheScience />
       </div>
 
-      {/* 11. A CLOSER LOOK (Light Theme - Crisp White with Ash Grey Specs) */}
+      {/* 11. A CLOSER LOOK */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <PigmentSwatches />
       </div>
 
-      {/* 12. WHAT OUR CLIENTS SAY (Light Theme - Platinum #CED1D0) */}
+      {/* 12. WHAT OUR CLIENTS SAY */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <CustomerReviews />
       </div>
 
-      {/* 13. Luxury E-Commerce Footer (Dark Section 3 - Obsidian #0D151C) */}
+      {/* 13. Luxury E-Commerce Footer */}
       <EcommFooter />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <StoreProvider>
+      <HomeContent />
+    </StoreProvider>
   );
 }
