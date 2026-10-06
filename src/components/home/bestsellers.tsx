@@ -91,28 +91,25 @@ export function Bestsellers({
         {BESTSELLER_ITEMS.map((item) => (
           <div
             key={item.id}
-            className="group flex flex-col cursor-pointer"
-            onClick={() =>
-              onAddToCart?.({
-                code: item.shadeCode,
-                name: item.name,
-                hex: item.shadeHex,
-                undertone: item.category,
-              })
-            }
+            className="group flex flex-col"
           >
             {/* Portrait Image Container with Minimal Corners */}
             <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
-              />
+              <Link
+                href={`/product?shade=${item.id.replace("best-", "")}`}
+                className="block w-full h-full relative"
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                />
+              </Link>
 
               {/* Reviews rating pill on top left */}
-              <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-10 flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur text-obsidian text-[9px] sm:text-[10px] font-mono shadow-xs">
+              <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-10 flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur text-obsidian text-[9px] sm:text-[10px] font-mono shadow-xs pointer-events-none">
                 <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-amber-500 text-amber-500" />
                 <span className="font-bold">{item.rating}</span>
                 <span className="text-graphite hidden xs:inline sm:inline">({item.reviews})</span>
@@ -138,34 +135,28 @@ export function Bestsellers({
 
               {/* Floating Pill Action Button (Desktop hover only) */}
               <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAddToCart?.({
-                      code: item.shadeCode,
-                      name: item.name,
-                      hex: item.shadeHex,
-                      undertone: item.category,
-                    });
-                  }}
+                <Link
+                  href={`/product?shade=${item.id.replace("best-", "")}`}
                   className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
                 >
                   <ShoppingBag className="w-3.5 h-3.5" />
-                  <span className="truncate">SELECT OPTIONS</span>
-                </button>
+                  <span className="truncate">VIEW PRODUCT</span>
+                </Link>
               </div>
             </div>
 
             {/* Left-Aligned Product Typography below Image */}
-            <div className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left">
-              <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover:text-black transition-colors truncate">
+            <Link
+              href={`/product?shade=${item.id.replace("best-", "")}`}
+              className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
+            >
+              <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
                 {item.name}
               </h3>
               <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
                 ${item.price} USD
               </p>
-            </div>
+            </Link>
           </div>
         ))}
       </div>

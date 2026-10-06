@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
@@ -128,9 +129,13 @@ export function WishlistDrawer() {
                     {/* Content & Actions */}
                     <div className="flex-1 min-w-0 flex flex-col justify-between min-h-[96px] sm:min-h-[104px] py-0.5">
                       <div>
-                        <h3 className="text-xs sm:text-[13px] font-headline font-bold text-obsidian leading-snug line-clamp-2">
+                        <Link
+                          href="/product"
+                          onClick={closeWishlist}
+                          className="text-xs sm:text-[13px] font-headline font-bold text-obsidian leading-snug line-clamp-2 hover:underline block"
+                        >
                           {item.name}
-                        </h3>
+                        </Link>
                         {item.category && (
                           <p className="text-[10px] text-graphite font-mono mt-0.5 truncate">
                             {item.category}

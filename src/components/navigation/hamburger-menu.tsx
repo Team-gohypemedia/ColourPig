@@ -33,13 +33,14 @@ export function HamburgerMenu() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const NAV_ITEMS = [
-    { label: "The System", href: "#system", badge: "Patented" },
-    { label: "Shades & Formulas", href: "#shades", badge: "9 Shades" },
-    { label: "Bestsellers", href: "#bestsellers", badge: "Top Picks" },
-    { label: "Before & After Results", href: "#shade-finder", badge: "Real Results" },
-    { label: "In-Shower Ritual", href: "#ritual", badge: "4 Steps" },
-    { label: "Behind the Science", href: "#science", badge: "Clean Formula" },
-    { label: "Customer Reviews", href: "#reviews", badge: "4.9 ★" },
+    { label: "Shop Product Details", href: "/product", badge: "PDP" },
+    { label: "The System", href: "/#system", badge: "Patented" },
+    { label: "Shades & Formulas", href: "/#shades", badge: "9 Shades" },
+    { label: "Bestsellers", href: "/#bestsellers", badge: "Top Picks" },
+    { label: "Before & After Results", href: "/#shade-finder", badge: "Real Results" },
+    { label: "In-Shower Ritual", href: "/#ritual", badge: "4 Steps" },
+    { label: "Behind the Science", href: "/#science", badge: "Clean Formula" },
+    { label: "Customer Reviews", href: "/#reviews", badge: "4.9 ★" },
   ];
 
   return (

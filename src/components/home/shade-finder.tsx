@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Check } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
@@ -328,13 +329,22 @@ export function ShadeFinder({
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={handleAddCurrentShade}
-              className="w-full py-2.5 sm:py-3 px-5 rounded-full bg-obsidian hover:bg-black text-white text-[11px] sm:text-xs font-mono font-semibold tracking-wider uppercase transition-all shadow-xs active:scale-98 flex items-center justify-center gap-2"
-            >
-              <span>{added ? "Added to Bag" : `Add to Bag — $${selectedShade.price}`}</span>
-            </button>
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={handleAddCurrentShade}
+                className="w-full py-2.5 sm:py-3 px-3 rounded-full bg-obsidian hover:bg-black text-white text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider uppercase transition-all shadow-xs active:scale-98 flex items-center justify-center gap-1.5"
+              >
+                <span>{added ? "Added" : `Add to Bag`}</span>
+              </button>
+
+              <Link
+                href={`/product?shade=${selectedShade.id}`}
+                className="w-full py-2.5 sm:py-3 px-3 rounded-full border border-ash/40 bg-platinum/30 hover:bg-platinum/70 text-obsidian text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider uppercase transition-all flex items-center justify-center gap-1 text-center"
+              >
+                <span>Full Details →</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

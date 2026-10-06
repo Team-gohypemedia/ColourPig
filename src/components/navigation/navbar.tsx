@@ -102,19 +102,19 @@ export function Navbar({
 
             <nav className="hidden lg:flex items-center gap-8 text-[12px] font-mono font-medium tracking-[0.16em] uppercase text-platinum/90">
               <Link
-                href="#system"
-                className="hover:text-white transition-opacity duration-200"
+                href="/product"
+                className="hover:text-white transition-opacity duration-200 text-white font-bold"
               >
-                The System
+                Shop System
               </Link>
               <Link
-                href="#shades"
+                href="/#shades"
                 className="hover:text-white transition-opacity duration-200"
               >
                 Shades
               </Link>
               <Link
-                href="#bestsellers"
+                href="/#bestsellers"
                 className="hover:text-white transition-opacity duration-200"
               >
                 Bestsellers
