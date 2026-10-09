@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { ChevronDown } from "lucide-react";
+import React, { useRef, useState, useEffect } from "react";
+import { ChevronDown, Volume2, VolumeX } from "lucide-react";
 
 export interface ShadeItem {
   code: string;
@@ -43,197 +43,99 @@ export const CORE_SHADES: ShadeItem[] = [
   },
 ];
 
-const TOTAL_FRAMES = 240;
-
-const getFrameSrc = (frameIndex: number) => {
-  const padded = String(frameIndex).padStart(6, "0");
-  return `/hero%20frames/frame_${padded}.webp`;
-};
-
 interface HeroSectionProps {
   onAddToCart?: (shade: ShadeItem) => void;
 }
 
 export function HeroSection({ onAddToCart }: HeroSectionProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES).fill(null));
-  const currentFrameRef = useRef<number>(1);
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-  const animationFrameIdRef = useRef<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-  // Draw target frame onto canvas with aspect-ratio preserving cover/contain
-  const drawFrame = useCallback((frameNumber: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let img = imagesRef.current[frameNumber - 1];
-    if (!img || !img.complete) {
-      // Find closest loaded frame to keep display smooth
-      for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-        const prevImg = imagesRef.current[frameNumber - 1 - offset];
-        if (prevImg && prevImg.complete) {
-          img = prevImg;
-          break;
-        }
-        const nextImg = imagesRef.current[frameNumber - 1 + offset];
-        if (nextImg && nextImg.complete) {
-          img = nextImg;
-          break;
-        }
-      }
+  // Attempt autoplay
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay may be restricted by browser until user interaction
+      });
     }
-
-    if (!img || !img.complete) return;
-
-    const width = canvas.width;
-    const height = canvas.height;
-
-    // Preserving 1280x720 aspect ratio (16:9)
-    const imgAspect = img.naturalWidth / img.naturalHeight;
-    const canvasAspect = width / height;
-
-    let drawWidth: number;
-    let drawHeight: number;
-    let offsetX: number;
-    let offsetY: number;
-
-    if (canvasAspect > imgAspect) {
-      drawWidth = width;
-      drawHeight = width / imgAspect;
-      offsetX = 0;
-      offsetY = (height - drawHeight) / 2;
-    } else {
-      drawWidth = height * imgAspect;
-      drawHeight = height;
-      offsetX = (width - drawWidth) / 2;
-      offsetY = 0;
-    }
-
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-    currentFrameRef.current = frameNumber;
   }, []);
 
-  // Update canvas resolution with devicePixelRatio for ultra-sharp Retina rendering
-  const updateCanvasSize = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const rect = canvas.getBoundingClientRect();
-
-    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      drawFrame(currentFrameRef.current);
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const nextMuted = !isMuted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
     }
-  }, [drawFrame]);
+  };
 
-  // Preload initial frames instantly, then progressively buffer all 240 frames
-  useEffect(() => {
-    let isCancelled = false;
-
-    // Load Frame 1 immediately
-    const firstImg = new window.Image();
-    firstImg.src = getFrameSrc(1);
-    firstImg.onload = () => {
-      if (isCancelled) return;
-      imagesRef.current[0] = firstImg;
-      updateCanvasSize();
-      drawFrame(1);
-    };
-
-    // Buffer remaining frames in small batches
-    const loadRemainingFrames = () => {
-      for (let i = 2; i <= TOTAL_FRAMES; i++) {
-        const img = new window.Image();
-        img.src = getFrameSrc(i);
-        img.onload = () => {
-          if (isCancelled) return;
-          imagesRef.current[i - 1] = img;
-          if (currentFrameRef.current === i) {
-            drawFrame(i);
-          }
-        };
-      }
-    };
-
-    const timer = setTimeout(loadRemainingFrames, 30);
-
-    return () => {
-      isCancelled = true;
-      clearTimeout(timer);
-    };
-  }, [drawFrame, updateCanvasSize]);
-
-  // 250vh Scroll animation tracking
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const scrollableDistance = rect.height - window.innerHeight;
-      if (scrollableDistance <= 0) return;
-
-      const scrolled = -rect.top;
-      const progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1);
-      setScrollProgress(progress);
-
-      const targetFrame = Math.min(
-        Math.max(Math.floor(progress * (TOTAL_FRAMES - 1)) + 1, 1),
-        TOTAL_FRAMES
-      );
-
-      if (animationFrameIdRef.current) {
-        cancelAnimationFrame(animationFrameIdRef.current);
-      }
-
-      animationFrameIdRef.current = requestAnimationFrame(() => {
-        drawFrame(targetFrame);
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", updateCanvasSize, { passive: true });
-    handleScroll();
-    updateCanvasSize();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", updateCanvasSize);
-      if (animationFrameIdRef.current) {
-        cancelAnimationFrame(animationFrameIdRef.current);
-      }
-    };
-  }, [drawFrame, updateCanvasSize]);
+  const scrollToNext = () => {
+    const hero = document.getElementById("hero-section");
+    if (hero) {
+      const nextTop = hero.offsetTop + hero.offsetHeight;
+      window.scrollTo({ top: nextTop, behavior: "smooth" });
+    }
+  };
 
   return (
     <section
       id="hero-section"
-      ref={containerRef}
-      className="relative w-full h-[250vh] bg-[#070D12] select-none"
+      className="relative w-full pt-[96px] sm:pt-0 sm:h-screen sm:min-h-[580px] sm:max-h-[1080px] bg-[#070D12] overflow-hidden select-none"
     >
-      {/* Sticky Fullscreen Canvas Viewport playing all 240 frames on scroll */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden bg-[#070D12]">
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full object-cover block"
-        />
-
-
-        {/* Minimal Scroll Cue */}
-        <div
-          className={`absolute bottom-8 inset-x-0 mx-auto flex flex-col items-center justify-center gap-2 pointer-events-none transition-opacity duration-500 z-20 ${
-            scrollProgress > 0.06 ? "opacity-0" : "opacity-80"
-          }`}
+      {/* Background / Main Video Container */}
+      <div className="relative w-full aspect-video sm:aspect-auto sm:absolute sm:inset-0 sm:w-full sm:h-full flex items-center justify-center overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          preload="auto"
+          className="w-full h-full object-contain sm:object-cover block"
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
         >
-          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-platinum/70">
-            Scroll to play
-          </span>
-          <ChevronDown className="w-4 h-4 text-platinum/70 animate-bounce" />
+          <source src="/hero-video.mp4" type="video/mp4" />
+          <source src="/COLOURPIG_Dots_Opening_30s_v2%20(1).mp4" type="video/mp4" />
+        </video>
+
+        {/* Floating Sound Controller (positioned inside video container for clean mobile framing) */}
+        <div className="absolute bottom-3 right-3 sm:bottom-8 sm:right-10 z-20 flex items-center gap-2">
+          <button
+            onClick={toggleMute}
+            className="group flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/15 text-white/80 hover:text-white transition-all active:scale-95 shadow-lg"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+          >
+            {isMuted ? (
+              <>
+                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-ash group-hover:text-white" />
+                <span className="hidden sm:inline text-[10px] font-mono tracking-wider uppercase text-ash group-hover:text-white">
+                  Sound Off
+                </span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#7AC142]" />
+                <span className="hidden sm:inline text-[10px] font-mono tracking-wider uppercase text-white">
+                  Sound On
+                </span>
+              </>
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Minimal Interactive Scroll Cue (Desktop only) */}
+      <button
+        onClick={scrollToNext}
+        className="hidden sm:flex absolute bottom-6 sm:bottom-8 inset-x-0 mx-auto w-fit flex-col items-center justify-center gap-1.5 cursor-pointer z-20 opacity-80 hover:opacity-100 transition-opacity group"
+        aria-label="Scroll to explore"
+      >
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-platinum/80 group-hover:text-white transition-colors">
+          Scroll to explore
+        </span>
+        <ChevronDown className="w-4 h-4 text-platinum/80 group-hover:text-white animate-bounce" />
+      </button>
     </section>
   );
 }

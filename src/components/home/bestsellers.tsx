@@ -157,6 +157,24 @@ export function Bestsellers({
                 ${item.price} USD
               </p>
             </Link>
+
+            {/* Mobile-Only: Add to Bag button directly on mobile card */}
+            <button
+              onClick={() =>
+                store.addToCart({
+                  id: item.id,
+                  name: item.name,
+                  variant: item.category,
+                  price: item.price,
+                  image: item.image,
+                  shadeCode: item.shadeCode,
+                })
+              }
+              className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
+            >
+              <ShoppingBag className="w-3 h-3" />
+              <span>ADD TO BAG</span>
+            </button>
           </div>
         ))}
       </div>

@@ -51,7 +51,7 @@ function HomeContent() {
       {/* 1. E-Commerce Navbar */}
       <Navbar />
 
-      {/* 2. 250vh Scroll-Driven Frame Animation Hero Section */}
+      {/* 2. Video Hero Section */}
       <HeroSection onAddToCart={handleAddToCart} />
 
       {/* Brand Colorful Infinite Marquee */}
@@ -81,7 +81,7 @@ function HomeContent() {
       <PressTicker />
 
       {/* 8. THE IN-SHOWER RITUAL */}
-      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
+      <div className="w-full bg-toc text-platinum border-b border-white/10">
         <InShowerRitual />
       </div>
 

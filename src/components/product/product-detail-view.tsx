@@ -881,23 +881,30 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
             <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {RECENTLY_VIEWED.map((prod) => (
               <div
                 key={prod.id}
-                className="group flex flex-col bg-white rounded-2xl border border-ash/30 p-3 sm:p-4 shadow-2xs hover:shadow-sm transition-all"
+                className="group flex flex-col"
               >
-                {/* Image */}
-                <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-platinum/20 mb-3">
-                  <Image
-                    src={prod.image}
-                    alt={prod.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Top Wishlist Button */}
+                {/* Portrait Image Container with Minimal Corners & Aspect Ratio matching Image 2 */}
+                <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
+                  <Link
+                    href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
+                    className="block w-full h-full relative"
+                  >
+                    <Image
+                      src={prod.image}
+                      alt={prod.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                    />
+                  </Link>
+
+                  {/* Top-Right Circular Wishlist Button */}
                   <button
+                    type="button"
                     onClick={() =>
                       store.toggleWishlist({
                         id: prod.id,
@@ -908,55 +915,70 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                         shadeCode: prod.shadeCode,
                       })
                     }
-                    className="absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center text-obsidian hover:scale-110 active:scale-95 transition-all"
+                    className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                      store.isInWishlist(prod.id)
+                        ? "opacity-100 text-rose-600"
+                        : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
+                    }`}
                     aria-label="Wishlist"
                   >
                     <Heart
-                      className={`w-3.5 h-3.5 ${
-                        store.isInWishlist(prod.id)
-                          ? "fill-rose-600 text-rose-600"
-                          : "text-obsidian"
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
+                        store.isInWishlist(prod.id) ? "fill-rose-600 text-rose-600" : ""
                       }`}
                     />
                   </button>
-                </div>
 
-                {/* Details */}
-                <div className="flex-1 flex flex-col justify-between space-y-2">
-                  <div>
-                    <h3 className="font-headline font-bold text-xs sm:text-sm text-obsidian uppercase truncate">
-                      {prod.name}
-                    </h3>
-                    <p className="text-[10px] sm:text-[11px] font-mono text-graphite truncate">
-                      {prod.category}
-                    </p>
-                    <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-xs sm:text-sm font-mono font-bold text-obsidian">
-                        {store.formatPrice(prod.priceInr)}
-                      </span>
-                      <span className="text-[10px] font-mono text-ash line-through">
-                        {store.formatPrice(prod.originalInr)}
-                      </span>
-                    </div>
+                  {/* Floating Pill Action Button (Desktop/Laptop hover only) */}
+                  <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
+                    <Link
+                      href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
+                      className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span className="truncate">VIEW PRODUCT</span>
+                    </Link>
                   </div>
-
-                  <button
-                    onClick={() =>
-                      store.addToCart({
-                        id: `cart-${prod.id}`,
-                        name: prod.name,
-                        variant: prod.category,
-                        price: prod.priceInr,
-                        image: prod.image,
-                        shadeCode: prod.shadeCode,
-                      })
-                    }
-                    className="w-full py-2 px-3 rounded-xl bg-obsidian hover:bg-black text-white text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
-                  >
-                    <ShoppingBag className="w-3 h-3" />
-                    <span>ADD TO BAG</span>
-                  </button>
                 </div>
+
+                {/* Left-Aligned Product Typography below Image */}
+                <Link
+                  href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
+                  className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
+                >
+                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                    {prod.name}
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] font-mono text-graphite truncate">
+                    {prod.category}
+                  </p>
+                  <div className="flex items-baseline gap-2 mt-0.5">
+                    <span className="text-xs sm:text-sm font-mono font-bold text-obsidian">
+                      {store.formatPrice(prod.priceInr)}
+                    </span>
+                    <span className="text-[10px] font-mono text-ash line-through">
+                      {store.formatPrice(prod.originalInr)}
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Mobile-Only: Add to Bag button directly on mobile card */}
+                <button
+                  onClick={() =>
+                    store.addToCart({
+                      id: `cart-${prod.id}`,
+                      name: prod.name,
+                      variant: prod.category,
+                      price: prod.priceInr,
+                      image: prod.image,
+                      shadeCode: prod.shadeCode,
+                    })
+                  }
+                  className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
+                >
+                  <ShoppingBag className="w-3 h-3" />
+                  <span>ADD TO BAG</span>
+                </button>
               </div>
             ))}
           </div>

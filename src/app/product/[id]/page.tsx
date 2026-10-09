@@ -28,7 +28,7 @@ export default function DynamicProductPage({
         <Navbar />
 
         {/* Main PDP Content */}
-        <main className="flex-1 pt-24 sm:pt-28">
+        <main className="flex-1 pt-[104px] sm:pt-[120px]">
           <ProductDetailView initialShadeId={resolvedParams.id} />
         </main>
 

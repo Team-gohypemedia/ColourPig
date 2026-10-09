@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ColourpigLogo } from "@/components/brand/logo";
+import { usePathname } from "next/navigation";
+import { ColourpigLogo, SnoutIcon } from "@/components/brand/logo";
 import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
 import { useStore } from "@/context/store-context";
+import { StoryModal } from "@/components/navigation/story-modal";
 
 interface NavbarProps {
   cartCount?: number;
@@ -12,6 +14,7 @@ interface NavbarProps {
   onOpenCart?: () => void;
   onOpenWishlist?: () => void;
   onOpenMenu?: () => void;
+  solidBackground?: boolean;
 }
 
 export function Navbar({
@@ -20,7 +23,11 @@ export function Navbar({
   onOpenCart: propOpenCart,
   onOpenWishlist: propOpenWishlist,
   onOpenMenu: propOpenMenu,
+  solidBackground,
 }: NavbarProps) {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   const store = useStore();
   const cartCount = propCartCount ?? store.cartCount;
   const wishlistCount = propWishlistCount ?? store.wishlistCount;
@@ -31,11 +38,20 @@ export function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [storyModalOpen, setStoryModalOpen] = useState(false);
 
-  // Stay transparent while hero section is visible; turn solid once it's fully scrolled past
+  // Stay transparent while hero section is visible on homepage; turn solid once it's fully scrolled past
   useEffect(() => {
+    if (!isHomePage) return;
+
     const hero = document.getElementById("hero-section");
-    if (!hero) return;
+    if (!hero) {
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 50);
+      };
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -47,10 +63,12 @@ export function Navbar({
 
     observer.observe(hero);
     return () => observer.disconnect();
-  }, []);
+  }, [isHomePage]);
 
+  // Show solid background on other pages or when scrolled on homepage
+  const showSolidBg = solidBackground ?? (!isHomePage || isScrolled);
 
-  const navBg = isScrolled
+  const navBg = showSolidBg
     ? "bg-obsidian/95 backdrop-blur-md border-b border-white/10 shadow-lg"
     : "bg-transparent border-b border-transparent";
 
@@ -86,7 +104,7 @@ export function Navbar({
 
       {/* 2. Main Navigation Bar */}
       <header
-        className={`w-full px-4 sm:px-10 lg:px-14 transition-all duration-500 ${navBg}`}
+        className={`w-full px-4 sm:px-10 lg:px-14 ${isHomePage ? "transition-all duration-500" : ""} ${navBg}`}
       >
         <div className="max-w-[1600px] mx-auto h-16 sm:h-20 flex items-center justify-between">
           
@@ -136,7 +154,45 @@ export function Navbar({
           </div>
 
           {/* Right Action Icons */}
-          <div className="flex items-center justify-end gap-3 sm:gap-6 text-platinum lg:w-1/3">
+          <div className="flex items-center justify-end gap-3 sm:gap-5 text-platinum lg:w-1/3">
+            {/* Story Ring Avatar Trigger with Pig Snout Icon (Moved to Right Side) */}
+            <button
+              type="button"
+              onClick={() => setStoryModalOpen(true)}
+              className="relative flex items-center gap-2 group cursor-pointer focus:outline-none"
+              aria-label="View Brand Stories"
+              title="View ColourPig Stories"
+            >
+              {/* Ring Container with Moving Circular Gradient */}
+              <div className="relative p-[2px] sm:p-[2.5px] rounded-full group-hover:scale-105 active:scale-95 transition-transform duration-300">
+                {/* Moving Conic Gradient Spinning in a Circle */}
+                <div
+                  className="absolute inset-0 rounded-full animate-spin [animation-duration:5s] [animation-timing-function:linear]"
+                  style={{
+                    background:
+                      "conic-gradient(from 0deg, #D4AF37, #F6E27A, #C59B27, #FFF2A6, #AA771C, #D4AF37)",
+                  }}
+                />
+
+                {/* Soft Radial Gold Glow */}
+                <div className="absolute inset-0 rounded-full shadow-[0_0_12px_rgba(212,175,55,0.5)] group-hover:shadow-[0_0_18px_rgba(246,226,122,0.7)] pointer-events-none transition-shadow duration-300" />
+
+                {/* Inner Disc (Version 1: Black when transparent; Version 2: White when solid navbar) */}
+                <div
+                  className={`relative z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center p-1 transition-colors duration-300 ${
+                    showSolidBg ? "bg-white" : "bg-black"
+                  }`}
+                >
+                  <SnoutIcon
+                    className={`w-4 h-4 sm:w-[18px] sm:h-[18px] transition-colors duration-300 ${
+                      showSolidBg ? "text-[#0A0A0A]" : "text-white"
+                    }`}
+                    color={showSolidBg ? "#0A0A0A" : "#FFFFFF"}
+                  />
+                </div>
+              </div>
+            </button>
+
             {/* Search Icon (Desktop/Tablet only) */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
@@ -222,28 +278,28 @@ export function Navbar({
             {/* Primary Nav Links */}
             <div className="space-y-1">
               <Link
-                href="#system"
+                href="/#system"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 px-2 rounded-lg transition-colors"
               >
                 The System
               </Link>
               <Link
-                href="#shades"
+                href="/#shades"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 px-2 rounded-lg transition-colors"
               >
                 Shades
               </Link>
               <Link
-                href="#bestsellers"
+                href="/#bestsellers"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 px-2 rounded-lg transition-colors"
               >
                 Bestsellers
               </Link>
               <Link
-                href="#shade-finder"
+                href="/#shade-finder"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 px-2 rounded-lg transition-colors"
               >
@@ -251,8 +307,33 @@ export function Navbar({
               </Link>
             </div>
 
-            {/* Items moved under hamburger: Wishlist, Account, Region */}
+            {/* Items moved under hamburger: Stories, Wishlist, Account, Region */}
             <div className="pt-3 border-t border-white/10 space-y-2.5 text-[11px] text-ash">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setStoryModalOpen(true);
+                }}
+                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+              >
+                <span className="flex items-center gap-2.5">
+                  <div className="relative p-[1.5px] rounded-full overflow-hidden">
+                    <div
+                      className="absolute inset-0 rounded-full animate-spin [animation-duration:5s] [animation-timing-function:linear]"
+                      style={{
+                        background:
+                          "conic-gradient(from 0deg, #D4AF37, #F6E27A, #C59B27, #FFF2A6, #AA771C, #D4AF37)",
+                      }}
+                    />
+                    <div className="relative z-10 w-5 h-5 rounded-full bg-black flex items-center justify-center p-0.5 text-white">
+                      <SnoutIcon className="w-3.5 h-3.5 text-white" color="#FFFFFF" />
+                    </div>
+                  </div>
+                  <span className="text-white font-medium">Brand Stories</span>
+                </span>
+                <span className="text-[10px] font-mono text-[#F3E5AB]">Watch</span>
+              </button>
+
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg transition-colors"
@@ -285,6 +366,12 @@ export function Navbar({
           </div>
         )}
       </header>
+
+      {/* Instagram-Style Story Modal */}
+      <StoryModal
+        isOpen={storyModalOpen}
+        onClose={() => setStoryModalOpen(false)}
+      />
     </div>
   );
 }
