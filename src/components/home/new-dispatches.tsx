@@ -204,17 +204,17 @@ export function NewDispatches({
                   </span>
                 </div>
 
-                {/* Pure Circular Hair Shade Swatch - Clean Transparent PNG */}
+                {/* Pure Circular Hair Shade Swatch - Clean Transparent Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 my-2 transition-transform duration-500 ease-out group-hover:scale-105"
+                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 my-2 rounded-full overflow-hidden shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-[0_20px_36px_rgba(0,0,0,0.22)]"
                 >
                   <Image
                     src={circleSrc}
                     alt={item.name}
                     fill
                     sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
-                    className="object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.18)]"
+                    className="object-cover scale-[1.02]"
                     priority={idx < 4}
                   />
                 </Link>
