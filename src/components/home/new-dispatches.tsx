@@ -21,6 +21,19 @@ const SHADE_PANTONE_TAGS: Record<string, { tag: string; pantoneColor: string }> 
   "shade-9": { tag: "Platinum Shine", pantoneColor: "#D8C0B0" },
 };
 
+// Clean, transparent circular swatches without white square backgrounds
+const SHADE_CLEAN_CIRCLES: Record<string, string> = {
+  "shade-0-0": "/images/products/swatches/clean/circle_shade_1.png",
+  "shade-1": "/images/products/swatches/clean/circle_shade_2.png",
+  "shade-3": "/images/products/swatches/clean/circle_shade_3.png",
+  "shade-4": "/images/products/swatches/clean/circle_shade_4.png",
+  "shade-5": "/images/products/swatches/clean/circle_shade_5.png",
+  "shade-6": "/images/products/swatches/clean/circle_shade_6.png",
+  "shade-7": "/images/products/swatches/clean/circle_shade_7.png",
+  "shade-8": "/images/products/swatches/clean/circle_shade_8.png",
+  "shade-9": "/images/products/swatches/clean/circle_shade_9.png",
+};
+
 const NEW_ARRIVALS = [
   {
     id: "prod-shade-4",
@@ -144,18 +157,6 @@ export function NewDispatches({
     });
   };
 
-  const handleToggleWishlistShade = (item: ShadeProduct, e: React.MouseEvent) => {
-    e.stopPropagation();
-    store.toggleWishlist({
-      id: `prod-${item.id}`,
-      name: `${item.name} System`,
-      category: `${item.undertone} • Air-Driven Touch Up`,
-      price: item.price,
-      image: item.cardImage,
-      shadeCode: item.code,
-    });
-  };
-
   const activeShade = OFFICIAL_SHADES[activeIndex] || OFFICIAL_SHADES[0];
 
   return (
@@ -171,102 +172,59 @@ export function NewDispatches({
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
 
-      {/* 1. Circle Shades Slider with identical UI (Progress Bar, Dots, Chevrons, Pantone Tags) */}
+      {/* 1. Pure Circle Shades Slider (No card containers, no white background circles) */}
       <div className="relative">
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar snap-x snap-mandatory"
+          className="flex gap-6 sm:gap-10 overflow-x-auto scroll-smooth pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar snap-x snap-mandatory items-start"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
             const pantone = SHADE_PANTONE_TAGS[item.id] || { tag: "Permanent", pantoneColor: "#FFC72C" };
+            const circleSrc = SHADE_CLEAN_CIRCLES[item.id] || item.swatchImage;
             const isActive = activeIndex === idx;
+
             return (
               <div
                 key={item.id}
                 onClick={() => scrollToIndex(idx)}
-                className={`group flex-none w-[230px] sm:w-[280px] lg:w-[310px] snap-center flex flex-col transition-all duration-300 cursor-pointer ${
-                  isActive ? "scale-[1.01]" : "opacity-95"
+                className={`group flex-none w-[180px] sm:w-[220px] lg:w-[240px] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 ${
+                  isActive ? "scale-105 opacity-100" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
                 }`}
               >
-                {/* Portrait Card Container with centered Circular Shade Swatch */}
-                <div
-                  className={`relative aspect-[2/3] w-full rounded-lg overflow-hidden bg-[#E2E5E4] flex items-center justify-center p-6 transition-all duration-300 ${
-                    isActive
-                      ? "ring-2 ring-obsidian/30 shadow-md"
-                      : "shadow-xs group-hover:shadow-md"
-                  }`}
-                >
-                  <Link
-                    href={`/product?shade=${item.id.replace("shade-", "")}`}
-                    className="block w-full h-full relative flex items-center justify-center"
-                  >
-                    {/* Subtle halo glow behind circle matching shade undertone */}
-                    <div
-                      className="absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full opacity-20 blur-xl pointer-events-none transition-opacity duration-500 group-hover:opacity-35"
-                      style={{ backgroundColor: item.hex }}
+                {/* Floating Pantone Tag Badge */}
+                <div className="mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-obsidian border border-black/10 text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase shadow-xs">
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0 shadow-xs"
+                      style={{ backgroundColor: pantone.pantoneColor }}
                     />
-
-                    {/* Circular Hair Shade Swatch with chrome bezel & luxury drop-shadow */}
-                    <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden transition-transform duration-700 ease-out sm:group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)]">
-                      <Image
-                        src={item.swatchImage}
-                        alt={item.name}
-                        fill
-                        sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
-                        className="object-contain"
-                      />
-                    </div>
-                  </Link>
-
-                  {/* Top-Left Pantone Tag Badge */}
-                  <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-20 pointer-events-none">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-obsidian backdrop-blur-md border border-black/10 text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase shadow-md">
-                      <span
-                        className="w-2 h-2 rounded-full shrink-0 shadow-xs"
-                        style={{ backgroundColor: pantone.pantoneColor }}
-                      />
-                      <span className="text-obsidian font-bold">{pantone.tag}</span>
-                    </span>
-                  </div>
-
-                  {/* Top-Right Circular Wishlist Button */}
-                  <button
-                    type="button"
-                    onClick={(e) => handleToggleWishlistShade(item, e)}
-                    className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
-                      store.isInWishlist(`prod-${item.id}`)
-                        ? "opacity-100 text-rose-600"
-                        : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
-                    }`}
-                    aria-label="Wishlist"
-                  >
-                    <Heart
-                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
-                        store.isInWishlist(`prod-${item.id}`) ? "fill-rose-600 text-rose-600" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {/* Floating Pill Action Button */}
-                  <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                    <Link
-                      href={`/product?shade=${item.id.replace("shade-", "")}`}
-                      className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span className="truncate">VIEW PRODUCT</span>
-                    </Link>
-                  </div>
+                    <span className="text-obsidian font-bold">{pantone.tag}</span>
+                  </span>
                 </div>
 
-                {/* Product Info below image */}
+                {/* Pure Circular Hair Shade Swatch - Clean Transparent PNG */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="mt-3 space-y-1 text-left block group/link"
+                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 my-2 transition-transform duration-500 ease-out group-hover:scale-105"
                 >
-                  <div className="flex items-center gap-1.5">
+                  <Image
+                    src={circleSrc}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
+                    className="object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.18)]"
+                    priority={idx < 4}
+                  />
+                </Link>
+
+                {/* Typography below Circle */}
+                <Link
+                  href={`/product?shade=${item.id.replace("shade-", "")}`}
+                  className="mt-4 space-y-1 block group/link"
+                >
+                  <div className="flex items-center justify-center gap-1.5">
                     <span
                       className="w-2.5 h-2.5 rounded-full shrink-0 border border-black/10"
                       style={{ backgroundColor: item.hex }}
@@ -275,7 +233,7 @@ export function NewDispatches({
                       {item.code} • {item.formula}
                     </span>
                   </div>
-                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
                     {item.name} System
                   </h3>
                   <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
@@ -283,24 +241,13 @@ export function NewDispatches({
                   </p>
                 </Link>
 
-                {/* Mobile Add to Bag */}
-                <button
-                  onClick={() =>
-                    store.addToCart({
-                      id: `prod-${item.id}`,
-                      name: `${item.name} System`,
-                      variant: `${item.undertone} • Air-Driven Touch Up`,
-                      price: item.price,
-                      image: item.cardImage,
-                      shadeCode: item.code,
-                      shadeHex: item.hex,
-                    })
-                  }
-                  className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
+                {/* View Product Link */}
+                <Link
+                  href={`/product?shade=${item.id.replace("shade-", "")}`}
+                  className="mt-2.5 text-[10px] font-mono font-bold tracking-wider uppercase text-graphite hover:text-obsidian border-b border-graphite/30 hover:border-obsidian transition-colors pb-0.5 inline-block"
                 >
-                  <ShoppingBag className="w-3 h-3" />
-                  <span>ADD TO BAG</span>
-                </button>
+                  VIEW PRODUCT
+                </Link>
               </div>
             );
           })}
