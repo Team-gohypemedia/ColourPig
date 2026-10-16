@@ -3,10 +3,11 @@
 import React, { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { HairSuitabilityModal } from "@/components/modals/hair-suitability-modal";
 
 // Mapping Pantone accent styling for each shade in the collection
 const SHADE_PANTONE_TAGS: Record<string, { tag: string; pantoneColor: string }> = {
@@ -97,6 +98,8 @@ export function NewDispatches({
   const store = useStore();
   const sliderRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isSuitabilityOpen, setIsSuitabilityOpen] = useState(false);
+  const [suitabilityShade, setSuitabilityShade] = useState<ShadeProduct | null>(null);
 
   const scrollToIndex = useCallback((index: number) => {
     const container = sliderRef.current;
@@ -162,7 +165,7 @@ export function NewDispatches({
   return (
     <section id="system" className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto select-none">
       {/* Editorial Heading */}
-      <div className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2">
+      <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           COLLECTION • ALL 9 SHADES
         </span>
@@ -170,6 +173,22 @@ export function NewDispatches({
           NEW IN
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
+      </div>
+
+      {/* Hair Color Suitability Confirmation Banner */}
+      <div className="flex items-center justify-center mb-8 sm:mb-10">
+        <button
+          type="button"
+          onClick={() => {
+            setSuitabilityShade(activeShade);
+            setIsSuitabilityOpen(true);
+          }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-obsidian text-obsidian hover:text-white border border-black/10 shadow-xs text-xs font-mono font-medium tracking-wide transition-all duration-300 hover:scale-[1.02] active:scale-95 group/btn cursor-pointer"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-[#00A3E0] group-hover/btn:text-white transition-colors" />
+          <span>Unsure if this shade matches your hair? <strong className="font-bold underline decoration-obsidian/30 underline-offset-2">Check Suitability</strong></span>
+          <ArrowRight className="w-3 h-3 text-graphite group-hover/btn:text-white transition-colors" />
+        </button>
       </div>
 
       {/* 1. Pure Circle Shades Slider (No card containers, no white background circles) */}
@@ -241,13 +260,29 @@ export function NewDispatches({
                   </p>
                 </Link>
 
-                {/* View Product Link */}
-                <Link
-                  href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="mt-2.5 text-[10px] font-mono font-bold tracking-wider uppercase text-graphite hover:text-obsidian border-b border-graphite/30 hover:border-obsidian transition-colors pb-0.5 inline-block"
-                >
-                  VIEW PRODUCT
-                </Link>
+                {/* Actions: Suitability Check & View Product */}
+                <div className="mt-3 flex flex-col items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSuitabilityShade(item);
+                      setIsSuitabilityOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
+                  >
+                    <Sparkles className="w-2.5 h-2.5 text-[#FFC72C]" />
+                    <span>CHECK SUITABILITY</span>
+                  </button>
+
+                  <Link
+                    href={`/product?shade=${item.id.replace("shade-", "")}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-[10px] font-mono font-bold tracking-wider uppercase text-graphite hover:text-obsidian border-b border-graphite/30 hover:border-obsidian transition-colors pb-0.5"
+                  >
+                    VIEW PRODUCT
+                  </Link>
+                </div>
               </div>
             );
           })}
@@ -434,6 +469,12 @@ export function NewDispatches({
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
+      {/* Hair Suitability Confirmation Modal */}
+      <HairSuitabilityModal
+        isOpen={isSuitabilityOpen}
+        onClose={() => setIsSuitabilityOpen(false)}
+        initialShade={suitabilityShade}
+      />
     </section>
   );
 }
