@@ -201,7 +201,7 @@ export function ShadeFinder({
               }}
             >
               <Image
-                src="/images/results/model_before.jpg"
+                src="/images/results/model_before_gray_roots.jpg"
                 alt="Before - Natural Regrowth"
                 fill
                 priority
