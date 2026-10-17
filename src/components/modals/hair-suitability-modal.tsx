@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
-import { X, Check, Sparkles, AlertCircle, ShoppingBag, ArrowRight } from "lucide-react";
+import { X, Check, AlertCircle, ShoppingBag, ArrowRight } from "lucide-react";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
 import { useStore } from "@/context/store-context";
 
@@ -13,21 +12,21 @@ interface HairSuitabilityModalProps {
 }
 
 const NATURAL_BASES = [
-  { id: "base-black", name: "Jet / Deep Black", level: "Level 1–2", hex: "#1C1B1F", bestShadeId: "shade-1" },
-  { id: "base-dark-brown", name: "Dark Espresso Brown", level: "Level 3", hex: "#2A211D", bestShadeId: "shade-3" },
-  { id: "base-med-brown", name: "Medium Chestnut Brown", level: "Level 4", hex: "#4A392F", bestShadeId: "shade-4" },
-  { id: "base-light-brown", name: "Light Amber Brown", level: "Level 5", hex: "#634E3F", bestShadeId: "shade-5" },
-  { id: "base-dark-blonde", name: "Dark Honey Blonde", level: "Level 6", hex: "#7E644B", bestShadeId: "shade-6" },
-  { id: "base-med-blonde", name: "Medium Golden Blonde", level: "Level 7", hex: "#A8835B", bestShadeId: "shade-7" },
-  { id: "base-light-blonde", name: "Light Sunlit Blonde", level: "Level 8", hex: "#CEAA81", bestShadeId: "shade-8" },
-  { id: "base-very-light", name: "Very Light / Platinum", level: "Level 9+", hex: "#E8D3BD", bestShadeId: "shade-9" },
+  { id: "base-black", name: "Deep Black", level: "L1–2", hex: "#1C1B1F", bestShadeId: "shade-1" },
+  { id: "base-dark-brown", name: "Dark Brown", level: "L3", hex: "#2A211D", bestShadeId: "shade-3" },
+  { id: "base-med-brown", name: "Medium Brown", level: "L4", hex: "#4A392F", bestShadeId: "shade-4" },
+  { id: "base-light-brown", name: "Light Brown", level: "L5", hex: "#634E3F", bestShadeId: "shade-5" },
+  { id: "base-dark-blonde", name: "Dark Blonde", level: "L6", hex: "#7E644B", bestShadeId: "shade-6" },
+  { id: "base-med-blonde", name: "Golden Blonde", level: "L7", hex: "#A8835B", bestShadeId: "shade-7" },
+  { id: "base-light-blonde", name: "Light Blonde", level: "L8", hex: "#CEAA81", bestShadeId: "shade-8" },
+  { id: "base-very-light", name: "Platinum", level: "L9+", hex: "#E8D3BD", bestShadeId: "shade-9" },
 ];
 
 const GRAY_PERCENTAGES = [
-  { id: "gray-10-30", label: "10% – 30%", desc: "Early stray greys at temples or part" },
-  { id: "gray-30-60", label: "30% – 60%", desc: "Moderate visible silver regrowth" },
-  { id: "gray-60-100", label: "60% – 100%", desc: "Dense, resistant silver/white roots" },
-  { id: "gray-0", label: "0% (No Greys)", desc: "Seeking gloss shine and rich tone" },
+  { id: "gray-0", label: "0% Gray" },
+  { id: "gray-10-30", label: "10% – 30%" },
+  { id: "gray-30-60", label: "30% – 60%" },
+  { id: "gray-60-100", label: "60% – 100%" },
 ];
 
 export function HairSuitabilityModal({
@@ -44,7 +43,6 @@ export function HairSuitabilityModal({
   useEffect(() => {
     if (initialShade) {
       setSelectedShade(initialShade);
-      // Auto-set natural base closest to selected shade
       const matchedBase = NATURAL_BASES.find((b) => b.bestShadeId === initialShade.id);
       if (matchedBase) {
         setNaturalBase(matchedBase.id);
@@ -52,7 +50,7 @@ export function HairSuitabilityModal({
     }
   }, [initialShade, isOpen]);
 
-  // Lock body scroll when modal is open
+  // Prevent background scrolling while modal is active
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -74,35 +72,28 @@ export function HairSuitabilityModal({
     return OFFICIAL_SHADES.find((s) => s.id === activeBaseObj.bestShadeId) || selectedShade;
   }, [activeBaseObj, selectedShade]);
 
-  // Verdict calculation
+  // Direct, simple match check
   const matchVerdict = useMemo(() => {
     if (selectedShade.id === "shade-0-0") {
       return {
         isMatch: true,
-        badge: "UNIVERSAL COMPATIBLE",
-        badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
-        title: "✓ Universal Compatibility",
-        message:
-          "No.0/0 Clear Gloss contains translucent salon pigment that blends seamlessly with any natural base without altering your underlying colour.",
+        title: "Universal Clear Gloss",
+        message: "No.0/0 adds high-gloss shine across all hair colors without changing your shade.",
       };
     }
 
     if (selectedShade.id === recommendedShade.id) {
       return {
         isMatch: true,
-        badge: "100% PERFECT MATCH",
-        badgeColor: "bg-emerald-50 text-emerald-800 border-emerald-200",
-        title: `✓ Excellent Match for ${activeBaseObj.name}`,
-        message: `${selectedShade.name} is calibrated with optimal pigment load for ${activeBaseObj.level} hair, providing 100% grey root coverage with zero brassiness.`,
+        title: `Perfect match for ${activeBaseObj.name}`,
+        message: `${selectedShade.name} blends naturally with your roots and provides even gray coverage.`,
       };
     }
 
     return {
       isMatch: false,
-      badge: "COLOR SHIFT ADVISORY",
-      badgeColor: "bg-amber-50 text-amber-800 border-amber-200",
       title: `Recommended: ${recommendedShade.name}`,
-      message: `Your selected ${selectedShade.name} may produce a multi-tone contrast with your ${activeBaseObj.name} base. For seamless root touch-up blending, our lab recommends ${recommendedShade.name}.`,
+      message: `For your ${activeBaseObj.name} hair, ${recommendedShade.name} will blend more naturally.`,
     };
   }, [selectedShade, recommendedShade, activeBaseObj]);
 
@@ -110,7 +101,7 @@ export function HairSuitabilityModal({
     store.addToCart({
       id: `prod-${selectedShade.id}`,
       name: `${selectedShade.name} System`,
-      variant: `${selectedShade.undertone} • Suitability Verified`,
+      variant: `${selectedShade.undertone} • Match Verified`,
       price: selectedShade.price,
       image: selectedShade.cardImage,
       shadeCode: selectedShade.code,
@@ -120,68 +111,62 @@ export function HairSuitabilityModal({
     setTimeout(() => {
       onClose();
       store.openCart();
-    }, 1000);
+    }, 800);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-      {/* Dimmed backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-ash/40 overflow-hidden z-10 my-auto text-obsidian animate-in fade-in zoom-in-95 duration-200">
-        {/* Header */}
-        <div className="px-5 sm:px-7 py-4 border-b border-ash/25 flex items-center justify-between bg-[#F8F9F9]">
+      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-ash/30 flex flex-col max-h-[90dvh] sm:max-h-[85vh] overflow-hidden z-10 text-obsidian animate-in fade-in zoom-in-95 duration-200">
+        
+        {/* Header - Fixed */}
+        <div className="px-4 sm:px-6 py-3.5 border-b border-ash/20 flex items-center justify-between bg-white shrink-0">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#00A3E0] animate-pulse" />
-            <span className="text-[10px] font-mono tracking-[0.2em] uppercase font-bold text-graphite">
-              SALON COLOR MATCH LAB
+            <span
+              className="w-3 h-3 rounded-full border border-black/15 shrink-0"
+              style={{ backgroundColor: selectedShade.hex }}
+            />
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-obsidian">
+              {selectedShade.code} {selectedShade.name.replace(/No\.\S+\s*/, "")}
             </span>
           </div>
+
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full hover:bg-black/5 flex items-center justify-center text-graphite hover:text-obsidian transition-colors"
+            className="w-7 h-7 rounded-full hover:bg-black/5 flex items-center justify-center text-graphite hover:text-obsidian transition-colors cursor-pointer"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-5 sm:p-7 space-y-6 max-h-[80vh] overflow-y-auto no-scrollbar">
-          {/* Headline & Currently Selected Shade */}
-          <div className="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-ash/20">
-            <div>
-              <h2 className="font-headline font-bold text-lg sm:text-xl tracking-tight text-obsidian">
-                Are you sure this shade is suitable for your hair?
-              </h2>
-              <p className="text-xs text-graphite font-mono mt-1">
-                Confirm your natural base and gray percentage for 100% root blending precision.
-              </p>
-            </div>
-            {/* Active Shade Badge */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#EAECEB] border border-black/5 shadow-2xs shrink-0">
-              <span
-                className="w-3.5 h-3.5 rounded-full border border-black/10 shrink-0"
-                style={{ backgroundColor: selectedShade.hex }}
-              />
-              <span className="font-mono text-xs font-bold text-obsidian uppercase">
-                {selectedShade.code} {selectedShade.name.replace(/No\.\S+\s*/, "")}
-              </span>
-            </div>
+        {/* Scrollable Content Body */}
+        <div className="p-4 sm:p-6 space-y-4 overflow-y-auto">
+          {/* Title */}
+          <div>
+            <h2 className="font-headline font-bold text-base sm:text-lg tracking-tight text-obsidian">
+              Does this shade match your hair?
+            </h2>
+            <p className="text-xs text-graphite mt-0.5">
+              Select your root color and gray amount to confirm a natural blend.
+            </p>
           </div>
 
-          {/* STEP 1: Current / Natural Base Hair Color */}
-          <div className="space-y-3">
-            <label className="text-[11px] font-mono tracking-wider font-bold text-obsidian uppercase flex items-center gap-1.5">
-              <span>1. WHAT IS YOUR NATURAL BASE / REGROWTH COLOR?</span>
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {/* Question 1: Natural Root Color */}
+          <div className="space-y-2">
+            <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-graphite block">
+              1. Your Root Color
+            </span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
               {NATURAL_BASES.map((base) => {
                 const isSelected = naturalBase === base.id;
                 return (
@@ -189,21 +174,21 @@ export function HairSuitabilityModal({
                     key={base.id}
                     type="button"
                     onClick={() => setNaturalBase(base.id)}
-                    className={`p-2.5 rounded-lg border text-left transition-all duration-150 flex items-center gap-2.5 cursor-pointer ${
+                    className={`flex items-center gap-2 p-2 rounded-lg border text-left cursor-pointer transition-all ${
                       isSelected
-                        ? "bg-white border-obsidian ring-2 ring-obsidian shadow-xs"
-                        : "bg-[#F7F8F8] border-ash/40 hover:bg-white hover:border-obsidian/40"
+                        ? "bg-obsidian text-white border-obsidian shadow-2xs"
+                        : "bg-[#F7F8F8] border-ash/40 hover:bg-white hover:border-obsidian/30 text-obsidian"
                     }`}
                   >
                     <span
-                      className="w-4 h-4 rounded-full border border-black/15 shrink-0 shadow-2xs"
+                      className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0 shadow-2xs"
                       style={{ backgroundColor: base.hex }}
                     />
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-headline font-bold text-obsidian truncate">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-semibold truncate leading-tight">
                         {base.name}
                       </p>
-                      <p className="text-[9px] font-mono text-graphite truncate">
+                      <p className={`text-[9px] font-mono leading-none mt-0.5 ${isSelected ? "text-white/70" : "text-graphite"}`}>
                         {base.level}
                       </p>
                     </div>
@@ -213,12 +198,12 @@ export function HairSuitabilityModal({
             </div>
           </div>
 
-          {/* STEP 2: Gray Hair Percentage */}
-          <div className="space-y-3">
-            <label className="text-[11px] font-mono tracking-wider font-bold text-obsidian uppercase flex items-center gap-1.5">
-              <span>2. HOW MUCH GRAY OR SILVER ROOTS DO YOU HAVE?</span>
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {/* Question 2: Gray Hair Percentage */}
+          <div className="space-y-2">
+            <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-graphite block">
+              2. Gray Coverage Needed
+            </span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
               {GRAY_PERCENTAGES.map((gray) => {
                 const isSelected = grayLevel === gray.id;
                 return (
@@ -226,104 +211,79 @@ export function HairSuitabilityModal({
                     key={gray.id}
                     type="button"
                     onClick={() => setGrayLevel(gray.id)}
-                    className={`p-3 rounded-lg border text-left transition-all duration-150 cursor-pointer ${
+                    className={`py-2 px-2.5 rounded-lg border text-center font-mono text-xs font-semibold cursor-pointer transition-all ${
                       isSelected
-                        ? "bg-white border-obsidian ring-2 ring-obsidian shadow-xs"
-                        : "bg-[#F7F8F8] border-ash/40 hover:bg-white hover:border-obsidian/40"
+                        ? "bg-obsidian text-white border-obsidian shadow-2xs"
+                        : "bg-[#F7F8F8] border-ash/40 hover:bg-white hover:border-obsidian/30 text-obsidian"
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-mono text-xs font-bold text-obsidian">
-                        {gray.label}
-                      </span>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-obsidian" />}
-                    </div>
-                    <p className="text-[10px] text-graphite leading-snug">
-                      {gray.desc}
-                    </p>
+                    {gray.label}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* VERDICT BOX: Dynamic Compatibility Feedback */}
+          {/* Verdict Box - Clean & Minimal */}
           <div
-            className={`p-4 rounded-xl border transition-all duration-300 ${
+            className={`p-3 sm:p-3.5 rounded-xl border flex items-start gap-2.5 transition-all ${
               matchVerdict.isMatch
                 ? "bg-emerald-50/70 border-emerald-200"
                 : "bg-amber-50/70 border-amber-200"
             }`}
           >
-            <div className="flex items-start gap-3">
-              <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
-                  matchVerdict.isMatch
-                    ? "bg-emerald-600 text-white"
-                    : "bg-amber-600 text-white"
-                }`}
-              >
-                {matchVerdict.isMatch ? (
-                  <Sparkles className="w-3.5 h-3.5" />
-                ) : (
-                  <AlertCircle className="w-3.5 h-3.5" />
-                )}
-              </div>
-              <div className="space-y-1 min-w-0 flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span
-                    className={`text-[9px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded-full border ${matchVerdict.badgeColor}`}
-                  >
-                    {matchVerdict.badge}
-                  </span>
-                  <h4 className="font-headline font-bold text-sm text-obsidian">
-                    {matchVerdict.title}
-                  </h4>
-                </div>
-                <p className="text-xs text-graphite leading-relaxed">
-                  {matchVerdict.message}
-                </p>
+            <div className="mt-0.5 shrink-0">
+              {matchVerdict.isMatch ? (
+                <Check className="w-4 h-4 text-emerald-700" />
+              ) : (
+                <AlertCircle className="w-4 h-4 text-amber-700" />
+              )}
+            </div>
 
-                {/* If alternative recommended, offer 1-click switch */}
-                {!matchVerdict.isMatch && recommendedShade && (
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedShade(recommendedShade)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-obsidian text-white text-[11px] font-mono font-bold tracking-wider uppercase hover:bg-black transition-colors shadow-2xs"
-                    >
-                      <span>Switch to {recommendedShade.code} {recommendedShade.name.replace(/No\.\S+\s*/, "")}</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </button>
-                  </div>
-                )}
-              </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-headline font-bold text-xs sm:text-sm text-obsidian">
+                {matchVerdict.title}
+              </h4>
+              <p className="text-xs text-graphite mt-0.5 leading-relaxed">
+                {matchVerdict.message}
+              </p>
+
+              {/* If different shade recommended, offer 1-click switch */}
+              {!matchVerdict.isMatch && recommendedShade && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedShade(recommendedShade)}
+                  className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-obsidian text-white text-[10px] font-mono font-bold tracking-wider uppercase hover:bg-black transition-colors cursor-pointer"
+                >
+                  <span>Switch to {recommendedShade.code} {recommendedShade.name.replace(/No\.\S+\s*/, "")}</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Modal Footer with Actions */}
-        <div className="px-5 sm:px-7 py-4 bg-[#F8F9F9] border-t border-ash/25 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-xs font-mono text-graphite">
-            <span>Selected Formula:</span>
-            <span className="font-bold text-obsidian">
-              {selectedShade.code} • {selectedShade.name}
+        {/* Footer - Fixed */}
+        <div className="px-4 sm:px-6 py-3 bg-[#F9FAFA] border-t border-ash/20 flex items-center justify-between gap-2 shrink-0">
+          <div className="min-w-0">
+            <span className="font-mono text-xs font-bold text-obsidian block truncate">
+              {selectedShade.code} • ${selectedShade.price} USD
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 w-full sm:w-auto">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 sm:flex-none px-4 py-2.5 rounded-lg border border-ash/60 text-obsidian text-xs font-mono font-semibold tracking-wider uppercase hover:bg-white hover:border-obsidian transition-colors"
+              className="px-3 py-2 rounded-lg border border-ash/50 text-obsidian text-xs font-mono font-semibold tracking-wider uppercase hover:border-obsidian transition-colors cursor-pointer"
             >
-              Browse Shades
+              Close
             </button>
             <button
               type="button"
               onClick={handleAddToCart}
               disabled={justAdded}
-              className={`flex-1 sm:flex-none px-5 py-2.5 rounded-lg text-xs font-mono font-bold tracking-wider uppercase flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 ${
+              className={`px-4 py-2 rounded-lg text-xs font-mono font-bold tracking-wider uppercase flex items-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95 ${
                 justAdded
                   ? "bg-emerald-600 text-white"
                   : "bg-obsidian hover:bg-black text-white"
@@ -332,17 +292,18 @@ export function HairSuitabilityModal({
               {justAdded ? (
                 <>
                   <Check className="w-3.5 h-3.5" />
-                  <span>CONFIRMED &amp; ADDED</span>
+                  <span>Added</span>
                 </>
               ) : (
                 <>
                   <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>CONFIRM &amp; ADD (${selectedShade.price} USD)</span>
+                  <span>Confirm &amp; Add</span>
                 </>
               )}
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

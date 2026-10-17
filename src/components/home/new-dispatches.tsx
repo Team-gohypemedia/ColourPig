@@ -3,7 +3,7 @@
 import React, { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
@@ -185,8 +185,7 @@ export function NewDispatches({
           }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-obsidian text-obsidian hover:text-white border border-black/10 shadow-xs text-xs font-mono font-medium tracking-wide transition-all duration-300 hover:scale-[1.02] active:scale-95 group/btn cursor-pointer"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#00A3E0] group-hover/btn:text-white transition-colors" />
-          <span>Unsure if this shade matches your hair? <strong className="font-bold underline decoration-obsidian/30 underline-offset-2">Check Suitability</strong></span>
+          <span>Unsure if this shade matches your hair? <strong className="font-bold underline decoration-obsidian/30 underline-offset-2">Check Match</strong></span>
           <ArrowRight className="w-3 h-3 text-graphite group-hover/btn:text-white transition-colors" />
         </button>
       </div>
@@ -269,10 +268,9 @@ export function NewDispatches({
                       setSuitabilityShade(item);
                       setIsSuitabilityOpen(true);
                     }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
+                    className="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
                   >
-                    <Sparkles className="w-2.5 h-2.5 text-[#FFC72C]" />
-                    <span>CHECK SUITABILITY</span>
+                    <span>CHECK MATCH</span>
                   </button>
 
                   <Link
