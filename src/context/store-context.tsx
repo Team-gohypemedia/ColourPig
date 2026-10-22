@@ -83,7 +83,7 @@ const INITIAL_CART_ITEMS: CartItem[] = [
     price: 2499,
     originalPrice: 3499,
     inStock: 2,
-    image: "/images/products/cards/shade_card_4.jpg",
+    image: "/Medium Brown/Medium Brown.00000.png",
     quantity: 1,
     shadeCode: "No.4",
     shadeHex: "#4E4136",
@@ -97,7 +97,7 @@ const INITIAL_WISHLIST_ITEMS: WishlistItem[] = [
     category: "Natural Chestnut • Air-Driven Touch Up",
     price: 2499,
     originalPrice: 3499,
-    image: "/images/products/cards/shade_card_4.jpg",
+    image: "/Medium Brown/Medium Brown.00000.png",
     shadeCode: "No.4",
   },
   {
@@ -114,7 +114,7 @@ const INITIAL_WISHLIST_ITEMS: WishlistItem[] = [
     category: "Warm Golden • 100% Resistant Gray Coverage",
     price: 1899,
     originalPrice: 2499,
-    image: "/images/products/cards/shade_card_7.jpg",
+    image: "/Medium Blonde/MediumBlonde.jpg",
     shadeCode: "No.7",
   },
 ];
@@ -135,7 +135,7 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
     variant: "Pure Mineral Jet • Full Root Coverage",
     price: 2499,
     originalPrice: 3499,
-    image: "/images/products/cards/shade_card_2.jpg",
+    image: "/Black/Black.jpg",
     inStock: 4,
   },
   {
@@ -144,7 +144,7 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
     variant: "Dark Espresso Brown Formula",
     price: 2499,
     originalPrice: 3499,
-    image: "/images/products/cards/shade_card_3.jpg",
+    image: "/Brown/Brown.jpg",
     inStock: 3,
   },
 ];

@@ -84,43 +84,46 @@ export function EcommFooter() {
             </div>
           </div>
 
-          {/* Column 2: Shades (Treatments equivalent) */}
-          <div className="lg:col-span-2 space-y-4">
-            <span className="text-[11px] font-mono font-bold tracking-[0.22em] uppercase text-platinum block">
-              SHADES
-            </span>
-            <ul className="space-y-2.5 text-xs sm:text-[13px] text-ash/80">
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.0/0 Clear Gloss</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.1 Mineral Black</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.3 Espresso Brown</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.4 Medium Brown</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.5 Light Brown</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.6 Dark Blonde</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.7 Medium Blonde</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.8 Light Blonde</a></li>
-              <li><a href="#bestsellers" className="hover:text-white transition-colors">No.9 Light Ash Blonde</a></li>
-            </ul>
-          </div>
+          {/* Shades & The System (Side by side on mobile) */}
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:col-span-4">
+            {/* Column 2: Shades */}
+            <div className="space-y-4">
+              <span className="text-[11px] font-mono font-bold tracking-[0.22em] uppercase text-platinum block">
+                SHADES
+              </span>
+              <ul className="space-y-2.5 text-xs sm:text-[13px] text-ash/80">
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.0/0 Clear Gloss</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.1 Mineral Black</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.3 Espresso Brown</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.4 Medium Brown</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.5 Light Brown</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.6 Dark Blonde</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.7 Medium Blonde</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.8 Light Blonde</a></li>
+                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.9 Light Ash Blonde</a></li>
+              </ul>
+            </div>
 
-          {/* Column 3: The System (Practice equivalent) */}
-          <div className="lg:col-span-2 space-y-4">
-            <span className="text-[11px] font-mono font-bold tracking-[0.22em] uppercase text-platinum block">
-              THE SYSTEM
-            </span>
-            <ul className="space-y-2.5 text-xs sm:text-[13px] text-ash/80">
-              <li><a href="#engineering" className="hover:text-white transition-colors">The Reusable Canister</a></li>
-              <li><a href="#engineering" className="hover:text-white transition-colors">Dual-Chamber Delivery</a></li>
-              <li><a href="#engineering" className="hover:text-white transition-colors">In-Shower Ritual</a></li>
-              <li><a href="#about" className="hover:text-white transition-colors">Norman Brown Atelier</a></li>
-              <li><a href="#shade-finder" className="hover:text-white transition-colors">Before &amp; After Results</a></li>
-              <li><a href="#engineering" className="hover:text-white transition-colors">How To Refill</a></li>
-              <li><a href="#about" className="hover:text-white transition-colors">Ingredients &amp; Safety</a></li>
-              <li><a href="#community" className="hover:text-white transition-colors">Airheads Archive</a></li>
-            </ul>
+            {/* Column 3: The System */}
+            <div className="space-y-4">
+              <span className="text-[11px] font-mono font-bold tracking-[0.22em] uppercase text-platinum block">
+                THE SYSTEM
+              </span>
+              <ul className="space-y-2.5 text-xs sm:text-[13px] text-ash/80">
+                <li><a href="#engineering" className="hover:text-white transition-colors">The Reusable Canister</a></li>
+                <li><a href="#engineering" className="hover:text-white transition-colors">Dual-Chamber Delivery</a></li>
+                <li><a href="#engineering" className="hover:text-white transition-colors">In-Shower Ritual</a></li>
+                <li><a href="#about" className="hover:text-white transition-colors">Norman Brown Atelier</a></li>
+                <li><a href="#shades" className="hover:text-white transition-colors">Before &amp; After Results</a></li>
+                <li><a href="#engineering" className="hover:text-white transition-colors">How To Refill</a></li>
+                <li><a href="#about" className="hover:text-white transition-colors">Ingredients &amp; Safety</a></li>
+                <li><a href="#community" className="hover:text-white transition-colors">Airheads Archive</a></li>
+              </ul>
+            </div>
           </div>
 
           {/* Column 4: Client Care & Head Office (Colourpig Real Content) */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="lg:col-span-4 space-y-4">
             <span className="text-[11px] font-mono font-bold tracking-[0.22em] uppercase text-platinum block">
               CLIENT CARE
             </span>

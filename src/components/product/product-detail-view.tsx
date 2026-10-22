@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -25,6 +25,10 @@ import {
   CheckCircle2,
   Droplets,
   Wind,
+  Play,
+  Volume2,
+  VolumeX,
+  Maximize2,
 } from "lucide-react";
 import { SnoutIcon, ColourpigLogo } from "@/components/brand/logo";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
@@ -92,7 +96,7 @@ const RECENTLY_VIEWED = [
     category: "Dark Espresso • Reusable System",
     priceInr: 2499,
     originalInr: 3499,
-    image: "/images/products/cards/shade_card_3.jpg",
+    image: "/Brown/Brown.jpg",
     shadeCode: "No.3",
   },
   {
@@ -101,7 +105,7 @@ const RECENTLY_VIEWED = [
     category: "Warm Amber • Reusable System",
     priceInr: 2499,
     originalInr: 3499,
-    image: "/images/products/cards/shade_card_5.jpg",
+    image: "/Light Brown/LightBrown01.jpg",
     shadeCode: "No.5",
   },
   {
@@ -110,7 +114,7 @@ const RECENTLY_VIEWED = [
     category: "Warm Golden • Reusable System",
     priceInr: 2499,
     originalInr: 3499,
-    image: "/images/products/cards/shade_card_7.jpg",
+    image: "/Medium Blonde/MediumBlonde.jpg",
     shadeCode: "No.7",
   },
   {
@@ -119,7 +123,7 @@ const RECENTLY_VIEWED = [
     category: "Deep Mineral Jet • Full Coverage",
     priceInr: 2499,
     originalInr: 3499,
-    image: "/images/products/cards/shade_card_2.jpg",
+    image: "/Black/Black.jpg",
     shadeCode: "No.1",
   },
 ];
@@ -184,39 +188,52 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
   // Open Accordion tabs
   const [openAccordion, setOpenAccordion] = useState<string | null>("how-it-works");
 
-  // Gallery images array dynamically constructed from shade & brand assets
+  // Video controls state
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Gallery media items dynamically constructed from shade & brand assets
   const galleryImages = [
     {
+      type: "image" as const,
       src: selectedShade.cardImage,
-      alt: `${selectedShade.name} Packaging Artboard`,
-      tag: "PACKAGING",
+      alt: `${selectedShade.name} Front Packaging`,
+      tag: "FRONT CANISTER",
     },
-    {
-      src: "/images/product-dispenser.jpg",
-      alt: "ColourPig In-Shower Precision Dispenser",
-      tag: "DISPENSER",
-    },
-    {
-      src: selectedShade.modelImage,
-      alt: `${selectedShade.name} Salon Result`,
-      tag: "RESULT",
-    },
-    {
-      src: "/images/ritual/step_1_dispense_clean_bg.jpg",
-      alt: "60-Second Air-Driven Dual Chamber Dispense",
-      tag: "HOW IT DISPENSES",
-    },
-    {
-      src: "/images/ritual/step_2_apply.jpg",
-      alt: "No-Drip In-Shower Applicator",
-      tag: "IN-SHOWER RITUAL",
-    },
-    {
-      src: "/images/behind-scenes-lab.jpg",
-      alt: "Pantone-Calibrated Micro-Pigments Lab",
-      tag: "LAB SCIENCE",
-    },
+    ...(selectedShade.video
+      ? [
+          {
+            type: "video" as const,
+            src: selectedShade.video,
+            poster: selectedShade.cardImage,
+            alt: `${selectedShade.name} 360° Product Video`,
+            tag: "PRODUCT VIDEO",
+          },
+        ]
+      : []),
+    ...(selectedShade.sideImage
+      ? [
+          {
+            type: "image" as const,
+            src: selectedShade.sideImage,
+            alt: `${selectedShade.name} Side Packaging Profile`,
+            tag: "SIDE PROFILE",
+          },
+        ]
+      : []),
+    ...(selectedShade.backImage
+      ? [
+          {
+            type: "image" as const,
+            src: selectedShade.backImage,
+            alt: `${selectedShade.name} Back Packaging & Directions`,
+            tag: "SPECIFICATIONS",
+          },
+        ]
+      : []),
   ];
+
+  const activeItem = galleryImages[Math.min(activeImageIdx, galleryImages.length - 1)] || galleryImages[0];
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText("COLOUR10");
@@ -275,45 +292,100 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
             
             {/* Vertical Thumbnail Rail (Desktop) / Horizontal Rail (Mobile) */}
             <div className="flex sm:flex-col gap-2.5 sm:gap-3 overflow-x-auto sm:overflow-y-auto sm:max-h-[620px] custom-drawer-scrollbar py-1 shrink-0">
-              {galleryImages.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImageIdx(idx)}
-                  className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white shadow-2xs group ${
-                    activeImageIdx === idx
-                      ? "border-obsidian shadow-sm scale-102"
-                      : "border-ash/30 hover:border-ash/70 opacity-80 hover:opacity-100"
-                  }`}
-                  aria-label={`View angle ${idx + 1}`}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    sizes="80px"
-                    className="object-cover object-center"
-                  />
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
-                </button>
-              ))}
+              {galleryImages.map((img, idx) => {
+                const isSelected = activeImageIdx === idx;
+                const isVid = img.type === "video";
+                const thumbSrc = isVid ? (img.poster || selectedShade.cardImage) : img.src;
+
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIdx(idx)}
+                    className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white shadow-2xs group cursor-pointer ${
+                      isSelected
+                        ? "border-obsidian shadow-sm scale-102"
+                        : "border-ash/30 hover:border-ash/70 opacity-80 hover:opacity-100"
+                    }`}
+                    aria-label={`View angle ${idx + 1}`}
+                  >
+                    <Image
+                      src={thumbSrc}
+                      alt={img.alt}
+                      fill
+                      sizes="80px"
+                      className="object-cover object-center"
+                    />
+                    {isVid ? (
+                      <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center text-white p-1 transition-colors group-hover:bg-black/30">
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/95 text-obsidian flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                          <Play className="w-3 h-3 fill-current ml-0.5" />
+                        </div>
+                        <span className="text-[8px] font-mono font-bold tracking-wider uppercase mt-1 drop-shadow">
+                          VIDEO
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Main High-Resolution Showcase Frame */}
             <div className="flex-1 relative aspect-[3/4] sm:aspect-[4/5] max-h-[720px] rounded-2xl overflow-hidden bg-white border border-ash/30 shadow-sm flex items-center justify-center group">
-              <Image
-                key={galleryImages[activeImageIdx].src}
-                src={galleryImages[activeImageIdx].src}
-                alt={galleryImages[activeImageIdx].alt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 700px"
-                className="object-cover object-center transition-transform duration-500 group-hover:scale-102"
-              />
+              {activeItem.type === "video" ? (
+                <div className="relative w-full h-full flex items-center justify-center bg-[#070D12]">
+                  <video
+                    ref={videoRef}
+                    key={activeItem.src}
+                    src={encodeURI(activeItem.src)}
+                    poster={activeItem.poster ? encodeURI(activeItem.poster) : undefined}
+                    autoPlay
+                    loop
+                    muted={isVideoMuted}
+                    playsInline
+                    controls
+                    className="w-full h-full object-contain"
+                  />
+                  {/* Floating Sound Toggle */}
+                  <div className="absolute top-4 right-16 z-20">
+                    <button
+                      type="button"
+                      onClick={() => setIsVideoMuted(!isVideoMuted)}
+                      className="px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/15 text-white text-[10px] font-mono tracking-wider uppercase flex items-center gap-1.5 transition-all shadow-md active:scale-95"
+                      aria-label={isVideoMuted ? "Unmute video" : "Mute video"}
+                    >
+                      {isVideoMuted ? (
+                        <>
+                          <VolumeX className="w-3.5 h-3.5 text-ash" />
+                          <span className="hidden sm:inline">Sound Off</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="w-3.5 h-3.5 text-[#7AC142]" />
+                          <span className="hidden sm:inline">Sound On</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Image
+                  key={activeItem.src}
+                  src={activeItem.src}
+                  alt={activeItem.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 700px"
+                  className="object-contain sm:object-cover object-center transition-transform duration-500 group-hover:scale-102"
+                />
+              )}
 
               {/* Top Badges */}
               <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2 pointer-events-none">
                 <span className="px-3 py-1 rounded-full bg-obsidian/90 text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase backdrop-blur-md shadow-md">
-                  PATENTED AIR-DRIVEN
+                  {activeItem.tag}
                 </span>
                 <span className="px-2.5 py-1 rounded-full bg-[#7AC142] text-obsidian font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shadow-md">
                   SAVE 28%
@@ -372,9 +444,9 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
 
               {/* Bottom Tag Preview */}
               <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-[10px] font-mono text-white/90 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 pointer-events-none">
-                <span>VIEW: {galleryImages[activeImageIdx].tag}</span>
+                <span>VIEW: {activeItem.tag}</span>
                 <span>
-                  {activeImageIdx + 1} / {galleryImages.length}
+                  {Math.min(activeImageIdx + 1, galleryImages.length)} / {galleryImages.length}
                 </span>
               </div>
             </div>

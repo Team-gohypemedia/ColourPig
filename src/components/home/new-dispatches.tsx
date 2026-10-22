@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight } from "lucide-react";
@@ -47,7 +47,8 @@ const NEW_ARRIVALS = [
     tag: "Most Popular",
     pantoneColor: "#FFC72C",
     pantoneCode: "123C",
-    image: "/images/products/cards/shade_card_4.jpg",
+    image: "/Medium Brown/Medium Brown.00000.png",
+    video: "/Medium Brown/Medium Brown.mp4",
   },
   {
     id: "prod-shade-7",
@@ -60,7 +61,8 @@ const NEW_ARRIVALS = [
     tag: "High Demand",
     pantoneColor: "#FF671F",
     pantoneCode: "165C",
-    image: "/images/products/cards/shade_card_7.jpg",
+    image: "/Medium Blonde/MediumBlonde.jpg",
+    video: "/Medium Blonde/Medium Blonde.mp4",
   },
   {
     id: "prod-shade-2",
@@ -73,7 +75,8 @@ const NEW_ARRIVALS = [
     tag: "Intense Pigment",
     pantoneColor: "#00A3E0",
     pantoneCode: "299C",
-    image: "/images/products/cards/shade_card_2.jpg",
+    image: "/Black/Black.jpg",
+    video: "/Black/Black.mp4",
   },
   {
     id: "prod-shade-1",
@@ -87,6 +90,7 @@ const NEW_ARRIVALS = [
     pantoneColor: "#B584C4",
     pantoneCode: "2572C",
     image: "/images/products/cards/shade_card_1.jpg",
+    video: "/system-canister.mp4",
   },
 ];
 
@@ -97,9 +101,31 @@ export function NewDispatches({
 }) {
   const store = useStore();
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(2); // Default to Shade 3 (No.3 Brown System)
   const [isSuitabilityOpen, setIsSuitabilityOpen] = useState(false);
   const [suitabilityShade, setSuitabilityShade] = useState<ShadeProduct | null>(null);
+
+  const isProgrammaticScroll = useRef(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Position slider to default active Shade 3 on initial page visit
+  useEffect(() => {
+    const centerDefault = () => {
+      const container = sliderRef.current;
+      if (!container) return;
+      const cards = container.children;
+      if (cards[2]) {
+        const targetCard = cards[2] as HTMLElement;
+        const cardCenter = targetCard.offsetLeft + targetCard.clientWidth / 2;
+        const containerHalf = container.clientWidth / 2;
+        container.scrollLeft = Math.max(0, cardCenter - containerHalf);
+      }
+    };
+
+    centerDefault();
+    const timer = setTimeout(centerDefault, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const scrollToIndex = useCallback((index: number) => {
     const container = sliderRef.current;
@@ -107,12 +133,24 @@ export function NewDispatches({
     const cards = container.children;
     if (cards[index]) {
       const targetCard = cards[index] as HTMLElement;
-      targetCard.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      
+      // Calculate exact scroll position so the target card is dead center
+      const cardCenter = targetCard.offsetLeft + targetCard.clientWidth / 2;
+      const containerHalf = container.clientWidth / 2;
+      const targetScrollLeft = Math.max(0, cardCenter - containerHalf);
+
+      isProgrammaticScroll.current = true;
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      scrollTimeout.current = setTimeout(() => {
+        isProgrammaticScroll.current = false;
+      }, 600);
+
       setActiveIndex(index);
+
+      container.scrollTo({
+        left: targetScrollLeft,
+        behavior: "smooth",
+      });
     }
   }, []);
 
@@ -128,9 +166,21 @@ export function NewDispatches({
 
   const handleScroll = () => {
     if (!sliderRef.current) return;
+    if (isProgrammaticScroll.current) return;
+
     const container = sliderRef.current;
     const cards = Array.from(container.children) as HTMLElement[];
     if (cards.length === 0) return;
+
+    // Boundary checks for start & end
+    if (container.scrollLeft <= 10) {
+      setActiveIndex(0);
+      return;
+    }
+    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 15) {
+      setActiveIndex(cards.length - 1);
+      return;
+    }
 
     const targetCenter = container.scrollLeft + container.clientWidth / 2;
     let closestIndex = 0;
@@ -170,7 +220,7 @@ export function NewDispatches({
           COLLECTION • ALL 9 SHADES
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
-          NEW IN
+          EXPLORE YOUR SHADE
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
       </div>
@@ -195,7 +245,7 @@ export function NewDispatches({
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-6 sm:gap-10 overflow-x-auto scroll-smooth pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar snap-x snap-mandatory items-start"
+          className="flex gap-6 sm:gap-10 overflow-x-auto scroll-smooth pb-4 pt-1 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-[calc(50%-120px)]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {

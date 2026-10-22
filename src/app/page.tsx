@@ -18,16 +18,17 @@ import { PressTicker } from "@/components/home/press-ticker";
 import { InShowerRitual } from "@/components/home/in-shower-ritual";
 import { AirheadsCommunity } from "@/components/home/airheads-community";
 import { BehindTheScience } from "@/components/home/behind-the-science";
-import { PigmentSwatches } from "@/components/home/pigment-swatches";
 import { CustomerReviews } from "@/components/home/customer-reviews";
 import { EcommFooter } from "@/components/home/ecomm-footer";
+
+import { OFFICIAL_SHADES } from "@/data/shades";
 
 function HomeContent() {
   const { addToCart } = useStore();
 
   const handleAddToCart = (shade: ShadeItem) => {
-    const codeNum = shade.code.replace("No.", "").replace("/0", "1");
-    const imagePath = `/images/products/cards/shade_card_${codeNum}.jpg`;
+    const foundShade = OFFICIAL_SHADES.find((s) => s.code === shade.code);
+    const imagePath = foundShade?.cardImage || "/Medium Brown/Medium Brown.00000.png";
 
     addToCart({
       id: `system-${shade.code.replace("#", "").replace("/", "-")}`,
@@ -57,7 +58,7 @@ function HomeContent() {
       {/* Brand Colorful Infinite Marquee */}
       <ColorfulMarquee />
 
-      {/* 3. NEW IN Product Grid */}
+      {/* 3. EXPLORE YOUR SHADE Product Grid */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <NewDispatches onAddToCart={handleAddToCart} />
       </div>
@@ -85,22 +86,17 @@ function HomeContent() {
         <InShowerRitual />
       </div>
 
-      {/* 9. COMMUNITY ARCHIVE (#AIRHEADS) */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <AirheadsCommunity />
-      </div>
-
-      {/* 10. BEHIND THE SCIENCE */}
+      {/* 9. THE SYSTEM (BEHIND THE SCIENCE) */}
       <div className="w-full bg-toc text-platinum border-b border-white/10">
         <BehindTheScience />
       </div>
 
-      {/* 11. A CLOSER LOOK */}
+      {/* 10. COMMUNITY ARCHIVE (#AIRHEADS) */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <PigmentSwatches />
+        <AirheadsCommunity />
       </div>
 
-      {/* 12. WHAT OUR CLIENTS SAY */}
+      {/* 11. WHAT OUR CLIENTS SAY */}
       <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
         <CustomerReviews />
       </div>

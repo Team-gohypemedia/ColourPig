@@ -17,7 +17,9 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.3",
     rating: 4.9,
     reviews: 195,
-    image: "/images/products/cards/shade_card_3.jpg",
+    image: "/Brown/Brown.jpg",
+    sideImage: "/Brown/Side.jpg",
+    video: "/Brown/Brown.mp4",
   },
   {
     id: "best-shade-5",
@@ -28,7 +30,9 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.5",
     rating: 4.8,
     reviews: 167,
-    image: "/images/products/cards/shade_card_5.jpg",
+    image: "/Light Brown/LightBrown01.jpg",
+    sideImage: "/Light Brown/Side.jpg",
+    video: "/Light Brown/Light Brown.mp4",
   },
   {
     id: "best-shade-6",
@@ -39,7 +43,9 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.6",
     rating: 4.9,
     reviews: 182,
-    image: "/images/products/cards/shade_card_6.jpg",
+    image: "/Dark Blonde/DarkBlonde.jpg",
+    sideImage: "/Dark Blonde/Side.jpg",
+    video: "/Dark Blonde/Dark Blonde.mp4",
   },
   {
     id: "best-shade-8",
@@ -50,7 +56,9 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.8",
     rating: 4.9,
     reviews: 149,
-    image: "/images/products/cards/shade_card_8.jpg",
+    image: "/Light Blonde/LightBlonde.jpg",
+    sideImage: "/Light Blonde/Side.jpg",
+    video: "/Light Blonde/Nob Light blonde.mp4",
   },
 ];
 

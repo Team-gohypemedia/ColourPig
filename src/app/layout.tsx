@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { ScrollToTop } from "@/components/navigation/scroll-to-top";
 
 export const metadata: Metadata = {
   title: "Colourpig by Norman & Brown — World's First Reusable Precision Hair Colour System",
@@ -24,7 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="antialiased">
       <body className="bg-obsidian text-platinum font-body selection:bg-steel selection:text-white">
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SmoothScrollProvider>
+          {children}
+          <ScrollToTop />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
