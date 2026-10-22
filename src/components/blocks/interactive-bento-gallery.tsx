@@ -172,72 +172,52 @@ export const GalleryModal = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-black/70 backdrop-blur-md z-40 cursor-pointer"
+        className="fixed inset-0 bg-black/85 backdrop-blur-md z-40 cursor-pointer"
       />
 
-      {/* Main Modal */}
-      <motion.div
-        initial={{ scale: 0.98 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0.98 }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 30,
-        }}
-        className="fixed inset-0 w-full min-h-screen sm:h-[90vh] md:h-[600px] 
-                  rounded-none sm:rounded-lg md:rounded-xl overflow-hidden z-50 pointer-events-none flex items-center justify-center"
+      {/* Main Modal - Centered and responsive with safe area padding */}
+      <div 
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pb-24 sm:pb-28 pointer-events-none"
+        onClick={onClose}
       >
-        {/* Main Content */}
-        <div className="h-full w-full flex flex-col pointer-events-auto max-w-4xl max-h-[85vh] m-auto p-4 relative">
-          <div className="flex-1 p-2 sm:p-3 md:p-4 flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedItem.id}
-                className="relative rounded-xl overflow-hidden shadow-2xl bg-black flex items-center justify-center h-[82vh] max-h-[82vh] aspect-[3/4] max-w-[90vw]"
-                initial={{ y: 20, scale: 0.97 }}
-                animate={{
-                  y: 0,
-                  scale: 1,
-                  transition: {
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30,
-                    mass: 0.5,
-                  },
-                }}
-                exit={{
-                  y: 20,
-                  scale: 0.97,
-                  transition: { duration: 0.15 },
-                }}
-                onClick={onClose}
-              >
-                <MediaItem
-                  item={selectedItem}
-                  className="w-full h-full object-contain"
-                  onClick={onClose}
-                />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedItem.id}
+            initial={{ scale: 0.94, opacity: 0, y: 12 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.94, opacity: 0, y: 12 }}
+            transition={{
+              type: "spring",
+              stiffness: 420,
+              damping: 28,
+            }}
+            className="relative pointer-events-auto rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] bg-zinc-950 border border-white/20 flex items-center justify-center max-w-[90vw] sm:max-w-[80vw] md:max-w-xl lg:max-w-2xl max-h-[calc(100vh-190px)] aspect-[3/4]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <MediaItem
+              item={selectedItem}
+              className="w-full h-full object-contain bg-zinc-950"
+              onClick={onClose}
+            />
 
-                {/* Close Button Inside Modal */}
-                <motion.button
-                  className="absolute top-2 sm:top-2.5 md:top-3 right-2 sm:right-2.5 md:right-3 
-                            p-2 rounded-full bg-black/60 hover:bg-black/80 text-white 
-                            text-xs sm:text-sm backdrop-blur-sm cursor-pointer border border-white/20"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClose();
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <X className="w-4 h-4" />
-                </motion.button>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </motion.div>
+            {/* Close Button Inside Modal */}
+            <motion.button
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 
+                        p-2 sm:p-2.5 rounded-full bg-black/75 hover:bg-black/95 text-white 
+                        backdrop-blur-md cursor-pointer border border-white/25 shadow-xl transition-all"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Close"
+            >
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+            </motion.button>
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* Draggable Dock */}
       <motion.div
