@@ -2,8 +2,8 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "lenis/dist/lenis.css";
+import { MotionConfig } from "framer-motion";
 
 export function SmoothScrollProvider({
   children,
@@ -11,19 +11,16 @@ export function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    // Native scrolling for anyone who asked the OS for less motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
+      lerp: 0.085,
       smoothWheel: true,
+      anchors: true,
+      // Scrollable panels (drawers, modals, carousels) scroll themselves instead of the page
+      allowNestedScroll: true,
       touchMultiplier: 2,
-    });
-
-    // Synchronize Lenis scroll position with GSAP ScrollTrigger
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
     });
 
     // Pause Lenis when modal/drawers lock body scroll, resume when unlocked
@@ -40,19 +37,22 @@ export function SmoothScrollProvider({
       attributeFilter: ["style"],
     });
 
-    const update = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
+    let frame = requestAnimationFrame(function raf(time) {
+      lenis.raf(time);
+      frame = requestAnimationFrame(raf);
+    });
 
     return () => {
+      cancelAnimationFrame(frame);
       bodyObserver.disconnect();
-      gsap.ticker.remove(update);
       lenis.destroy();
     };
   }, []);
 
-  return <div className="smooth-scroll-wrapper">{children}</div>;
+  // reducedMotion="user": framer-motion drops transform/layout animations when the OS asks for reduced motion
+  return (
+    <MotionConfig reducedMotion="user">
+      <div className="smooth-scroll-wrapper">{children}</div>
+    </MotionConfig>
+  );
 }

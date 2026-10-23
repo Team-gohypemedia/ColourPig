@@ -29,7 +29,7 @@ export const OFFICIAL_SHADES: ShadeProduct[] = [
     price: 89,
     swatchImage: "/images/products/swatches/shade_1_swatch.png",
     cardImage: "/images/products/cards/shade_card_1.jpg",
-    video: "/system-canister.mp4",
+    video: "/system-exploded.mp4",
     modelImage: "/images/results/model_shade_1.jpg",
     description: "Air-driven permanent clear formula for multi-dimensional shine and gray translucency.",
     undertone: "Neutral Translucent",

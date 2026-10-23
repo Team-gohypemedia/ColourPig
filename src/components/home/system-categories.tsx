@@ -4,13 +4,20 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import {
+  ParallaxLayer,
+  Reveal,
+  ReplayCopy,
+  ReplayTitle,
+  useReplayReveal,
+} from "@/components/motion/motion-primitives";
 
 const COLLECTIONS = [
   {
     id: "starter",
     title: "THE STARTER SYSTEM",
     subtitle: "Complete Reusable Kit • $89",
-    image: "/Medium Brown/Medium Brown.00000.png",
+    image: "/images/banners/banner-starter.jpg",
     link: "/product?shade=shade-4",
     pantone: "123C",
     hex: "#FFC72C",
@@ -20,7 +27,7 @@ const COLLECTIONS = [
     id: "hardware",
     title: "REUSABLE DISPENSER",
     subtitle: "Permanent Canister Hardware • $58",
-    image: "/Black/Black.jpg",
+    image: "/images/banners/banner-hardware.jpg",
     link: "/product?shade=shade-1",
     pantone: "299C",
     hex: "#00A3E0",
@@ -30,7 +37,7 @@ const COLLECTIONS = [
     id: "refills",
     title: "COLOUR REFILLS",
     subtitle: "Dual-Chamber Cartridge • $32",
-    image: "/Medium Blonde/MediumBlonde.jpg",
+    image: "/images/banners/banner-refills.jpg",
     link: "/product?shade=shade-7",
     pantone: "1905C",
     hex: "#F08EAB",
@@ -40,7 +47,7 @@ const COLLECTIONS = [
     id: "aftercare",
     title: "SALON PRECISION KIT",
     subtitle: "5-Part Application & Care • $28",
-    image: "/Light Brown/LightBrown01.jpg",
+    image: "/images/banners/banner-aftercare.jpg",
     link: "/product?shade=shade-5",
     pantone: "375C",
     hex: "#7AC142",
@@ -50,7 +57,7 @@ const COLLECTIONS = [
     id: "atelier",
     title: "ATELIER FORMULATION",
     subtitle: "Norman & Brown Sydney • Custom Pigments",
-    image: "/Brown/Brown.jpg",
+    image: "/images/banners/banner-atelier.jpg",
     link: "/product?shade=shade-3",
     pantone: "165C",
     hex: "#FF671F",
@@ -59,6 +66,30 @@ const COLLECTIONS = [
 ];
 
 const AUTOPLAY_DURATION_MS = 5000; // 5 seconds per slide phase
+
+// Banner caption: the title types in letter by letter each time its banner slides / scrolls into view
+function BannerCaption({ cat }: { cat: (typeof COLLECTIONS)[number] }) {
+  const { ref, revealed } = useReplayReveal<HTMLDivElement>();
+  return (
+    <div ref={ref} className="absolute bottom-10 sm:bottom-12 inset-x-5 sm:inset-x-7 z-20 space-y-1 sm:space-y-1.5">
+      <ReplayTitle
+        text={cat.title}
+        revealed={revealed}
+        className="font-headline font-bold text-lg sm:text-xl md:text-2xl text-white tracking-wider uppercase drop-shadow-sm"
+      />
+      <ReplayCopy
+        revealed={revealed}
+        className="flex items-center gap-2 text-[11px] sm:text-xs font-mono text-white/80 tracking-widest uppercase"
+      >
+        <span>{cat.subtitle}</span>
+        <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 inline-flex items-center gap-1 text-[#FFC72C]">
+          <span>• EXPLORE</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </span>
+      </ReplayCopy>
+    </div>
+  );
+}
 
 export function SystemCategories() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -110,7 +141,7 @@ export function SystemCategories() {
       className="py-12 sm:py-16 md:py-20 w-full select-none overflow-hidden"
     >
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 px-4 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 px-4 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           COLLECTION
         </span>
@@ -118,13 +149,13 @@ export function SystemCategories() {
           SHOP BY CATEGORY
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
-      </div>
+      </Reveal>
 
       {/* Main Banner Slider Container (100% Full-Bleed End-to-End) */}
       <div className="relative w-full overflow-hidden">
         {/* Sliding Track */}
         <div
-          className="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+          className="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{
             transform: isMobile
               ? `translateX(-${activeIndex * 100}%)`
@@ -143,15 +174,17 @@ export function SystemCategories() {
               }}
             >
               <Link href={cat.link} className="block w-full h-full relative">
-                {/* Full-Bleed High-Res Editorial Photography */}
-                <Image
-                  src={cat.image}
-                  alt={cat.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                  priority={idx < 3}
-                />
+                {/* Full-Bleed High-Res Editorial Photography (drifts with the scroll) */}
+                <ParallaxLayer>
+                  <Image
+                    src={cat.image}
+                    alt={cat.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    priority={idx < 3}
+                  />
+                </ParallaxLayer>
 
                 {/* Bottom Luxury Vignette Scrim */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent transition-opacity duration-300 group-hover:from-black/90" />
@@ -163,18 +196,7 @@ export function SystemCategories() {
                 />
 
                 {/* Bottom Text Matching Image 1 */}
-                <div className="absolute bottom-10 sm:bottom-12 inset-x-5 sm:inset-x-7 z-20 space-y-1 sm:space-y-1.5">
-                  <h3 className="font-headline font-bold text-lg sm:text-xl md:text-2xl text-white tracking-wider uppercase drop-shadow-sm">
-                    {cat.title}
-                  </h3>
-                  <div className="flex items-center gap-2 text-[11px] sm:text-xs font-mono text-white/80 tracking-widest uppercase">
-                    <span>{cat.subtitle}</span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 inline-flex items-center gap-1 text-[#FFC72C]">
-                      <span>• EXPLORE</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </div>
+                <BannerCaption cat={cat} />
               </Link>
             </div>
           ))}

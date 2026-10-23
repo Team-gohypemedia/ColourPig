@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { EASE, Reveal } from "@/components/motion/motion-primitives";
 import { ArrowLeft, ArrowRight, Quote, X, Star, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -108,16 +109,11 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
           {items.map((item, index) => {
             return (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 0.45,
-                    delay: 0.1 * index,
-                    ease: "easeOut",
-                  },
-                }}
+                // Cards settle in one after another when the carousel scrolls into view
+                initial={{ opacity: 0, y: 28, scale: 0.94 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, delay: 0.07 * index, ease: EASE }}
                 key={`card-${index}`}
                 className="shrink-0"
               >
@@ -424,7 +420,7 @@ export function CustomerReviews() {
   return (
     <section className="py-14 sm:py-24 px-4 sm:px-8 max-w-[1700px] mx-auto overflow-hidden">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-2">
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           WHAT OUR CLIENTS SAY
         </h2>
@@ -432,7 +428,7 @@ export function CustomerReviews() {
           REAL REVIEWS FROM REAL CLIENTS
         </p>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
-      </div>
+      </Reveal>
 
       {/* Interactive Carousel */}
       <Carousel items={cards} />

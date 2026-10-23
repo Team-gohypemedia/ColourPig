@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart, Star } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
+import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
 const BESTSELLER_ITEMS = [
   {
@@ -84,7 +85,7 @@ export function Bestsellers({
   return (
     <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           CLIENT FAVORITES
         </span>
@@ -92,29 +93,32 @@ export function Bestsellers({
           BESTSELLERS
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
-      </div>
+      </Reveal>
 
       {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
-        {BESTSELLER_ITEMS.map((item) => (
-          <div
+        {BESTSELLER_ITEMS.map((item, idx) => (
+          <RevealCard
             key={item.id}
+            index={idx}
             className="group flex flex-col"
           >
             {/* Portrait Image Container with Minimal Corners */}
             <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
-              <Link
-                href={`/product?shade=${item.id.replace("best-", "")}`}
-                className="block w-full h-full relative"
-              >
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
-                />
-              </Link>
+              <RevealImage>
+                <Link
+                  href={`/product?shade=${item.id.replace("best-", "")}`}
+                  className="block w-full h-full relative"
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                  />
+                </Link>
+              </RevealImage>
 
               {/* Reviews rating pill on top left */}
               <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-10 flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur text-obsidian text-[9px] sm:text-[10px] font-mono shadow-xs pointer-events-none">
@@ -154,17 +158,19 @@ export function Bestsellers({
             </div>
 
             {/* Left-Aligned Product Typography below Image */}
-            <Link
-              href={`/product?shade=${item.id.replace("best-", "")}`}
-              className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
-            >
-              <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
-                {item.name}
-              </h3>
-              <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
-                ${item.price} USD
-              </p>
-            </Link>
+            <RevealLabel>
+              <Link
+                href={`/product?shade=${item.id.replace("best-", "")}`}
+                className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
+              >
+                <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                  {item.name}
+                </h3>
+                <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
+                  ${item.price} USD
+                </p>
+              </Link>
+            </RevealLabel>
 
             {/* Mobile-Only: Add to Bag button directly on mobile card */}
             <button
@@ -183,7 +189,7 @@ export function Bestsellers({
               <ShoppingBag className="w-3 h-3" />
               <span>ADD TO BAG</span>
             </button>
-          </div>
+          </RevealCard>
         ))}
       </div>
 

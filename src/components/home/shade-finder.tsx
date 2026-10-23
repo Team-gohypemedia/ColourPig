@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { Reveal } from "@/components/motion/motion-primitives";
 
 export function ShadeFinder({
   onAddToCart,
@@ -159,19 +160,19 @@ export function ShadeFinder({
   return (
     <section id="shades" ref={sectionRef} className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1">
+      <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
           RESULTS
         </span>
         <h2 className="font-headline font-bold text-xl sm:text-2xl lg:text-3xl text-obsidian tracking-wider uppercase">
           BEFORE &amp; AFTER
         </h2>
-      </div>
+      </Reveal>
 
       {/* Main Split Grid: Perfectly sized to fit within laptop viewports */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
         {/* Left Column: Interactive Before & After Slider */}
-        <div className="lg:col-span-6 flex flex-col items-center">
+        <Reveal className="lg:col-span-6 flex flex-col items-center" amount={0.3}>
           <div
             ref={containerRef}
             onMouseDown={handleMouseDown}
@@ -246,10 +247,10 @@ export function ShadeFinder({
             <span>Drag slider to compare</span>
             <span>Root Regrowth vs. Finish</span>
           </div>
-        </div>
+        </Reveal>
 
         {/* Right Column: 9 Clean Shade Cards */}
-        <div className="lg:col-span-6 flex flex-col justify-center space-y-4 max-w-[420px] mx-auto lg:mx-0 w-full">
+        <Reveal className="lg:col-span-6 flex flex-col justify-center space-y-4 max-w-[420px] mx-auto lg:mx-0 w-full" amount={0.3} delay={0.12}>
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <h3 className="font-headline font-bold text-xs tracking-widest uppercase text-obsidian">
@@ -346,7 +347,7 @@ export function ShadeFinder({
               </Link>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

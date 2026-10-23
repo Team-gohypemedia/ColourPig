@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { SnoutIcon } from "@/components/brand/logo";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Reveal, SwapText } from "@/components/motion/motion-primitives";
 
 const RITUAL_STEPS = [
   {
@@ -140,7 +141,7 @@ export function InShowerRitual() {
 
   return (
     <section
-      className="py-14 sm:py-24 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto select-none"
+      className="pt-14 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}
@@ -150,7 +151,7 @@ export function InShowerRitual() {
       }}
     >
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-ash font-semibold">
           HOW IT WORKS
         </span>
@@ -158,10 +159,10 @@ export function InShowerRitual() {
           THE 6-STEP RITUAL
         </h2>
         <div className="w-10 h-[2px] bg-white/20 mx-auto mt-3" />
-      </div>
+      </Reveal>
 
       {/* Carousel Track */}
-      <div className="relative">
+      <Reveal className="relative" amount={0.2} delay={0.1}>
         <div
           ref={scrollRef}
           onScroll={handleScroll}
@@ -236,12 +237,12 @@ export function InShowerRitual() {
             );
           })}
         </div>
-      </div>
+      </Reveal>
 
       {/* Progress Bar Indicator */}
       <div className="w-full max-w-md mx-auto h-[2px] bg-white/10 rounded-full overflow-hidden mt-6">
         <div
-          className="h-full transition-all duration-500 ease-out rounded-full"
+          className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
           style={{
             width: `${((activeIndex + 1) / RITUAL_STEPS.length) * 100}%`,
             backgroundColor: RITUAL_STEPS[activeIndex].hex,
@@ -253,7 +254,7 @@ export function InShowerRitual() {
       <div className="flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
         {/* Step Indicator */}
         <span className="text-[11px] font-mono tracking-widest uppercase text-ash/90 font-medium">
-          STEP {activeIndex + 1} OF {RITUAL_STEPS.length}
+          STEP <SwapText value={activeIndex + 1} /> OF {RITUAL_STEPS.length}
         </span>
 
         {/* Dynamic Pantone Pagination Dots */}

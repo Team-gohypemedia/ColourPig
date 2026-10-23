@@ -7,6 +7,17 @@ import { ColourpigLogo, SnoutIcon } from "@/components/brand/logo";
 import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
 import { useStore } from "@/context/store-context";
 import { StoryModal } from "@/components/navigation/story-modal";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
+// Shown one at a time on mobile; desktop lays them out across the bar
+const ANNOUNCEMENTS = [
+  { text: "International shipping available", color: "#7AC142" },
+  { text: "Free shipping over $75", color: "#FFC72C" },
+  { text: "Pantone system launch", color: "#F08EAB" },
+  { text: "30-day trial", color: "#00A3E0" },
+  { text: "Air-driven dispenser allocation open", color: "#B584C4" },
+];
+const ANNOUNCEMENT_INTERVAL_MS = 3500;
 
 interface NavbarProps {
   cartCount?: number;
@@ -39,6 +50,16 @@ export function Navbar({
   const [searchOpen, setSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [storyModalOpen, setStoryModalOpen] = useState(false);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  // Mobile announcement bar: cycle through the messages one after another
+  useEffect(() => {
+    const id = setInterval(() => {
+      setAnnouncementIndex((i) => (i + 1) % ANNOUNCEMENTS.length);
+    }, ANNOUNCEMENT_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
 
   // Stay transparent while hero section is visible on homepage; turn solid once it's fully scrolled past
   useEffect(() => {
@@ -88,7 +109,27 @@ export function Navbar({
             <span className="w-1.5 h-1.5 rounded-full bg-[#7AC142] animate-pulse" />
             <span>INTERNATIONAL SHIPPING AVAILABLE</span>
           </div>
-          <div className="text-center whitespace-nowrap flex-shrink-0 mx-auto lg:mx-0 truncate max-w-full flex items-center justify-center gap-2">
+          {/* Mobile / tablet: one announcement at a time, rotating */}
+          <div className="lg:hidden relative w-full h-4 overflow-hidden" aria-live="polite">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={announcementIndex}
+                className="absolute inset-0 flex items-center justify-center gap-2"
+                initial={reduceMotion ? { opacity: 0 } : { y: 12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={reduceMotion ? { opacity: 0 } : { y: -12, opacity: 0 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: ANNOUNCEMENTS[announcementIndex].color }}
+                />
+                <span className="truncate">{ANNOUNCEMENTS[announcementIndex].text}</span>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="hidden lg:flex text-center whitespace-nowrap flex-shrink-0 lg:mx-0 truncate max-w-full items-center justify-center gap-2">
             <span>FREE SHIPPING OVER $75</span>
             <span className="text-[#FFC72C] text-xs">◆</span>
             <span className="text-[#F08EAB]">PANTONE SYSTEM LAUNCH</span>

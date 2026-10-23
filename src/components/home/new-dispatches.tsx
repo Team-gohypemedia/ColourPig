@@ -8,6 +8,7 @@ import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
 import { HairSuitabilityModal } from "@/components/modals/hair-suitability-modal";
+import { Reveal, RevealCard, RevealImage, RevealLabel, SwapText } from "@/components/motion/motion-primitives";
 
 // Mapping Pantone accent styling for each shade in the collection
 const SHADE_PANTONE_TAGS: Record<string, { tag: string; pantoneColor: string }> = {
@@ -47,7 +48,7 @@ const NEW_ARRIVALS = [
     tag: "Most Popular",
     pantoneColor: "#FFC72C",
     pantoneCode: "123C",
-    image: "/Medium Brown/Medium Brown.00000.png",
+    image: "/Medium Brown/MediumBrown.jpg",
     video: "/Medium Brown/Medium Brown.mp4",
   },
   {
@@ -89,8 +90,8 @@ const NEW_ARRIVALS = [
     tag: "Multi-Use",
     pantoneColor: "#B584C4",
     pantoneCode: "2572C",
-    image: "/images/products/cards/shade_card_1.jpg",
-    video: "/system-canister.mp4",
+    image: "/Clear/Clear.jpg",
+    video: "/system-exploded.mp4",
   },
 ];
 
@@ -215,7 +216,7 @@ export function NewDispatches({
   return (
     <section id="system" className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto select-none">
       {/* Editorial Heading */}
-      <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           COLLECTION • ALL 9 SHADES
         </span>
@@ -223,10 +224,10 @@ export function NewDispatches({
           EXPLORE YOUR SHADE
         </h2>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
-      </div>
+      </Reveal>
 
       {/* Hair Color Suitability Confirmation Banner */}
-      <div className="flex items-center justify-center mb-8 sm:mb-10">
+      <Reveal className="flex items-center justify-center mb-8 sm:mb-10" delay={0.1}>
         <button
           type="button"
           onClick={() => {
@@ -238,14 +239,15 @@ export function NewDispatches({
           <span>Unsure if this shade matches your hair? <strong className="font-bold underline decoration-obsidian/30 underline-offset-2">Check Match</strong></span>
           <ArrowRight className="w-3 h-3 text-graphite group-hover/btn:text-white transition-colors" />
         </button>
-      </div>
+      </Reveal>
 
       {/* 1. Pure Circle Shades Slider (No card containers, no white background circles) */}
-      <div className="relative">
+      {/* Full-viewport bleed so cards run off the screen edge instead of being clipped by the section */}
+      <Reveal className="relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]" amount={0.2} delay={0.15}>
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-6 sm:gap-10 overflow-x-auto scroll-smooth pb-4 pt-1 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-[calc(50%-120px)]"
+          className="flex gap-6 sm:gap-10 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-[calc(50%-120px)]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
@@ -335,12 +337,12 @@ export function NewDispatches({
             );
           })}
         </div>
-      </div>
+      </Reveal>
 
       {/* Progress Bar Line Indicator */}
       <div className="w-full max-w-lg mx-auto h-[2px] bg-black/10 rounded-full overflow-hidden mt-6 sm:mt-8">
         <div
-          className="h-full transition-all duration-500 ease-out rounded-full"
+          className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
           style={{
             width: `${((activeIndex + 1) / OFFICIAL_SHADES.length) * 100}%`,
             backgroundColor: activeShade.hex || "#111827",
@@ -352,7 +354,7 @@ export function NewDispatches({
       <div className="flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
         {/* Step Indicator */}
         <span className="text-[11px] font-mono tracking-widest uppercase text-graphite font-semibold">
-          SHADE {activeIndex + 1} OF {OFFICIAL_SHADES.length}
+          SHADE <SwapText value={activeIndex + 1} /> OF {OFFICIAL_SHADES.length}
         </span>
 
         {/* Dynamic Pagination Pill Dots */}
@@ -399,7 +401,7 @@ export function NewDispatches({
 
       {/* 2. Divider & Header for the 4 Product Cards Grid */}
       <div className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-ash/30">
-        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1.5">
+        <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1.5">
           <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
             FEATURED DISPATCHES
           </span>
@@ -407,29 +409,32 @@ export function NewDispatches({
             STARTER SYSTEMS
           </h3>
           <div className="w-8 h-[2px] bg-obsidian/30 mx-auto mt-2" />
-        </div>
+        </Reveal>
 
         {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
-          {NEW_ARRIVALS.map((item) => (
-            <div
+          {NEW_ARRIVALS.map((item, idx) => (
+            <RevealCard
               key={item.id}
+              index={idx}
               className="group flex flex-col"
             >
               {/* Portrait Image Container with Minimal Corners */}
               <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
-                <Link
-                  href={`/product?shade=${item.id.replace("prod-", "")}`}
-                  className="block w-full h-full relative"
-                >
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
-                  />
-                </Link>
+                <RevealImage>
+                  <Link
+                    href={`/product?shade=${item.id.replace("prod-", "")}`}
+                    className="block w-full h-full relative"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                    />
+                  </Link>
+                </RevealImage>
 
                 {/* Top-Left Pantone Tag Badge (High contrast solid pill) */}
                 <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-20 pointer-events-none">
@@ -473,17 +478,19 @@ export function NewDispatches({
               </div>
 
               {/* Left-Aligned Product Typography below Image */}
-              <Link
-                href={`/product?shade=${item.id.replace("prod-", "")}`}
-                className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
-              >
-                <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
-                  {item.name}
-                </h3>
-                <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
-                  ${item.price} USD
-                </p>
-              </Link>
+              <RevealLabel>
+                <Link
+                  href={`/product?shade=${item.id.replace("prod-", "")}`}
+                  className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
+                >
+                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                    {item.name}
+                  </h3>
+                  <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
+                    ${item.price} USD
+                  </p>
+                </Link>
+              </RevealLabel>
 
               {/* Mobile-Only: Add to Bag button directly on mobile card */}
               <button
@@ -502,7 +509,7 @@ export function NewDispatches({
                 <ShoppingBag className="w-3 h-3" />
                 <span>ADD TO BAG</span>
               </button>
-            </div>
+            </RevealCard>
           ))}
         </div>
       </div>
