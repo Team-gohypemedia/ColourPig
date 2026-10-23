@@ -141,7 +141,7 @@ export function InShowerRitual() {
 
   return (
     <section
-      className="pt-14 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto select-none"
+      className="pt-14 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-8 lg:px-10 w-full select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}

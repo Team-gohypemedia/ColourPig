@@ -6,7 +6,11 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
-import { Reveal } from "@/components/motion/motion-primitives";
+import { motion, transform, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useHasMounted } from "@/components/motion/motion-primitives";
+
+// Height of the fixed navbar from the sm breakpoint up (announcement bar + header)
+const NAV_HEIGHT_LG = 116;
 
 export function ShadeFinder({
   onAddToCart,
@@ -62,30 +66,6 @@ export function ShadeFinder({
     triggerSweepAnimation(2000);
     return () => stopAutoAnimation();
   }, [triggerSweepAnimation, stopAutoAnimation]);
-
-  // 2. Trigger sweep whenever user scrolls into this section
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    let wasIntersecting = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !wasIntersecting) {
-            triggerSweepAnimation(1800);
-            wasIntersecting = true;
-          } else if (!entry.isIntersecting) {
-            wasIntersecting = false;
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [triggerSweepAnimation]);
 
   const handlePointerMove = useCallback(
     (clientX: number) => {
@@ -144,6 +124,96 @@ export function ShadeFinder({
     };
   }, [isDragging, handlePointerMove]);
 
+  // ---- Scroll choreography (all scroll-position driven, so scrolling back up plays it in reverse) ----
+  // Laptop/desktop (lg+): the section is taller than the screen and its content pins below the navbar.
+  //   1. It slides up over the previous section (which holds still underneath) while the photo opens
+  //      from a thin strip on its left edge.
+  //   2. Once it covers the screen it pins, and the photo keeps opening to its full half-screen width.
+  //   3. Then the heading and the shade picker fade in, and the page moves on.
+  // Phones/tablets (stacked layout, no pin): the photo opens and the text fades in as the section scrolls up.
+  const isLg = useRef(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const sync = () => {
+      isLg.current = mq.matches;
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const { scrollYProgress: pinProgress } = useScroll({ target: sectionRef, offset: ["start end", "end end"] });
+  const { scrollYProgress: enterProgress } = useScroll({ target: sectionRef, offset: ["start end", "start 15%"] });
+
+  // Share of the lg timeline spent sliding in (until the section top meets the navbar); the rest is the pin
+  const coveredAt = () => {
+    const el = sectionRef.current;
+    return el && el.offsetHeight > 0 ? Math.min(0.9, (window.innerHeight - NAV_HEIGHT_LG) / el.offsetHeight) : 0.46;
+  };
+  const pinAt = (c: number, f: number) => c + (1 - c) * f; // point f (0-1) through the pinned stretch
+
+  const photoReveal = useTransform([pinProgress, enterProgress], ([pin, enter]: number[]) => {
+    if (!isLg.current) return transform(enter, [0.1, 0.85], [0.06, 1]);
+    const c = coveredAt();
+    return transform(pin, [0, c, pinAt(c, 0.5)], [0.03, 0.35, 1]);
+  });
+  // Counter-scale keeps the photo itself at natural size while its frame opens (GPU transforms, no repaint)
+  const photoCounter = useTransform(photoReveal, (r) => 1 / Math.max(r, 0.001));
+
+  const textOpacity = useTransform([pinProgress, enterProgress], ([pin, enter]: number[]) => {
+    if (!isLg.current) return transform(enter, [0.35, 0.8], [0, 1]);
+    const c = coveredAt();
+    return transform(pin, [pinAt(c, 0.3), pinAt(c, 0.6)], [0, 1]);
+  });
+  const panelOpacity = useTransform([pinProgress, enterProgress], ([pin, enter]: number[]) => {
+    if (!isLg.current) return transform(enter, [0.55, 1], [0.1, 1]);
+    const c = coveredAt();
+    return transform(pin, [pinAt(c, 0.45), pinAt(c, 0.8)], [0, 1]);
+  });
+  const textY = useTransform(textOpacity, (o) => (1 - o) * 24);
+  const panelY = useTransform(panelOpacity, (o) => (1 - o) * 32);
+
+  // Play the slider's demo sweep each time the photo finishes opening
+  const swept = useRef(false);
+  useMotionValueEvent(photoReveal, "change", (r) => {
+    if (r >= 0.98 && !swept.current) {
+      swept.current = true;
+      triggerSweepAnimation(1800);
+    } else if (r < 0.5) {
+      swept.current = false;
+    }
+  });
+
+  // ---- Fit the right column into the pinned screen (lg) ------------------------------------------
+  // On short laptop screens the heading + 9 shades + order box are taller than the space below the
+  // navbar; measure both and scale the column down just enough that nothing is cut off.
+  const fitOuterRef = useRef<HTMLDivElement>(null);
+  const fitInnerRef = useRef<HTMLDivElement>(null);
+  const [fitScale, setFitScale] = useState(1);
+  useEffect(() => {
+    const outer = fitOuterRef.current;
+    const inner = fitInnerRef.current;
+    if (!outer || !inner) return;
+    const measure = () => {
+      if (!window.matchMedia("(min-width: 1024px)").matches) return setFitScale(1);
+      const cs = getComputedStyle(outer);
+      const available = outer.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const natural = inner.offsetHeight; // layout height, unaffected by the transform
+      setFitScale(natural > 0 && available > 0 ? Math.min(1, available / natural) : 1);
+    };
+    const ro = new ResizeObserver(measure); // fires once right away, then on any size change
+    ro.observe(outer);
+    ro.observe(inner);
+    return () => ro.disconnect();
+  }, []);
+
+  // Scroll-linked styles only after hydration, and never for reduced-motion users
+  const mounted = useHasMounted();
+  const reduce = useReducedMotion();
+  const animate = mounted && !reduce;
+  const textStyle = animate ? { opacity: textOpacity, y: textY } : undefined;
+  const panelStyle = animate ? { opacity: panelOpacity, y: panelY } : undefined;
+
   const handleAddCurrentShade = () => {
     if (onAddToCart) {
       onAddToCart({
@@ -158,28 +228,35 @@ export function ShadeFinder({
   };
 
   return (
-    <section id="shades" ref={sectionRef} className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto">
-      {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1">
+    // lg: two screens tall, so the stage below can pin for one screen of scrolling
+    <section id="shades" ref={sectionRef} className="relative lg:h-[calc(200svh-116px)]">
+      <div className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto lg:max-w-none lg:p-0 lg:sticky lg:top-[116px] lg:h-[calc(100svh-116px)] lg:overflow-hidden">
+      {/* Title (phones/tablets: centred above; lg: shown in the right column instead) */}
+      <motion.div className="lg:hidden text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1" style={textStyle}>
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
           RESULTS
         </span>
         <h2 className="font-headline font-bold text-xl sm:text-2xl lg:text-3xl text-obsidian tracking-wider uppercase">
           BEFORE &amp; AFTER
         </h2>
-      </Reveal>
+      </motion.div>
 
       {/* Main Split Grid: Perfectly sized to fit within laptop viewports */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-1 gap-6 lg:gap-0 items-center lg:items-stretch lg:h-full">
         {/* Left Column: Interactive Before & After Slider */}
-        <Reveal className="lg:col-span-6 flex flex-col items-center" amount={0.3}>
-          <div
+        <div className="flex flex-col items-center lg:h-full">
+          {/* Opening frame: scales out from its left edge; the slider inside is counter-scaled to natural size */}
+          <motion.div
+            className="w-full max-w-[360px] lg:max-w-none lg:h-full overflow-hidden rounded-md lg:rounded-none origin-left will-change-transform"
+            style={animate ? { scaleX: photoReveal } : undefined}
+          >
+          <motion.div
             ref={containerRef}
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
             onDoubleClick={() => setSliderPos(50)}
-            className="relative w-full max-w-[360px] aspect-[3/4] max-h-[460px] rounded-md overflow-hidden border border-black/10 shadow-lg bg-[#0F141A] select-none cursor-ew-resize group"
-            style={{ touchAction: "none" }}
+            className="relative w-full aspect-[3/4] max-h-[460px] lg:max-h-none lg:aspect-auto lg:h-full rounded-md lg:rounded-none overflow-hidden border border-black/10 lg:border-0 bg-[#0F141A] select-none cursor-ew-resize group origin-left will-change-transform"
+            style={animate ? { touchAction: "none", scaleX: photoCounter } : { touchAction: "none" }}
           >
             {/* 1. AFTER Image (Clean Portrait with selected shade) */}
             <div className="absolute inset-0 w-full h-full">
@@ -189,7 +266,7 @@ export function ShadeFinder({
                 alt={`${selectedShade.name} After`}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-center pointer-events-none transition-opacity duration-300"
               />
             </div>
@@ -206,7 +283,7 @@ export function ShadeFinder({
                 alt="Before - Natural Regrowth"
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-center pointer-events-none"
               />
             </div>
@@ -240,17 +317,37 @@ export function ShadeFinder({
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
+          </motion.div>
 
-          {/* Under Slider Caption */}
-          <div className="w-full max-w-[360px] flex items-center justify-between mt-2.5 text-[10px] font-mono text-graphite/80 px-1">
+          {/* Under Slider Caption (phones/tablets) */}
+          <div className="lg:hidden w-full max-w-[360px] flex items-center justify-between mt-2.5 text-[10px] font-mono text-graphite/80 px-1">
             <span>Drag slider to compare</span>
             <span>Root Regrowth vs. Finish</span>
           </div>
-        </Reveal>
+        </div>
 
-        {/* Right Column: 9 Clean Shade Cards */}
-        <Reveal className="lg:col-span-6 flex flex-col justify-center space-y-4 max-w-[420px] mx-auto lg:mx-0 w-full" amount={0.3} delay={0.12}>
+        {/* Right Column: heading (lg) + 9 Clean Shade Cards.
+            lg: the pinned screen has a fixed height, so the content is scaled down to fit when the screen is short */}
+        <div
+          ref={fitOuterRef}
+          className="max-w-[420px] lg:max-w-[620px] mx-auto w-full lg:px-12 xl:px-16 lg:py-6 lg:h-full lg:min-h-0 lg:flex lg:items-center lg:justify-center"
+        >
+        <div
+          ref={fitInnerRef}
+          className="flex flex-col justify-center gap-4 lg:gap-5 w-full origin-center"
+          style={fitScale < 1 ? { transform: `scale(${fitScale})` } : undefined}
+        >
+          <motion.div className="hidden lg:block space-y-1" style={textStyle}>
+            <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
+              RESULTS
+            </span>
+            <h2 className="font-headline font-bold text-3xl xl:text-4xl text-obsidian tracking-wider uppercase">
+              BEFORE &amp; AFTER
+            </h2>
+          </motion.div>
+
+          <motion.div className="space-y-4" style={panelStyle}>
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <h3 className="font-headline font-bold text-xs tracking-widest uppercase text-obsidian">
@@ -347,7 +444,10 @@ export function ShadeFinder({
               </Link>
             </div>
           </div>
-        </Reveal>
+          </motion.div>
+        </div>
+        </div>
+      </div>
       </div>
     </section>
   );

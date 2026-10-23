@@ -28,7 +28,7 @@ const ORIENTATION_SPAN = {
 const MediaItem = ({ item, className, onClick }: { item: MediaItemType, className?: string, onClick?: () => void }) => {
     const videoRef = useRef<HTMLVideoElement>(null); // Reference for video element
     const [isInView, setIsInView] = useState(false); // To track if video is in the viewport
-    const [isBuffering, setIsBuffering] = useState(true);  // To track if video is buffering
+    const [isBuffering, setIsBuffering] = useState(false);  // True from a play request until frames arrive
 
     // Intersection Observer to detect if video is in view and play/pause accordingly
     useEffect(() => {
@@ -64,19 +64,10 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
             if (!video || !isInView || !mounted) return; // Don't play if video is not in view or component is unmounted
 
             try {
-                if (video.readyState >= 3) {
-                    setIsBuffering(false);
-                    await video.play(); // Play the video if it's ready
-                } else {
-                    setIsBuffering(true);
-                    await new Promise((resolve) => {
-                        video.oncanplay = resolve; // Wait until the video can start playing
-                    });
-                    if (mounted) {
-                        setIsBuffering(false);
-                        await video.play();
-                    }
-                }
+                // preload="none": play() is what starts the download, so call it straight away
+                if (video.readyState < 3) setIsBuffering(true);
+                await video.play();
+                if (mounted) setIsBuffering(false);
             } catch (error) {
                 console.warn("Video playback failed:", error);
             }
@@ -106,8 +97,10 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
                     playsInline
                     muted
                     loop
-                    preload="auto"
+                    // Nothing downloads until the tile scrolls into view (the poster shows meanwhile)
+                    preload="none"
                     poster={item.poster ? encodeURI(item.poster) : undefined}
+                    onPlaying={() => setIsBuffering(false)}
                     style={{
                         opacity: isBuffering ? 0.8 : 1,
                         transition: 'opacity 0.2s',
@@ -616,7 +609,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
     const previewItem = preview && mediaItems.find((o) => o.id === preview.id);
 
     return (
-        <div className="container mx-auto px-3 sm:px-4 py-8 max-w-4xl">
+        <div className="w-full px-3 sm:px-6 lg:px-10 py-8">
             <div className="mb-8 text-center">
                 <motion.h1
                     className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent

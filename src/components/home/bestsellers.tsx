@@ -83,7 +83,7 @@ export function Bestsellers({
   };
 
   return (
-    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto">
+    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full">
       {/* Title */}
       <Reveal className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">

@@ -1,99 +1,88 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import {
-  ParallaxLayer,
-  Reveal,
-  ReplayCopy,
-  ReplayTitle,
-  useReplayReveal,
-} from "@/components/motion/motion-primitives";
+import { motion } from "framer-motion";
+import { LetterTitle, ParallaxLayer, Reveal, useRevealOnce } from "@/components/motion/motion-primitives";
 
+// Shade families, dark to light, each shown with its product box
 const COLLECTIONS = [
   {
-    id: "starter",
-    title: "THE STARTER SYSTEM",
-    subtitle: "Complete Reusable Kit • $89",
-    image: "/images/banners/banner-starter.jpg",
-    link: "/product?shade=shade-4",
+    id: "darks",
+    title: "DEEP DARKS",
+    image: "/images/products/cards/shade_card_2.jpg",
+    link: "/product?shade=shade-1",
     pantone: "123C",
     hex: "#FFC72C",
-    badge: "COMPLETE STARTER",
+    badge: "DEEP DARKS",
   },
   {
-    id: "hardware",
-    title: "REUSABLE DISPENSER",
-    subtitle: "Permanent Canister Hardware • $58",
-    image: "/images/banners/banner-hardware.jpg",
-    link: "/product?shade=shade-1",
+    id: "browns",
+    title: "RICH BROWNS",
+    image: "/images/products/cards/shade_card_4.jpg",
+    link: "/product?shade=shade-4",
     pantone: "299C",
     hex: "#00A3E0",
-    badge: "PERMANENT HARDWARE",
+    badge: "RICH BROWNS",
   },
   {
-    id: "refills",
-    title: "COLOUR REFILLS",
-    subtitle: "Dual-Chamber Cartridge • $32",
-    image: "/images/banners/banner-refills.jpg",
+    id: "golden-blondes",
+    title: "GOLDEN BLONDES",
+    image: "/images/products/cards/shade_card_7.jpg",
     link: "/product?shade=shade-7",
     pantone: "1905C",
     hex: "#F08EAB",
-    badge: "DUAL-CHAMBER",
+    badge: "GOLDEN BLONDES",
   },
   {
-    id: "aftercare",
-    title: "SALON PRECISION KIT",
-    subtitle: "5-Part Application & Care • $28",
-    image: "/images/banners/banner-aftercare.jpg",
-    link: "/product?shade=shade-5",
+    id: "light-blondes",
+    title: "LIGHT BLONDES",
+    image: "/images/products/cards/shade_card_9.jpg",
+    link: "/product?shade=shade-9",
     pantone: "375C",
     hex: "#7AC142",
-    badge: "PRECISION KIT",
+    badge: "LIGHT BLONDES",
   },
   {
-    id: "atelier",
-    title: "ATELIER FORMULATION",
-    subtitle: "Norman & Brown Sydney • Custom Pigments",
-    image: "/images/banners/banner-atelier.jpg",
-    link: "/product?shade=shade-3",
+    id: "clear",
+    title: "CLEAR GLOSS",
+    image: "/images/products/cards/shade_card_1.jpg",
+    link: "/product?shade=shade-0-0",
     pantone: "165C",
     hex: "#FF671F",
-    badge: "SYDNEY ATELIER",
+    badge: "CLEAR GLOSS",
   },
 ];
 
 const AUTOPLAY_DURATION_MS = 5000; // 5 seconds per slide phase
 
-// Banner caption: the title types in letter by letter each time its banner slides / scrolls into view
-function BannerCaption({ cat }: { cat: (typeof COLLECTIONS)[number] }) {
-  const { ref, revealed } = useReplayReveal<HTMLDivElement>();
+// Banner caption: the title types in letter by letter the first time its banner slides / scrolls into view
+// Two-tone titles in the box's own "GREY TOUCH UP" brand colours, so they read over the packaging art
+const TITLE_COLORS = [
+  ["#FFC72C", "#F08EAB"],
+  ["#00A3E0", "#FF671F"],
+  ["#7AC142", "#B584C4"],
+  ["#F08EAB", "#FFC72C"],
+  ["#FF671F", "#00A3E0"],
+];
+
+function BannerCaption({ cat, idx }: { cat: (typeof COLLECTIONS)[number]; idx: number }) {
+  const { ref, revealed } = useRevealOnce<HTMLDivElement>();
   return (
-    <div ref={ref} className="absolute bottom-10 sm:bottom-12 inset-x-5 sm:inset-x-7 z-20 space-y-1 sm:space-y-1.5">
-      <ReplayTitle
+    <div ref={ref} className="absolute bottom-10 sm:bottom-12 inset-x-5 sm:inset-x-7 z-20">
+      <LetterTitle
         text={cat.title}
         revealed={revealed}
-        className="font-headline font-bold text-lg sm:text-xl md:text-2xl text-white tracking-wider uppercase drop-shadow-sm"
+        wordColors={TITLE_COLORS[idx % TITLE_COLORS.length]}
+        className="font-headline font-black text-lg sm:text-xl md:text-2xl text-white tracking-wider uppercase [text-shadow:0_2px_12px_rgba(0,0,0,0.85),0_0_2px_rgba(0,0,0,0.9)]"
       />
-      <ReplayCopy
-        revealed={revealed}
-        className="flex items-center gap-2 text-[11px] sm:text-xs font-mono text-white/80 tracking-widest uppercase"
-      >
-        <span>{cat.subtitle}</span>
-        <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 inline-flex items-center gap-1 text-[#FFC72C]">
-          <span>• EXPLORE</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-      </ReplayCopy>
     </div>
   );
 }
 
 export function SystemCategories() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   // Maximum scroll index
@@ -112,28 +101,13 @@ export function SystemCategories() {
 
   const goToSlide = useCallback((index: number) => {
     setActiveIndex(index);
-    setProgress(0);
   }, []);
 
-  // Continuous accurate loading phase indicator
-  useEffect(() => {
-    setProgress(0);
-    const startTime = Date.now();
-
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const pct = Math.min(100, (elapsed / AUTOPLAY_DURATION_MS) * 100);
-
-      if (pct >= 100) {
-        clearInterval(interval);
-        setActiveIndex((prev) => (prev + 1) % totalSlides);
-      } else {
-        setProgress(pct);
-      }
-    }, 25);
-
-    return () => clearInterval(interval);
-  }, [activeIndex, totalSlides]);
+  // Autoplay is driven by the indicator's own fill animation (one continuous animation per slide,
+  // no 25ms state ticks): when the fill completes, advance. Keyed by activeIndex, so any slide change restarts it.
+  const advance = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
 
   return (
     <section
@@ -143,7 +117,7 @@ export function SystemCategories() {
       {/* Title */}
       <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 px-4 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          COLLECTION
+          SHADE FAMILIES
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
           SHOP BY CATEGORY
@@ -181,13 +155,11 @@ export function SystemCategories() {
                     alt={cat.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="object-cover object-[center_30%] transition-transform duration-700 ease-out group-hover:scale-105"
                     priority={idx < 3}
                   />
                 </ParallaxLayer>
 
-                {/* Bottom Luxury Vignette Scrim */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent transition-opacity duration-300 group-hover:from-black/90" />
 
                 {/* Top Subtle Pantone Accent Line */}
                 <div
@@ -196,7 +168,7 @@ export function SystemCategories() {
                 />
 
                 {/* Bottom Text Matching Image 1 */}
-                <BannerCaption cat={cat} />
+                <BannerCaption cat={cat} idx={idx} />
               </Link>
             </div>
           ))}
@@ -207,25 +179,38 @@ export function SystemCategories() {
           <div className="inline-flex items-center gap-2.5 bg-transparent p-1">
             {Array.from({ length: totalSlides }).map((_, i) => {
               const isActive = activeIndex === i;
+              // Each indicator carries its banner's Pantone colour
+              const hex = COLLECTIONS[i].hex;
               return (
                 <button
                   key={i}
                   onClick={() => goToSlide(i)}
                   aria-label={`Go to slide ${i + 1}`}
-                  className="relative flex items-center justify-center transition-all duration-300 cursor-pointer p-0.5"
+                  aria-current={isActive}
+                  className="relative flex items-center justify-center cursor-pointer p-0.5 group/dot"
                 >
-                  {isActive ? (
-                    /* Active indicator: elongated pill with filling loading progress line */
-                    <div className="w-10 sm:w-14 h-1 sm:h-1.5 rounded-full bg-white/30 overflow-hidden relative shadow-sm">
-                      <div
-                        className="h-full bg-[#FFC72C] rounded-full transition-all duration-75 ease-linear"
-                        style={{ width: `${progress}%` }}
+                  {/* One element morphs between dot and pill, so switching slides glides instead of popping */}
+                  <span
+                    className={`relative block rounded-full overflow-hidden shadow-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      isActive
+                        ? "w-10 sm:w-14 h-1 sm:h-1.5 bg-white/25"
+                        : "w-1.5 h-1.5 sm:w-2 sm:h-2 opacity-60 group-hover/dot:opacity-100 group-hover/dot:scale-125"
+                    }`}
+                    style={isActive ? undefined : { backgroundColor: hex }}
+                  >
+                    {isActive && (
+                      /* Loading fill in the slide's colour; finishing it advances the slider */
+                      <motion.span
+                        key={activeIndex}
+                        className="absolute inset-y-0 left-0 rounded-full"
+                        style={{ backgroundColor: hex, boxShadow: `0 0 8px ${hex}` }}
+                        initial={{ width: "0%" }}
+                        animate={{ width: "100%" }}
+                        transition={{ duration: AUTOPLAY_DURATION_MS / 1000, ease: "linear" }}
+                        onAnimationComplete={advance}
                       />
-                    </div>
-                  ) : (
-                    /* Inactive indicator: small circle dot */
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white/50 hover:bg-white/90 transition-colors shadow-xs" />
-                  )}
+                    )}
+                  </span>
                 </button>
               );
             })}

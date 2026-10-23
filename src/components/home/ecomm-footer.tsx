@@ -30,8 +30,8 @@ function YoutubeIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export function EcommFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#0B1015] text-ash pt-12 sm:pt-14 pb-2 sm:pb-3 px-6 sm:px-10 lg:px-14 relative overflow-hidden">
-      <div className="max-w-[1600px] mx-auto">
+    <footer className="border-t border-white/10 bg-[#0B1015] text-ash pt-12 sm:pt-14 pb-2 sm:pb-3 px-4 sm:px-8 lg:px-10 relative overflow-hidden">
+      <div className="w-full">
         {/* Main 4-Column Grid matching reference design */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
           {/* Column 1: Brand Logo, Bio & Circular Social Buttons */}

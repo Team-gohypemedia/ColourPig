@@ -49,33 +49,8 @@ export function Reveal({
 }
 
 // ---------------------------------------------------------------------------
-// StaggerItem: grid / list item that rises and settles, staggered by index
-// ---------------------------------------------------------------------------
-export function StaggerItem({
-  children,
-  className,
-  index,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  index: number;
-}) {
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 28, scale: 0.94 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: EASE, delay: index * 0.07 }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Image tile reveal: the card root watches itself; its image wipes up from the
-// bottom while zooming out, and its label rises in shortly after.
+// Image tile reveal (once): the card root watches itself; its image wipes up from
+// the bottom while zooming out, and its label rises in shortly after.
 //   <RevealCard index={i} className="..."> ... <RevealImage>img</RevealImage> ... <RevealLabel>text</RevealLabel>
 // ---------------------------------------------------------------------------
 const RevealCardContext = createContext<{ inView: boolean; delay: number; reduce: boolean }>({
@@ -162,40 +137,41 @@ export function ParallaxLayer({ children }: { children: React.ReactNode }) {
 }
 
 // ---------------------------------------------------------------------------
-// ReplayTitle: banner title that animates letter by letter every time the
-// banner comes (mostly) into view, and resets once it has fully left.
-// Pair with ReplayCopy for the line beneath it.
+// LetterTitle / LetterCopy: banner title that types in letter by letter, then its
+// copy fades up. Plays ONCE, the first time the banner is mostly in view.
+//   const { ref, revealed } = useRevealOnce<HTMLDivElement>();
 // ---------------------------------------------------------------------------
-export function useReplayReveal<T extends Element>() {
+export function useRevealOnce<T extends Element>(amount = 0.6) {
   const ref = useRef<T>(null);
-  const [revealed, setRevealed] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.intersectionRatio >= 0.6) setRevealed(true);
-        else if (entry.intersectionRatio < 0.03) setRevealed(false);
-      },
-      { threshold: [0, 0.03, 0.6, 1] }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const revealed = useInView(ref, { once: true, amount });
   return { ref, revealed };
 }
 
-export function ReplayTitle({
+export function LetterTitle({
   text,
   revealed,
   className,
+  wordColors,
 }: {
   text: string;
   revealed: boolean;
   className?: string;
+  /** Optional colour per word (cycles if there are more words than colours) */
+  wordColors?: string[];
 }) {
   const reduce = useReducedMotionAfterMount();
-  if (reduce) return <h3 className={className}>{text}</h3>;
+  const colorOf = (w: number) => (wordColors?.length ? { color: wordColors[w % wordColors.length] } : undefined);
+  if (reduce)
+    return (
+      <h3 className={className}>
+        {text.split(" ").map((word, w) => (
+          <React.Fragment key={w}>
+            {w > 0 && " "}
+            <span style={colorOf(w)}>{word}</span>
+          </React.Fragment>
+        ))}
+      </h3>
+    );
   let i = 0;
   return (
     <h3 className={className} aria-label={text}>
@@ -203,16 +179,16 @@ export function ReplayTitle({
         <React.Fragment key={w}>
           {w > 0 && " "}
           {/* Letters of a word stay together so wrapping still happens between words */}
-          <span className="inline-block whitespace-nowrap" aria-hidden="true">
+          <span className="inline-block whitespace-nowrap" aria-hidden="true" style={colorOf(w)}>
             {Array.from(word).map((ch) => {
               const delay = 0.1 + i++ * 0.075;
               return (
                 <motion.span
                   key={i}
                   className="inline-block"
-                  initial={false}
-                  animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: "0.6em" }}
-                  transition={revealed ? { duration: 0.6, ease: EASE, delay } : { duration: 0 }}
+                  initial={{ opacity: 0, y: "0.6em" }}
+                  animate={revealed ? { opacity: 1, y: 0 } : undefined}
+                  transition={{ duration: 0.6, ease: EASE, delay }}
                 >
                   {ch}
                 </motion.span>
@@ -225,7 +201,7 @@ export function ReplayTitle({
   );
 }
 
-export function ReplayCopy({
+export function LetterCopy({
   children,
   revealed,
   className,
@@ -237,9 +213,9 @@ export function ReplayCopy({
   return (
     <motion.div
       className={className}
-      initial={false}
-      animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-      transition={revealed ? { duration: 0.7, ease: EASE, delay: 0.55 } : { duration: 0 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={revealed ? { opacity: 1, y: 0 } : undefined}
+      transition={{ duration: 0.7, ease: EASE, delay: 0.55 }}
     >
       {children}
     </motion.div>
@@ -262,5 +238,33 @@ export function SwapText({ value, className }: { value: string | number; classNa
         {value}
       </motion.span>
     </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// StickyUnder: a section that stops moving once its bottom reaches the bottom of
+// the screen, so the next section (positioned above it, z-10) slides up over it
+// like a card. Wrap both in one container so it is released when they end.
+// ---------------------------------------------------------------------------
+export function StickyUnder({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [top, setTop] = useState<number | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Stick when the bottom edge meets the viewport bottom: top = viewport height - own height
+    const update = () => setTop(window.innerHeight - el.offsetHeight);
+    const ro = new ResizeObserver(update); // also fires once right away with the initial size
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return (
+    <div ref={ref} className={`sticky z-0 ${className ?? ""}`} style={top === null ? undefined : { top }}>
+      {children}
+    </div>
   );
 }

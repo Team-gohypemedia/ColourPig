@@ -112,7 +112,7 @@ export function HeroSection({ onAddToCart }: HeroSectionProps) {
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         >
-          <source src="/hero-video.mp4" type="video/mp4" />
+          <source src="/hero-video-web.mp4" type="video/mp4" />
           <source src="/COLOURPIG_Dots_Opening_30s_v2%20(1).mp4" type="video/mp4" />
         </video>
 

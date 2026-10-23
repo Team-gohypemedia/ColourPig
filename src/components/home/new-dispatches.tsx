@@ -91,7 +91,7 @@ const NEW_ARRIVALS = [
     pantoneColor: "#B584C4",
     pantoneCode: "2572C",
     image: "/Clear/Clear.jpg",
-    video: "/system-exploded.mp4",
+    video: "/system-exploded-hd.mp4",
   },
 ];
 
@@ -214,7 +214,7 @@ export function NewDispatches({
   const activeShade = OFFICIAL_SHADES[activeIndex] || OFFICIAL_SHADES[0];
 
   return (
-    <section id="system" className="py-14 sm:py-24 px-4 sm:px-10 lg:px-14 max-w-[1600px] mx-auto select-none">
+    <section id="system" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full select-none">
       {/* Editorial Heading */}
       <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-2">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">

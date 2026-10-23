@@ -22,6 +22,7 @@ import { CustomerReviews } from "@/components/home/customer-reviews";
 import { EcommFooter } from "@/components/home/ecomm-footer";
 
 import { OFFICIAL_SHADES } from "@/data/shades";
+import { StickyUnder } from "@/components/motion/motion-primitives";
 
 function HomeContent() {
   const { addToCart } = useStore();
@@ -63,14 +64,17 @@ function HomeContent() {
         <NewDispatches onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 4. THE PRECISION SYSTEM */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <SystemCategories />
-      </div>
+      {/* 4 + 5: Before & After slides up over The Precision System, which holds still underneath */}
+      <div className="relative">
+        {/* 4. THE PRECISION SYSTEM */}
+        <StickyUnder className="w-full bg-white text-obsidian border-b border-ash/30">
+          <SystemCategories />
+        </StickyUnder>
 
-      {/* 5. BEFORE & AFTER RESULTS */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <ShadeFinder onAddToCart={handleAddToCart} />
+        {/* 5. BEFORE & AFTER RESULTS */}
+        <div className="relative z-10 w-full bg-white text-obsidian border-b border-ash/30 shadow-[0_-24px_48px_-12px_rgba(13,21,28,0.18)]">
+          <ShadeFinder onAddToCart={handleAddToCart} />
+        </div>
       </div>
 
       {/* 6. BESTSELLERS 4-Card Grid */}
