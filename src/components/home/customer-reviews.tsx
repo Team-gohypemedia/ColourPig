@@ -64,26 +64,29 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
     }
   };
 
+  // One card + gap, measured from the rendered track so it matches every breakpoint
+  const getCardStep = () => {
+    const cards = carouselRef.current?.firstElementChild?.children;
+    if (!cards || cards.length < 2) return 340;
+    return (cards[1] as HTMLElement).offsetLeft - (cards[0] as HTMLElement).offsetLeft;
+  };
+
   const handleScrollLeft = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -340, behavior: "smooth" });
+      carouselRef.current.scrollBy({ left: -getCardStep(), behavior: "smooth" });
     }
   };
 
   const handleScrollRight = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 340, behavior: "smooth" });
+      carouselRef.current.scrollBy({ left: getCardStep(), behavior: "smooth" });
     }
   };
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const isMobile = window.innerWidth < 768;
-      const cardWidth = isMobile ? 280 : 360;
-      const gap = 16;
-      const scrollPosition = (cardWidth + gap) * index;
       carouselRef.current.scrollTo({
-        left: scrollPosition,
+        left: getCardStep() * index,
         behavior: "smooth",
       });
     }
@@ -100,12 +103,13 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
     <div className="relative w-full mt-6">
       {/* Scrollable Track */}
       <div
-        className="flex w-full overflow-x-auto scroll-smooth [scrollbar-width:none] py-6 px-4 sm:px-8"
+        className="flex w-full overflow-x-auto scroll-smooth snap-x snap-mandatory scroll-px-4 sm:scroll-px-8 [scrollbar-width:none] py-6 px-4 sm:px-8"
         ref={carouselRef}
         onScroll={checkScrollability}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        <div className="flex flex-row justify-start gap-4 sm:gap-6 mx-auto">
+        {/* Laptop: exactly 4 whole cards in view, desktop: 5 — no cut-off previews */}
+        <div className="flex flex-row justify-start gap-4 sm:gap-6 mx-auto lg:mx-0 lg:w-full">
           {items.map((item, index) => {
             return (
               <motion.div
@@ -115,7 +119,7 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, delay: 0.07 * index, ease: EASE }}
                 key={`card-${index}`}
-                className="shrink-0"
+                className="shrink-0 snap-start lg:w-[calc((100%-4.5rem)/4)] 2xl:w-[calc((100%-6rem)/5)]"
               >
                 {React.cloneElement(item, {
                   onCardClose: () => handleCardClose(index),
@@ -278,14 +282,14 @@ export const TestimonialCard = ({
       {/* Interactive Card */}
       <motion.button
         onClick={handleExpand}
-        className="text-left focus:outline-none"
+        className="text-left focus:outline-none lg:w-full"
         whileHover={{
           scale: 1.02,
           y: -4,
           transition: { duration: 0.25, ease: "easeOut" },
         }}
       >
-        <div className="rounded-2xl bg-white border border-ash/30 h-[480px] sm:h-[520px] w-72 sm:w-80 p-6 flex flex-col justify-between items-center text-center relative z-10 shadow-sm hover:shadow-xl hover:border-obsidian transition-all duration-300 group">
+        <div className="rounded-2xl bg-white border border-ash/30 h-[480px] sm:h-[520px] w-72 sm:w-80 lg:w-full p-6 flex flex-col justify-between items-center text-center relative z-10 shadow-sm hover:shadow-xl hover:border-obsidian transition-all duration-300 group">
           {/* Top: Avatar & Rating */}
           <div className="flex flex-col items-center space-y-3 pt-2">
             <ProfileImage src={testimonial.profileImage} alt={testimonial.name} />

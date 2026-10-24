@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { LetterTitle, ParallaxLayer, Reveal, useRevealOnce } from "@/components/motion/motion-primitives";
+import { ParallaxLayer, Reveal } from "@/components/motion/motion-primitives";
 
 // Shade families, dark to light, each shown with its product box
 const COLLECTIONS = [
@@ -56,30 +56,6 @@ const COLLECTIONS = [
 ];
 
 const AUTOPLAY_DURATION_MS = 5000; // 5 seconds per slide phase
-
-// Banner caption: the title types in letter by letter the first time its banner slides / scrolls into view
-// Two-tone titles in the box's own "GREY TOUCH UP" brand colours, so they read over the packaging art
-const TITLE_COLORS = [
-  ["#FFC72C", "#F08EAB"],
-  ["#00A3E0", "#FF671F"],
-  ["#7AC142", "#B584C4"],
-  ["#F08EAB", "#FFC72C"],
-  ["#FF671F", "#00A3E0"],
-];
-
-function BannerCaption({ cat, idx }: { cat: (typeof COLLECTIONS)[number]; idx: number }) {
-  const { ref, revealed } = useRevealOnce<HTMLDivElement>();
-  return (
-    <div ref={ref} className="absolute bottom-10 sm:bottom-12 inset-x-5 sm:inset-x-7 z-20">
-      <LetterTitle
-        text={cat.title}
-        revealed={revealed}
-        wordColors={TITLE_COLORS[idx % TITLE_COLORS.length]}
-        className="font-headline font-black text-lg sm:text-xl md:text-2xl text-white tracking-wider uppercase [text-shadow:0_2px_12px_rgba(0,0,0,0.85),0_0_2px_rgba(0,0,0,0.9)]"
-      />
-    </div>
-  );
-}
 
 export function SystemCategories() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -166,9 +142,6 @@ export function SystemCategories() {
                   className="absolute top-0 inset-x-0 h-1 z-20 transition-all duration-300 group-hover:h-1.5"
                   style={{ backgroundColor: cat.hex }}
                 />
-
-                {/* Bottom Text Matching Image 1 */}
-                <BannerCaption cat={cat} idx={idx} />
               </Link>
             </div>
           ))}

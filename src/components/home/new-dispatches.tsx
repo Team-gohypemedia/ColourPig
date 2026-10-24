@@ -173,16 +173,6 @@ export function NewDispatches({
     const cards = Array.from(container.children) as HTMLElement[];
     if (cards.length === 0) return;
 
-    // Boundary checks for start & end
-    if (container.scrollLeft <= 10) {
-      setActiveIndex(0);
-      return;
-    }
-    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 15) {
-      setActiveIndex(cards.length - 1);
-      return;
-    }
-
     const targetCenter = container.scrollLeft + container.clientWidth / 2;
     let closestIndex = 0;
     let minDiff = Infinity;
@@ -242,12 +232,13 @@ export function NewDispatches({
       </Reveal>
 
       {/* 1. Pure Circle Shades Slider (No card containers, no white background circles) */}
-      {/* Full-viewport bleed so cards run off the screen edge instead of being clipped by the section */}
-      <Reveal className="relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]" amount={0.2} delay={0.15}>
+      {/* Mobile/tablet: full-viewport bleed with a centered card peeking neighbours.
+          Laptop/desktop: contained track showing exactly 5 whole shades, no cut-off previews. */}
+      <Reveal className="relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] lg:mx-auto lg:max-w-7xl" amount={0.2} delay={0.15}>
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-6 sm:gap-10 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-[calc(50%-120px)]"
+          className="flex gap-6 sm:gap-10 lg:gap-6 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
@@ -259,7 +250,7 @@ export function NewDispatches({
               <div
                 key={item.id}
                 onClick={() => scrollToIndex(idx)}
-                className={`group flex-none w-[180px] sm:w-[220px] lg:w-[240px] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 ${
+                className={`group flex-none w-[180px] sm:w-[220px] lg:w-[calc((100%-6rem)/5)] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 ${
                   isActive ? "scale-105 opacity-100" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
                 }`}
               >
@@ -277,7 +268,7 @@ export function NewDispatches({
                 {/* Pure Circular Hair Shade Swatch - Clean Transparent Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 my-2 rounded-full overflow-hidden shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-[0_20px_36px_rgba(0,0,0,0.22)]"
+                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-full lg:max-w-48 lg:h-auto lg:aspect-square my-2 rounded-full overflow-hidden shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-[0_20px_36px_rgba(0,0,0,0.22)]"
                 >
                   <Image
                     src={circleSrc}

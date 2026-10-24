@@ -82,7 +82,7 @@ export function InShowerRitual() {
     if (cards[index]) {
       const targetCard = cards[index] as HTMLElement;
       // Center card on smaller screens, align smoothly on larger
-      const isMobile = window.innerWidth < 768;
+      const isMobile = window.innerWidth < 1024;
       const scrollPos = isMobile
         ? targetCard.offsetLeft - (container.clientWidth - targetCard.clientWidth) / 2
         : targetCard.offsetLeft - container.offsetLeft;
@@ -112,13 +112,17 @@ export function InShowerRitual() {
     const cards = Array.from(container.children) as HTMLElement[];
     if (cards.length === 0) return;
 
-    const targetCenter = container.scrollLeft + container.clientWidth / 2;
+    // Mobile cards snap to the center; laptop/desktop cards snap to the left edge
+    const isMobile = window.innerWidth < 1024;
+    const target = isMobile
+      ? container.scrollLeft + container.clientWidth / 2
+      : container.scrollLeft;
     let closestIndex = 0;
     let minDiff = Infinity;
 
     cards.forEach((card, idx) => {
-      const cardCenter = card.offsetLeft + card.clientWidth / 2;
-      const diff = Math.abs(cardCenter - targetCenter);
+      const cardPos = isMobile ? card.offsetLeft + card.clientWidth / 2 : card.offsetLeft;
+      const diff = Math.abs(cardPos - target);
       if (diff < minDiff) {
         minDiff = diff;
         closestIndex = idx;
@@ -166,7 +170,7 @@ export function InShowerRitual() {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 px-1 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0"
+          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 lg:px-1"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {RITUAL_STEPS.map((item, idx) => {
@@ -175,7 +179,7 @@ export function InShowerRitual() {
               <div
                 key={item.step}
                 onClick={() => scrollToIndex(idx)}
-                className={`w-[78vw] max-w-[310px] sm:w-[320px] md:w-[340px] shrink-0 snap-center group relative rounded-lg bg-[#13212E] border p-3.5 sm:p-4 flex flex-col justify-between h-auto min-h-[350px] sm:min-h-[380px] overflow-hidden cursor-pointer transition-all duration-300 ${
+                className={`w-[78vw] max-w-[310px] sm:w-[320px] md:w-[340px] lg:max-w-none lg:w-[calc((100%-3.75rem)/4)] 2xl:w-[calc((100%-5rem)/5)] shrink-0 snap-center lg:snap-start group relative rounded-lg bg-[#13212E] border p-3.5 sm:p-4 flex flex-col justify-between h-auto min-h-[350px] sm:min-h-[380px] overflow-hidden cursor-pointer transition-all duration-300 ${
                   isActive
                     ? "border-white/40 shadow-2xl shadow-black/80 ring-1 ring-white/10"
                     : "border-white/10 hover:border-white/25 hover:shadow-lg"
@@ -219,7 +223,7 @@ export function InShowerRitual() {
                     src={item.image}
                     alt={item.title}
                     fill
-                    sizes="(max-width: 640px) 78vw, 340px"
+                    sizes="(max-width: 640px) 78vw, (max-width: 1024px) 340px, (max-width: 1536px) 25vw, 20vw"
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
