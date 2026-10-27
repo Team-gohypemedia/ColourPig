@@ -229,7 +229,7 @@ export function ShadeFinder({
 
   return (
     // lg: two screens tall, so the stage below can pin for one screen of scrolling
-    <section id="shades" ref={sectionRef} className="relative lg:h-[calc(200svh-116px)]">
+    <section id="shade-finder" ref={sectionRef} className="relative lg:h-[calc(200svh-116px)]">
       <div className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto lg:max-w-none lg:p-0 lg:sticky lg:top-[116px] lg:h-[calc(100svh-116px)] lg:overflow-hidden">
       {/* Title (phones/tablets: centred above; lg: shown in the right column instead) */}
       <motion.div className="lg:hidden text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1" style={textStyle}>
@@ -256,7 +256,11 @@ export function ShadeFinder({
             onTouchStart={handleTouchStart}
             onDoubleClick={() => setSliderPos(50)}
             className="relative w-full aspect-[3/4] max-h-[460px] lg:max-h-none lg:aspect-auto lg:h-full rounded-md lg:rounded-none overflow-hidden border border-black/10 lg:border-0 bg-[#0F141A] select-none cursor-ew-resize group origin-left will-change-transform"
-            style={animate ? { touchAction: "none", scaleX: photoCounter } : { touchAction: "none" }}
+            style={
+              animate
+                ? { touchAction: isDragging ? "none" : "pan-y", scaleX: photoCounter }
+                : { touchAction: isDragging ? "none" : "pan-y" }
+            }
           >
             {/* 1. AFTER Image (Clean Portrait with selected shade) */}
             <div className="absolute inset-0 w-full h-full">
@@ -395,7 +399,7 @@ export function ShadeFinder({
                       <span className="text-[9px] font-mono text-graphite block">
                         {shade.code}
                       </span>
-                      <h4 className="font-headline font-semibold text-[11px] text-obsidian truncate">
+                      <h4 className="font-montserrat font-semibold text-[11px] text-obsidian truncate">
                         {shade.name.replace(/No\.\S+\s*/, "")}
                       </h4>
                     </div>
@@ -414,7 +418,7 @@ export function ShadeFinder({
                   style={{ backgroundColor: selectedShade.hex }}
                 />
                 <div className="truncate">
-                  <h4 className="font-headline font-bold text-xs sm:text-sm text-obsidian uppercase truncate">
+                  <h4 className="font-montserrat font-bold text-xs sm:text-sm text-obsidian uppercase truncate">
                     {selectedShade.name}
                   </h4>
                   <span className="text-[10px] font-mono text-graphite">
@@ -422,7 +426,10 @@ export function ShadeFinder({
                   </span>
                 </div>
               </div>
-              <span className="font-mono text-xs sm:text-sm font-semibold text-obsidian shrink-0">
+              <span
+                className="font-mono text-xs sm:text-sm !font-normal font-[400] text-obsidian shrink-0"
+                style={{ fontWeight: 400 }}
+              >
                 ${selectedShade.price}
               </span>
             </div>

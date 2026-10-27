@@ -12,8 +12,8 @@ export function PressTicker() {
   ];
 
   return (
-    <div className="w-full bg-[#E5E8E7] border-y border-ash/30 py-8 px-6 overflow-hidden">
-      <div className="max-w-[1600px] mx-auto flex flex-wrap items-center justify-around gap-8 text-center">
+    <div className="w-full bg-[#E5E8E7] border-y border-ash/30 py-6 sm:py-8 px-4 sm:px-6 overflow-hidden">
+      <div className="max-w-[1600px] mx-auto flex flex-wrap items-center justify-around gap-6 sm:gap-8 text-center">
         {publications.map((p, idx) => (
           <div key={idx} className="group space-y-1 transition-transform hover:-translate-y-0.5">
             <div className="flex items-center justify-center gap-1.5">

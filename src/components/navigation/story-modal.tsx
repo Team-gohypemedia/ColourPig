@@ -178,7 +178,7 @@ export function StoryModal({ isOpen, onClose, initialIndex = 0 }: StoryModalProp
       {/* Smartphone Story Container matching Image 2 */}
       <div
         ref={containerRef}
-        className="relative z-20 w-full max-w-[360px] sm:max-w-[390px] h-[580px] sm:h-[620px] rounded-3xl bg-white shadow-2xl overflow-hidden flex flex-col justify-between p-4 sm:p-5 border border-white/20"
+        className="relative z-20 w-full max-w-[360px] sm:max-w-[390px] h-[580px] sm:h-[620px] max-h-[92dvh] sm:max-h-[90vh] rounded-3xl bg-white shadow-2xl overflow-hidden flex flex-col justify-between p-4 sm:p-5 border border-white/20"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header: Progress Segments & Controls */}

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { ColourpigLogo, SnoutIcon } from "@/components/brand/logo";
 import { useStore } from "@/context/store-context";
+import { scrollToStarterSystems } from "@/lib/scroll-utils";
 
 export function HamburgerMenu() {
   const {
@@ -37,6 +38,7 @@ export function HamburgerMenu() {
     { label: "The System", href: "/#system", badge: "Patented" },
     { label: "Shades & Formulas", href: "/#shades", badge: "9 Shades" },
     { label: "Bestsellers", href: "/#bestsellers", badge: "Top Picks" },
+    { label: "Collection", href: "/collection", badge: "Archive" },
     { label: "Before & After Results", href: "/#shade-finder", badge: "Real Results" },
     { label: "In-Shower Ritual", href: "/#ritual", badge: "4 Steps" },
     { label: "Behind the Science", href: "/#science", badge: "Clean Formula" },
@@ -115,7 +117,7 @@ export function HamburgerMenu() {
                     <Heart className="w-4 h-4 fill-rose-600" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[11px] font-headline font-bold text-obsidian truncate">
+                    <div className="text-[11px] font-montserrat font-bold text-obsidian truncate">
                       Favorites
                     </div>
                     <div className="text-[10px] text-graphite font-mono">
@@ -136,7 +138,7 @@ export function HamburgerMenu() {
                     <ShoppingBag className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[11px] font-headline font-bold text-obsidian truncate">
+                    <div className="text-[11px] font-montserrat font-bold text-obsidian truncate">
                       Your Cart
                     </div>
                     <div className="text-[10px] text-graphite font-mono">
@@ -167,7 +169,13 @@ export function HamburgerMenu() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={closeMenu}
+                  onClick={(e) => {
+                    closeMenu();
+                    if (item.href === "/#shades" && typeof window !== "undefined" && window.location.pathname === "/") {
+                      e.preventDefault();
+                      setTimeout(scrollToStarterSystems, 120);
+                    }
+                  }}
                   className="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-platinum/30 text-obsidian transition-colors group"
                 >
                   <span className="text-xs font-mono font-medium tracking-wider uppercase">

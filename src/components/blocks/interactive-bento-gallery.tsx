@@ -331,12 +331,11 @@ const fits = (items: MediaItemType[], layout: Layout, item: MediaItemType, cell:
 const bottomOf = (items: MediaItemType[], layout: Layout, exclude?: number) =>
     items.reduce((max, o) => (o.id !== exclude && layout[o.id] ? Math.max(max, layout[o.id].row + spanOf(o).h) : max), 0);
 
-// Same result as CSS grid's default (sparse) auto-placement, so the starting layout matches the original staggered look
+// Dense auto-placement: scans from top-left for each item so all open slots are filled without gaps
 const autoPlace = (items: MediaItemType[]) => {
     const layout: Layout = {};
-    let cursor: Cell = { col: 0, row: 0 };
     for (const item of items) {
-        let { col, row } = cursor;
+        let col = 0, row = 0;
         while (!fits(items, layout, item, { col, row })) {
             col++;
             if (col + spanOf(item).w > COLS) {
@@ -345,7 +344,6 @@ const autoPlace = (items: MediaItemType[]) => {
             }
         }
         layout[item.id] = { col, row };
-        cursor = { col, row };
     }
     return layout;
 };
@@ -609,10 +607,10 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
     const previewItem = preview && mediaItems.find((o) => o.id === preview.id);
 
     return (
-        <div className="w-full px-3 sm:px-6 lg:px-10 py-8">
+        <div className="w-full px-3 sm:px-6 lg:px-10 py-2 sm:py-4">
             <div className="mb-8 text-center">
                 <motion.h1
-                    className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent
+                    className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold uppercase tracking-wider bg-clip-text text-transparent
                              bg-gradient-to-r from-white via-gray-200 to-white"
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}

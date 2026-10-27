@@ -66,7 +66,7 @@ const NEW_ARRIVALS = [
     video: "/Medium Blonde/Medium Blonde.mp4",
   },
   {
-    id: "prod-shade-2",
+    id: "prod-shade-1",
     name: "No.1 Black System",
     category: "Pure Mineral Jet • 100% Coverage",
     shadeCode: "No.1",
@@ -80,7 +80,7 @@ const NEW_ARRIVALS = [
     video: "/Black/Black.mp4",
   },
   {
-    id: "prod-shade-1",
+    id: "prod-shade-0-0",
     name: "No.0/0 Clear Gloss System",
     category: "Universal Gloss • Translucent Blending",
     shadeCode: "No.0/0",
@@ -195,9 +195,10 @@ export function NewDispatches({
       id: item.id,
       name: item.name,
       category: item.category,
-      price: item.price,
+      price: 2499,
       image: item.image,
       shadeCode: item.shadeCode,
+      shadeHex: item.shadeHex,
     });
   };
 
@@ -205,30 +206,11 @@ export function NewDispatches({
 
   return (
     <section id="system" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full select-none">
-      {/* Editorial Heading */}
-      <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-2">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          COLLECTION • ALL 9 SHADES
-        </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
+      {/* Editorial Heading - Center Aligned */}
+      <Reveal className="text-center max-w-7xl mx-auto mb-6 sm:mb-10">
+        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase">
           EXPLORE YOUR SHADE
         </h2>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
-      </Reveal>
-
-      {/* Hair Color Suitability Confirmation Banner */}
-      <Reveal className="flex items-center justify-center mb-8 sm:mb-10" delay={0.1}>
-        <button
-          type="button"
-          onClick={() => {
-            setSuitabilityShade(activeShade);
-            setIsSuitabilityOpen(true);
-          }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-obsidian text-obsidian hover:text-white border border-black/10 shadow-xs text-xs font-mono font-medium tracking-wide transition-all duration-300 hover:scale-[1.02] active:scale-95 group/btn cursor-pointer"
-        >
-          <span>Unsure if this shade matches your hair? <strong className="font-bold underline decoration-obsidian/30 underline-offset-2">Check Match</strong></span>
-          <ArrowRight className="w-3 h-3 text-graphite group-hover/btn:text-white transition-colors" />
-        </button>
       </Reveal>
 
       {/* 1. Pure Circle Shades Slider (No card containers, no white background circles) */}
@@ -242,7 +224,6 @@ export function NewDispatches({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
-            const pantone = SHADE_PANTONE_TAGS[item.id] || { tag: "Permanent", pantoneColor: "#FFC72C" };
             const circleSrc = SHADE_CLEAN_CIRCLES[item.id] || item.swatchImage;
             const isActive = activeIndex === idx;
 
@@ -254,16 +235,6 @@ export function NewDispatches({
                   isActive ? "scale-105 opacity-100" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
                 }`}
               >
-                {/* Floating Pantone Tag Badge */}
-                <div className="mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-obsidian border border-black/10 text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase shadow-xs">
-                    <span
-                      className="w-2 h-2 rounded-full shrink-0 shadow-xs"
-                      style={{ backgroundColor: pantone.pantoneColor }}
-                    />
-                    <span className="text-obsidian font-bold">{pantone.tag}</span>
-                  </span>
-                </div>
 
                 {/* Pure Circular Hair Shade Swatch - Clean Transparent Circle */}
                 <Link
@@ -285,19 +256,10 @@ export function NewDispatches({
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
                   className="mt-4 space-y-1 block group/link"
                 >
-                  <div className="flex items-center justify-center gap-1.5">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full shrink-0 border border-black/10"
-                      style={{ backgroundColor: item.hex }}
-                    />
-                    <span className="text-[11px] font-mono font-bold text-graphite uppercase">
-                      {item.code} • {item.formula}
-                    </span>
-                  </div>
-                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
+                  <h3 className="font-montserrat font-normal text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
                     {item.name} System
                   </h3>
-                  <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
+                  <p className="font-montserrat font-normal text-xs sm:text-sm text-obsidian">
                     ${item.price} USD
                   </p>
                 </Link>
@@ -348,8 +310,8 @@ export function NewDispatches({
           SHADE <SwapText value={activeIndex + 1} /> OF {OFFICIAL_SHADES.length}
         </span>
 
-        {/* Dynamic Pagination Pill Dots */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Dynamic Pagination Pill Dots (Desktop & Tablets) */}
+        <div className="hidden sm:flex items-center gap-1.5 sm:gap-2">
           {OFFICIAL_SHADES.map((item, idx) => {
             const isActive = activeIndex === idx;
             return (
@@ -390,9 +352,9 @@ export function NewDispatches({
         </div>
       </div>
 
-      {/* 2. Divider & Header for the 4 Product Cards Grid */}
-      <div className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-ash/30">
-        <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1.5">
+      {/* 2. Divider & Header for the 4 Product Cards Grid (Target for Shades nav button) */}
+      <div id="shades" className="mt-8 sm:mt-12 pt-3 sm:pt-4 border-t border-ash/30 scroll-mt-[120px]">
+        <Reveal className="text-center max-w-xl mx-auto mb-4 sm:mb-6 space-y-1 sm:space-y-1.5">
           <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
             FEATURED DISPATCHES
           </span>
@@ -403,7 +365,7 @@ export function NewDispatches({
         </Reveal>
 
         {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 items-start">
           {NEW_ARRIVALS.map((item, idx) => (
             <RevealCard
               key={item.id}
@@ -411,7 +373,7 @@ export function NewDispatches({
               className="group flex flex-col"
             >
               {/* Portrait Image Container with Minimal Corners */}
-              <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
+              <div className="relative aspect-[2/3] max-h-[46vh] sm:max-h-[48vh] xl:max-h-[52vh] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
                 <RevealImage>
                   <Link
                     href={`/product?shade=${item.id.replace("prod-", "")}`}
@@ -426,17 +388,6 @@ export function NewDispatches({
                     />
                   </Link>
                 </RevealImage>
-
-                {/* Top-Left Pantone Tag Badge (High contrast solid pill) */}
-                <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-20 pointer-events-none">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-obsidian backdrop-blur-md border border-black/10 text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase shadow-md">
-                    <span
-                      className="w-2 h-2 rounded-full shrink-0 shadow-xs"
-                      style={{ backgroundColor: item.pantoneColor }}
-                    />
-                    <span className="text-obsidian font-bold">{item.tag}</span>
-                  </span>
-                </div>
 
                 {/* Top-Right Circular Wishlist Button */}
                 <button
@@ -458,13 +409,27 @@ export function NewDispatches({
 
                 {/* Floating Pill Action Button (Desktop hover only) */}
                 <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                  <Link
-                    href={`/product?shade=${item.id.replace("prod-", "")}`}
-                    className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      store.addToCart({
+                        id: `shade-${item.shadeCode.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}-starter-system`,
+                        name: `Colourpig Starter System | ${item.name.replace(/ System$/i, "")}`,
+                        variant: item.category,
+                        price: 2499,
+                        image: item.image,
+                        shadeCode: item.shadeCode,
+                        shadeHex: item.shadeHex,
+                      });
+                    }}
+                    className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
+                    aria-label={`Add ${item.name} to cart`}
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
-                    <span className="truncate">VIEW PRODUCT</span>
-                  </Link>
+                    <span className="truncate">ADD TO CART</span>
+                  </button>
                 </div>
               </div>
 
@@ -474,10 +439,16 @@ export function NewDispatches({
                   href={`/product?shade=${item.id.replace("prod-", "")}`}
                   className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
                 >
-                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                  <p
+                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate"
+                    style={{ fontWeight: 400 }}
+                  >
                     {item.name}
-                  </h3>
-                  <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
+                  </p>
+                  <p
+                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] text-obsidian"
+                    style={{ fontWeight: 400 }}
+                  >
                     ${item.price} USD
                   </p>
                 </Link>
@@ -487,12 +458,13 @@ export function NewDispatches({
               <button
                 onClick={() =>
                   store.addToCart({
-                    id: item.id,
-                    name: item.name,
+                    id: `shade-${item.shadeCode.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}-starter-system`,
+                    name: `Colourpig Starter System | ${item.name.replace(/ System$/i, "")}`,
                     variant: item.category,
-                    price: item.price,
+                    price: 2499,
                     image: item.image,
                     shadeCode: item.shadeCode,
+                    shadeHex: item.shadeHex,
                   })
                 }
                 className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"

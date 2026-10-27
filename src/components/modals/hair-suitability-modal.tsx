@@ -231,10 +231,10 @@ export function HairSuitabilityModal({
 
   const handleAddToCart = () => {
     store.addToCart({
-      id: `prod-${selectedShade.id}`,
-      name: `${selectedShade.name} System`,
+      id: `${selectedShade.id}-starter-system`,
+      name: `Colourpig Starter System | ${selectedShade.name}`,
       variant: `${selectedShade.undertone} • Match Verified`,
-      price: selectedShade.price,
+      price: 2499,
       image: selectedShade.cardImage,
       shadeCode: selectedShade.code,
       shadeHex: selectedShade.hex,

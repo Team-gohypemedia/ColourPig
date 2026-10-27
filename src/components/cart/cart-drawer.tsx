@@ -4,9 +4,9 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Plus, Trash2, ArrowLeft, Lock, ShoppingBag, Sparkles } from "lucide-react";
+import { X, Minus, Plus, Trash2, Lock, ShoppingBag } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
-import { useStore } from "@/context/store-context";
+import { useStore, CartItem } from "@/context/store-context";
 
 export function CartDrawer() {
   const {
@@ -22,6 +22,19 @@ export function CartDrawer() {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const getProductShadeLink = (item: CartItem) => {
+    if (item.shadeCode) {
+      const raw = item.shadeCode
+        .toLowerCase()
+        .replace("no.", "")
+        .replace("#", "")
+        .replace("/", "-")
+        .trim();
+      return `/product?shade=${raw}`;
+    }
+    return "/product";
+  };
 
   return (
     <AnimatePresence>
@@ -74,16 +87,7 @@ export function CartDrawer() {
               </button>
             </div>
 
-            {/* 2. Free Shipping Progress Bar (Brand Accent) */}
-            <div className="px-6 py-2.5 bg-platinum/30 border-b border-ash/20 text-[10px] sm:text-[11px] font-mono text-graphite flex items-center justify-between flex-shrink-0">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-[#FFC72C]" />
-                <span>COMPLIMENTARY SHIPPING OVER ₹2,499</span>
-              </span>
-              <span className="font-semibold text-obsidian">UNLOCKED</span>
-            </div>
-
-            {/* 3. Fully Scrollable Body with Native Smooth Scrolling */}
+            {/* Fully Scrollable Body with Native Smooth Scrolling */}
             <div
               ref={scrollContainerRef}
               data-lenis-prevent="true"
@@ -108,12 +112,13 @@ export function CartDrawer() {
                       Explore our root touch-up systems and refill pods.
                     </p>
                   </div>
-                  <button
+                  <Link
+                    href="/product"
                     onClick={closeCart}
                     className="mt-2 inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-obsidian text-white text-xs font-mono font-semibold tracking-wider uppercase hover:bg-black transition-colors"
                   >
                     Explore Shades
-                  </button>
+                  </Link>
                 </div>
               ) : (
                 <div className="space-y-3 pt-1">
@@ -138,9 +143,9 @@ export function CartDrawer() {
                         <div>
                           <div className="flex justify-between items-start gap-2">
                             <Link
-                              href="/product"
+                              href={getProductShadeLink(item)}
                               onClick={closeCart}
-                              className="text-xs sm:text-[13px] font-headline font-bold text-obsidian leading-snug line-clamp-2 hover:underline"
+                              className="text-xs sm:text-[13px] font-montserrat font-bold text-obsidian leading-snug line-clamp-2 hover:underline"
                             >
                               {item.name}
                             </Link>
@@ -155,9 +160,25 @@ export function CartDrawer() {
                             </button>
                           </div>
 
-                          <p className="text-[11px] text-graphite font-mono mt-1 truncate">
-                            {item.variant}
-                          </p>
+                          {/* Selected Color & Shade Badge */}
+                          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                            {item.shadeHex && (
+                              <span
+                                className="w-3 h-3 rounded-full border border-black/20 shrink-0 shadow-2xs inline-block"
+                                style={{ backgroundColor: item.shadeHex }}
+                                title={item.shadeCode || item.variant}
+                              />
+                            )}
+                            {item.shadeCode && (
+                              <span className="text-[10px] font-mono font-bold text-obsidian px-1.5 py-0.5 rounded bg-platinum/50 border border-ash/30 uppercase">
+                                {item.shadeCode}
+                              </span>
+                            )}
+                            <span className="text-[11px] text-graphite font-mono truncate max-w-[180px]">
+                              {item.variant}
+                            </span>
+                          </div>
+
                           <div className="flex items-center gap-1.5 mt-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#7AC142]" />
                             <span className="text-[10px] text-graphite font-mono">
@@ -190,9 +211,19 @@ export function CartDrawer() {
                           </div>
 
                           {/* Item Price */}
-                          <span className="text-xs sm:text-sm font-bold text-obsidian font-mono tracking-tight">
-                            {formatPrice(item.price * item.quantity)}
-                          </span>
+                          <div className="text-right">
+                            <div
+                              className="text-xs sm:text-sm !font-normal font-[400] text-obsidian font-mono tracking-tight"
+                              style={{ fontWeight: 400 }}
+                            >
+                              {formatPrice(item.price * item.quantity)}
+                            </div>
+                            {item.quantity > 1 && (
+                              <div className="text-[10px] text-graphite font-mono">
+                                {formatPrice(item.price)} each
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -230,14 +261,17 @@ export function CartDrawer() {
 
                       {/* Rec Info */}
                       <div className="flex-1 min-w-0 pr-1">
-                        <h4 className="text-xs font-headline font-semibold text-obsidian line-clamp-1">
+                        <h4 className="text-xs font-montserrat font-semibold text-obsidian line-clamp-1">
                           {rec.name}
                         </h4>
                         <p className="text-[10px] text-graphite font-mono truncate mt-0.5">
                           {rec.variant}
                         </p>
                         <div className="flex items-baseline gap-2 mt-1">
-                          <span className="text-xs font-bold font-mono text-obsidian">
+                          <span
+                            className="text-xs !font-normal font-[400] font-mono text-obsidian"
+                            style={{ fontWeight: 400 }}
+                          >
                             {formatPrice(rec.price)}
                           </span>
                           {rec.originalPrice && (
@@ -252,13 +286,15 @@ export function CartDrawer() {
                       <button
                         onClick={() =>
                           addToCart({
-                            id: `rec-added-${rec.id}`,
+                            id: rec.id,
                             name: rec.name,
                             variant: rec.variant,
                             price: rec.price,
                             originalPrice: rec.originalPrice,
                             image: rec.image,
                             inStock: rec.inStock,
+                            shadeCode: rec.shadeCode,
+                            shadeHex: rec.shadeHex,
                           })
                         }
                         className="px-3 py-1.5 rounded-lg bg-obsidian hover:bg-black text-white text-[11px] font-mono font-semibold tracking-wider uppercase transition-all flex-shrink-0 shadow-2xs"
@@ -282,7 +318,10 @@ export function CartDrawer() {
                   <span className="text-xs font-mono uppercase tracking-widest font-bold text-graphite">
                     SUBTOTAL
                   </span>
-                  <span className="text-lg font-bold font-mono text-obsidian tracking-tight">
+                  <span
+                    className="text-lg !font-normal font-[400] font-mono text-obsidian tracking-tight"
+                    style={{ fontWeight: 400 }}
+                  >
                     {formatPrice(subtotal)}
                   </span>
                 </div>
@@ -296,10 +335,9 @@ export function CartDrawer() {
                   {/* Left: Continue Shopping (Light Platinum) */}
                   <button
                     onClick={closeCart}
-                    className="w-full py-3.5 px-3 rounded-xl border border-ash/30 bg-platinum/30 hover:bg-platinum/60 text-obsidian text-[11px] font-mono font-bold tracking-widest uppercase flex items-center justify-center gap-1.5 transition-colors"
+                    className="w-full py-3.5 px-3 rounded-xl border border-ash/30 bg-platinum/30 hover:bg-platinum/60 text-obsidian text-[11px] font-mono font-bold tracking-widest uppercase flex items-center justify-center transition-colors"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>CONTINUE</span>
+                    CONTINUE
                   </button>
 
                   {/* Right: Checkout in ColourPig Theme Color (Obsidian Black) */}

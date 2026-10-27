@@ -68,12 +68,6 @@ export function CartMini({
               </button>
             </div>
 
-            {/* Free shipping banner */}
-            <div className="px-6 py-2.5 bg-steel/40 border-b border-brand text-[11px] font-mono text-ash">
-              {freeShipping
-                ? "✓ Complimentary Worldwide Express Unlocked"
-                : `Add $${(75 - subtotal).toFixed(2)} more for complimentary express delivery`}
-            </div>
 
             {/* List */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -99,10 +93,13 @@ export function CartMini({
 
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start">
-                        <h4 className="font-headline font-medium text-xs text-platinum truncate">
+                        <h4 className="font-montserrat font-medium text-xs text-platinum truncate">
                           {item.name}
                         </h4>
-                        <span className="font-mono text-xs font-semibold ml-2">
+                        <span
+                          className="font-mono text-xs !font-normal font-[400] ml-2"
+                          style={{ fontWeight: 400 }}
+                        >
                           ${item.price * item.quantity}
                         </span>
                       </div>

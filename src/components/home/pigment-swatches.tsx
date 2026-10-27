@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
+import { useHasMounted } from "@/components/motion/motion-primitives";
 
 const SPECIFICATION_CARDS = [
   {
@@ -48,6 +49,7 @@ const SPECIFICATION_CARDS = [
 ];
 
 export function PigmentSwatches() {
+  const mounted = useHasMounted();
   const sliderRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -98,17 +100,17 @@ export function PigmentSwatches() {
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-12 max-w-[1600px] mx-auto overflow-hidden">
       {/* Title */}
-      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-14 space-y-2">
+      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           SYSTEM DETAILS
         </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase leading-tight">
           PRODUCT SPECIFICATIONS
         </h2>
         <p className="text-xs sm:text-sm font-mono text-graphite">
           Engineered by Norman &amp; Brown • Designed in Australia
         </p>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
       </div>
 
       {/* Pill Selector (Quick Jump Tabs) - Mobile only */}
@@ -246,7 +248,8 @@ export function PigmentSwatches() {
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrev}
-            disabled={!canScrollLeft}
+            disabled={mounted ? !canScrollLeft : true}
+            suppressHydrationWarning
             aria-label="Previous specification"
             className="h-9 w-9 rounded-full bg-white border border-ash/30 text-obsidian flex items-center justify-center hover:bg-platinum/40 disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs active:scale-95"
           >
@@ -254,7 +257,8 @@ export function PigmentSwatches() {
           </button>
           <button
             onClick={handleNext}
-            disabled={!canScrollRight}
+            disabled={mounted ? !canScrollRight : false}
+            suppressHydrationWarning
             aria-label="Next specification"
             className="h-9 w-9 rounded-full bg-white border border-ash/30 text-obsidian flex items-center justify-center hover:bg-platinum/40 disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs active:scale-95"
           >

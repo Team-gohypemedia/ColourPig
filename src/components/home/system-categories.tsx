@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -11,8 +11,9 @@ const COLLECTIONS = [
   {
     id: "darks",
     title: "DEEP DARKS",
+    shadeId: "shade-1",
     image: "/images/products/cards/shade_card_2.jpg",
-    link: "/product?shade=shade-1",
+    link: "/product?shade=shade-1&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_2.jpg",
     pantone: "123C",
     hex: "#FFC72C",
     badge: "DEEP DARKS",
@@ -20,8 +21,9 @@ const COLLECTIONS = [
   {
     id: "browns",
     title: "RICH BROWNS",
+    shadeId: "shade-4",
     image: "/images/products/cards/shade_card_4.jpg",
-    link: "/product?shade=shade-4",
+    link: "/product?shade=shade-4&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_4.jpg",
     pantone: "299C",
     hex: "#00A3E0",
     badge: "RICH BROWNS",
@@ -29,8 +31,9 @@ const COLLECTIONS = [
   {
     id: "golden-blondes",
     title: "GOLDEN BLONDES",
+    shadeId: "shade-7",
     image: "/images/products/cards/shade_card_7.jpg",
-    link: "/product?shade=shade-7",
+    link: "/product?shade=shade-7&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_7.jpg",
     pantone: "1905C",
     hex: "#F08EAB",
     badge: "GOLDEN BLONDES",
@@ -38,8 +41,9 @@ const COLLECTIONS = [
   {
     id: "light-blondes",
     title: "LIGHT BLONDES",
+    shadeId: "shade-9",
     image: "/images/products/cards/shade_card_9.jpg",
-    link: "/product?shade=shade-9",
+    link: "/product?shade=shade-9&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_9.jpg",
     pantone: "375C",
     hex: "#7AC142",
     badge: "LIGHT BLONDES",
@@ -47,8 +51,9 @@ const COLLECTIONS = [
   {
     id: "clear",
     title: "CLEAR GLOSS",
+    shadeId: "shade-0-0",
     image: "/images/products/cards/shade_card_1.jpg",
-    link: "/product?shade=shade-0-0",
+    link: "/product?shade=shade-0-0&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_1.jpg",
     pantone: "165C",
     hex: "#FF671F",
     badge: "CLEAR GLOSS",
@@ -79,6 +84,29 @@ export function SystemCategories() {
     setActiveIndex(index);
   }, []);
 
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        setActiveIndex((prev) => (prev + 1) % totalSlides);
+      } else {
+        setActiveIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
   // Autoplay is driven by the indicator's own fill animation (one continuous animation per slide,
   // no 25ms state ticks): when the fill completes, advance. Keyed by activeIndex, so any slide change restarts it.
   const advance = useCallback(() => {
@@ -91,18 +119,22 @@ export function SystemCategories() {
       className="py-12 sm:py-16 md:py-20 w-full select-none overflow-hidden"
     >
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 px-4 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 px-4 space-y-1 sm:space-y-1.5">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           SHADE FAMILIES
         </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
+        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase leading-tight">
           SHOP BY CATEGORY
         </h2>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
       </Reveal>
 
       {/* Main Banner Slider Container (100% Full-Bleed End-to-End) */}
-      <div className="relative w-full overflow-hidden">
+      <div
+        className="relative w-full overflow-hidden touch-pan-y"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Sliding Track */}
         <div
           className="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"

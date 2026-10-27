@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { EASE, Reveal } from "@/components/motion/motion-primitives";
+import { EASE, Reveal, useHasMounted } from "@/components/motion/motion-primitives";
 import { ArrowLeft, ArrowRight, Quote, X, Star, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -52,6 +52,7 @@ const useOutsideClick = (
 
 // ===== Carousel Component =====
 export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
+  const mounted = useHasMounted();
   const carouselRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
@@ -135,7 +136,8 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
         <button
           className="relative z-40 h-10 w-10 rounded-full bg-obsidian text-white flex items-center justify-center disabled:opacity-30 hover:bg-steel active:scale-95 transition-all shadow-md"
           onClick={handleScrollLeft}
-          disabled={!canScrollLeft}
+          disabled={mounted ? !canScrollLeft : true}
+          suppressHydrationWarning
           aria-label="Previous review"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -143,7 +145,8 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
         <button
           className="relative z-40 h-10 w-10 rounded-full bg-obsidian text-white flex items-center justify-center disabled:opacity-30 hover:bg-steel active:scale-95 transition-all shadow-md"
           onClick={handleScrollRight}
-          disabled={!canScrollRight}
+          disabled={mounted ? !canScrollRight : false}
+          suppressHydrationWarning
           aria-label="Next review"
         >
           <ArrowRight className="h-5 w-5" />
@@ -289,7 +292,7 @@ export const TestimonialCard = ({
           transition: { duration: 0.25, ease: "easeOut" },
         }}
       >
-        <div className="rounded-2xl bg-white border border-ash/30 h-[480px] sm:h-[520px] w-72 sm:w-80 lg:w-full p-6 flex flex-col justify-between items-center text-center relative z-10 shadow-sm hover:shadow-xl hover:border-obsidian transition-all duration-300 group">
+        <div className="rounded-2xl bg-white border border-ash/30 h-[380px] sm:h-[410px] w-72 sm:w-80 lg:w-full p-6 flex flex-col justify-between items-center text-center relative z-10 shadow-sm hover:shadow-xl hover:border-obsidian transition-all duration-300 group">
           {/* Top: Avatar & Rating */}
           <div className="flex flex-col items-center space-y-3 pt-2">
             <ProfileImage src={testimonial.profileImage} alt={testimonial.name} />
@@ -312,29 +315,6 @@ export const TestimonialCard = ({
                 : testimonial.description}
               &rdquo;
             </p>
-          </div>
-
-          {/* Bottom: Client Meta */}
-          <div className="pt-4 border-t border-black/10 w-full space-y-1">
-            <div className="flex items-center justify-center gap-1.5">
-              <span className="font-headline font-bold text-sm text-obsidian">
-                {testimonial.name}
-              </span>
-              <CheckCircle className="w-3.5 h-3.5 text-[#7AC142]" />
-            </div>
-            <p className="text-[11px] font-mono text-graphite truncate px-2">
-              {testimonial.designation}
-            </p>
-            {testimonial.shade && (
-              <div className="pt-1">
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#13212E]/5 border border-black/10 text-[9px] font-mono text-graphite font-semibold">
-                  Verified: {testimonial.shade}
-                </span>
-              </div>
-            )}
-            <span className="block pt-1 text-[10px] font-mono text-ash group-hover:text-obsidian transition-colors underline underline-offset-4">
-              Read Full Story ↗
-            </span>
           </div>
         </div>
       </motion.button>
@@ -424,14 +404,14 @@ export function CustomerReviews() {
   return (
     <section className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full overflow-hidden">
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-2">
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
+        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase leading-tight">
           WHAT OUR CLIENTS SAY
         </h2>
         <p className="text-[11px] font-mono tracking-widest uppercase text-graphite font-semibold">
           REAL REVIEWS FROM REAL CLIENTS
         </p>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
       </Reveal>
 
       {/* Interactive Carousel */}

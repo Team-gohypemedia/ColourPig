@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -26,16 +26,18 @@ import {
   Droplets,
   Wind,
   Play,
-  Volume2,
-  VolumeX,
   Maximize2,
 } from "lucide-react";
 import { SnoutIcon, ColourpigLogo } from "@/components/brand/logo";
-import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import {
+  OFFICIAL_SHADES,
+  ShadeProduct,
+} from "@/data/shades";
 import { useStore } from "@/context/store-context";
 
 interface ProductDetailViewProps {
   initialShadeId?: string;
+  initialImage?: string;
 }
 
 const KIT_OPTIONS = [
@@ -98,6 +100,7 @@ const RECENTLY_VIEWED = [
     originalInr: 3499,
     image: "/Brown/Brown.jpg",
     shadeCode: "No.3",
+    shadeHex: "#241E1C",
   },
   {
     id: "shade-5",
@@ -107,6 +110,7 @@ const RECENTLY_VIEWED = [
     originalInr: 3499,
     image: "/Light Brown/LightBrown01.jpg",
     shadeCode: "No.5",
+    shadeHex: "#624F44",
   },
   {
     id: "shade-7",
@@ -116,6 +120,7 @@ const RECENTLY_VIEWED = [
     originalInr: 3499,
     image: "/Medium Blonde/MediumBlonde.jpg",
     shadeCode: "No.7",
+    shadeHex: "#BE966C",
   },
   {
     id: "shade-1",
@@ -125,6 +130,7 @@ const RECENTLY_VIEWED = [
     originalInr: 3499,
     image: "/Black/Black.jpg",
     shadeCode: "No.1",
+    shadeHex: "#2D2C2D",
   },
 ];
 
@@ -161,17 +167,70 @@ const TESTIMONIALS = [
   },
 ];
 
-export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailViewProps) {
+function resolveShadeFromParam(param: string): ShadeProduct {
+  const clean = (param || "shade-4").trim().toLowerCase();
+
+  // Color aliases
+  if (clean === "black" || clean === "1" || clean === "shade-1" || clean === "no.1" || clean === "shade-2" || clean === "2") {
+    return OFFICIAL_SHADES.find((s) => s.id === "shade-1") || OFFICIAL_SHADES[1];
+  }
+  if (clean === "brown" || clean === "4" || clean === "shade-4" || clean === "no.4") {
+    return OFFICIAL_SHADES.find((s) => s.id === "shade-4") || OFFICIAL_SHADES[3];
+  }
+  if (clean === "blonde" || clean === "7" || clean === "shade-7" || clean === "no.7") {
+    return OFFICIAL_SHADES.find((s) => s.id === "shade-7") || OFFICIAL_SHADES[6];
+  }
+  if (clean === "clear" || clean === "0/0" || clean === "0-0" || clean === "shade-0-0" || clean === "no.0/0") {
+    return OFFICIAL_SHADES.find((s) => s.id === "shade-0-0") || OFFICIAL_SHADES[0];
+  }
+
+  return (
+    OFFICIAL_SHADES.find((s) => s.id === clean) ||
+    OFFICIAL_SHADES.find((s) => s.id === `shade-${clean}`) ||
+    OFFICIAL_SHADES.find((s) => s.code.toLowerCase() === clean) ||
+    OFFICIAL_SHADES.find((s) => s.code.toLowerCase() === `no.${clean}`) ||
+    OFFICIAL_SHADES.find((s) => s.name.toLowerCase().includes(clean)) ||
+    OFFICIAL_SHADES[3]
+  );
+}
+
+export function ProductDetailView({
+  initialShadeId = "shade-4",
+  initialImage,
+}: ProductDetailViewProps) {
   const store = useStore();
 
   // Selected Shade state
   const [selectedShade, setSelectedShade] = useState<ShadeProduct>(() => {
-    return (
-      OFFICIAL_SHADES.find((s) => s.id === initialShadeId) ||
-      OFFICIAL_SHADES.find((s) => s.code === "No.4") ||
-      OFFICIAL_SHADES[3]
-    );
+    const base = resolveShadeFromParam(initialShadeId);
+    if (initialImage) {
+      return { ...base, cardImage: initialImage };
+    }
+    return base;
   });
+
+  // Sync state when initialShadeId or initialImage prop changes
+  useEffect(() => {
+    const target = resolveShadeFromParam(initialShadeId);
+    if (target) {
+      setSelectedShade(initialImage ? { ...target, cardImage: initialImage } : target);
+      setActiveImageIdx(0);
+    }
+  }, [initialShadeId, initialImage]);
+
+  // Smooth scroll directly to Customer Reviews section
+  const scrollToReviews = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const reviewsEl = document.getElementById("reviews");
+    if (!reviewsEl) return;
+
+    const lenis = typeof window !== "undefined" ? (window as any).lenis : null;
+    if (lenis && typeof lenis.scrollTo === "function") {
+      lenis.scrollTo(reviewsEl, { offset: -90, duration: 1.2 });
+    } else {
+      reviewsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Selected Kit Option
   const [selectedKit, setSelectedKit] = useState(KIT_OPTIONS[0]);
@@ -188,8 +247,7 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
   // Open Accordion tabs
   const [openAccordion, setOpenAccordion] = useState<string | null>("how-it-works");
 
-  // Video controls state
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  // Video element ref
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Gallery media items dynamically constructed from shade & brand assets
@@ -221,16 +279,6 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
           },
         ]
       : []),
-    ...(selectedShade.backImage
-      ? [
-          {
-            type: "image" as const,
-            src: selectedShade.backImage,
-            alt: `${selectedShade.name} Back Packaging & Directions`,
-            tag: "SPECIFICATIONS",
-          },
-        ]
-      : []),
   ];
 
   const activeItem = galleryImages[Math.min(activeImageIdx, galleryImages.length - 1)] || galleryImages[0];
@@ -244,8 +292,11 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
   const handleAddToCart = () => {
     store.addToCart({
       id: `${selectedShade.id}-${selectedKit.id}`,
-      name: `${selectedShade.name} — ${selectedKit.name}`,
-      variant: `${selectedShade.undertone} • ${selectedKit.subtitle}`,
+      name:
+        selectedKit.id === "starter-system"
+          ? `Colourpig Starter System | ${selectedShade.name}`
+          : `Colourpig ${selectedKit.name} | ${selectedShade.name}`,
+      variant: `Shade ${selectedShade.code} • ${selectedKit.subtitle}`,
       price: selectedKit.priceInr,
       originalPrice: selectedKit.originalInr,
       image: selectedShade.cardImage,
@@ -296,12 +347,13 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                 const isSelected = activeImageIdx === idx;
                 const isVid = img.type === "video";
                 const thumbSrc = isVid ? (img.poster || selectedShade.cardImage) : img.src;
+                const isCardImg = thumbSrc.includes("shade_card_");
 
                 return (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIdx(idx)}
-                    className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white shadow-2xs group cursor-pointer ${
+                    className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${isCardImg ? "bg-[#848F97]" : "bg-[#D6D7D9]"} shadow-2xs group cursor-pointer ${
                       isSelected
                         ? "border-obsidian shadow-sm scale-102"
                         : "border-ash/30 hover:border-ash/70 opacity-80 hover:opacity-100"
@@ -313,7 +365,7 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                       alt={img.alt}
                       fill
                       sizes="80px"
-                      className="object-cover object-center"
+                      className={isCardImg ? "object-cover object-center" : "object-contain object-center p-1"}
                     />
                     {isVid ? (
                       <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center text-white p-1 transition-colors group-hover:bg-black/30">
@@ -333,9 +385,9 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
             </div>
 
             {/* Main High-Resolution Showcase Frame */}
-            <div className="flex-1 relative aspect-[3/4] sm:aspect-[4/5] max-h-[720px] rounded-2xl overflow-hidden bg-white border border-ash/30 shadow-sm flex items-center justify-center group">
+            <div className={`flex-1 relative aspect-[3/4] sm:aspect-[4/5] max-h-[720px] rounded-2xl overflow-hidden ${activeItem.src.includes("shade_card_") ? "bg-[#848F97]" : "bg-[#D6D7D9]"} border border-ash/30 shadow-sm flex items-center justify-center group`}>
               {activeItem.type === "video" ? (
-                <div className="relative w-full h-full flex items-center justify-center bg-[#070D12]">
+                <div className="relative w-full h-full flex items-center justify-center bg-[#070D12] p-2 sm:p-4">
                   <video
                     ref={videoRef}
                     key={activeItem.src}
@@ -343,32 +395,11 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                     poster={activeItem.poster ? encodeURI(activeItem.poster) : undefined}
                     autoPlay
                     loop
-                    muted={isVideoMuted}
+                    muted
                     playsInline
                     controls
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain object-center"
                   />
-                  {/* Floating Sound Toggle */}
-                  <div className="absolute top-4 right-16 z-20">
-                    <button
-                      type="button"
-                      onClick={() => setIsVideoMuted(!isVideoMuted)}
-                      className="px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/15 text-white text-[10px] font-mono tracking-wider uppercase flex items-center gap-1.5 transition-all shadow-md active:scale-95"
-                      aria-label={isVideoMuted ? "Unmute video" : "Mute video"}
-                    >
-                      {isVideoMuted ? (
-                        <>
-                          <VolumeX className="w-3.5 h-3.5 text-ash" />
-                          <span className="hidden sm:inline">Sound Off</span>
-                        </>
-                      ) : (
-                        <>
-                          <Volume2 className="w-3.5 h-3.5 text-[#7AC142]" />
-                          <span className="hidden sm:inline">Sound On</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
                 </div>
               ) : (
                 <Image
@@ -378,45 +409,14 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 700px"
-                  className="object-contain sm:object-cover object-center transition-transform duration-500 group-hover:scale-102"
+                  className={
+                    activeItem.src.includes("shade_card_")
+                      ? "object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+                      : "object-contain object-center p-2 sm:p-4 transition-transform duration-500 group-hover:scale-[1.02]"
+                  }
                 />
               )}
 
-              {/* Top Badges */}
-              <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2 pointer-events-none">
-                <span className="px-3 py-1 rounded-full bg-obsidian/90 text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase backdrop-blur-md shadow-md">
-                  {activeItem.tag}
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-[#7AC142] text-obsidian font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shadow-md">
-                  SAVE 28%
-                </span>
-              </div>
-
-              {/* Wishlist Heart on Top Right */}
-              <button
-                type="button"
-                onClick={() =>
-                  store.toggleWishlist({
-                    id: selectedShade.id,
-                    name: `Colourpig Starter System (${selectedShade.name})`,
-                    category: selectedShade.category,
-                    price: selectedKit.priceInr,
-                    originalPrice: selectedKit.originalInr,
-                    image: selectedShade.cardImage,
-                    shadeCode: selectedShade.code,
-                  })
-                }
-                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 backdrop-blur-md border border-ash/30 flex items-center justify-center text-obsidian hover:scale-110 active:scale-95 transition-all shadow-md"
-                aria-label="Save to Wishlist"
-              >
-                <Heart
-                  className={`w-4 h-4 stroke-[2] ${
-                    store.isInWishlist(selectedShade.id)
-                      ? "fill-rose-600 text-rose-600"
-                      : "text-obsidian"
-                  }`}
-                />
-              </button>
 
               {/* Gallery Arrow Controls */}
               <button
@@ -441,14 +441,6 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
-
-              {/* Bottom Tag Preview */}
-              <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-[10px] font-mono text-white/90 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 pointer-events-none">
-                <span>VIEW: {activeItem.tag}</span>
-                <span>
-                  {Math.min(activeImageIdx + 1, galleryImages.length)} / {galleryImages.length}
-                </span>
-              </div>
             </div>
           </div>
 
@@ -469,31 +461,41 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
 
               {/* Rating & Review Counter Row */}
               <div className="flex items-center gap-3 pt-1">
-                <div className="flex items-center gap-1 text-[#FFC72C]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-[#FFC72C] stroke-[#FFC72C]" />
-                  ))}
-                </div>
-                <span className="text-xs font-mono font-bold text-obsidian">
-                  4.9
-                </span>
-                <span className="text-ash text-xs">•</span>
-                <span className="text-xs font-mono text-graphite underline cursor-pointer">
-                  {selectedShade.reviews} Verified Reviews
-                </span>
+                <a
+                  href="#reviews"
+                  onClick={scrollToReviews}
+                  className="inline-flex items-center gap-3 group text-left cursor-pointer focus:outline-none"
+                  aria-label={`Scroll to customer reviews (${selectedShade.reviews} verified reviews, rated 4.9 out of 5 stars)`}
+                >
+                  <div className="flex items-center gap-1 text-[#FFC72C] transition-transform group-hover:scale-105">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#FFC72C] stroke-[#FFC72C]" />
+                    ))}
+                  </div>
+                  <span className="text-xs font-mono font-bold text-obsidian group-hover:text-black">
+                    4.9
+                  </span>
+                  <span className="text-ash text-xs">•</span>
+                  <span className="text-xs font-mono text-graphite underline group-hover:text-obsidian transition-colors">
+                    {selectedShade.reviews} Verified Reviews
+                  </span>
+                </a>
               </div>
             </div>
 
             {/* Pricing Row */}
             <div className="space-y-1.5 border-b border-ash/25 pb-5">
               <div className="flex items-baseline gap-3">
-                <span className="text-2xl sm:text-3xl font-mono font-bold text-obsidian">
+                <span
+                  className="text-2xl sm:text-3xl font-mono !font-normal font-[400] text-obsidian"
+                  style={{ fontWeight: 400 }}
+                >
                   {store.formatPrice(selectedKit.priceInr)}
                 </span>
                 <span className="text-sm sm:text-base font-mono text-ash line-through">
                   {store.formatPrice(selectedKit.originalInr)}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#7AC142]/20 border border-[#7AC142]/40 text-[#4e8721] font-mono text-xs font-bold">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#7AC142]/20 border border-[#7AC142]/40 text-[#4e8721] font-mono text-xs font-normal">
                   Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} (28% OFF)
                 </span>
               </div>
@@ -502,7 +504,7 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
               </p>
             </div>
 
-            {/* 1. Shade Swatch Selector (All 9 Shades) */}
+            {/* 1. Shade Swatch Selector (Only shades for the selected product color) */}
             <div className="space-y-3 border-b border-ash/25 pb-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -518,38 +520,22 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                 </span>
               </div>
 
-              {/* Swatch Pill Buttons */}
-              <div className="grid grid-cols-5 sm:grid-cols-9 gap-2">
-                {OFFICIAL_SHADES.map((shade) => {
-                  const isSelected = selectedShade.id === shade.id;
-                  return (
-                    <button
-                      key={shade.id}
-                      onClick={() => {
-                        setSelectedShade(shade);
-                        setActiveImageIdx(0);
-                      }}
-                      className={`relative flex flex-col items-center gap-1 p-1 rounded-xl transition-all group ${
-                        isSelected
-                          ? "ring-2 ring-obsidian ring-offset-2 scale-105"
-                          : "hover:scale-105 opacity-80 hover:opacity-100"
-                      }`}
-                      title={`${shade.code} - ${shade.name}`}
-                    >
-                      <span
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-black/10 shadow-xs flex items-center justify-center relative overflow-hidden"
-                        style={{ backgroundColor: shade.hex }}
-                      >
-                        {isSelected && (
-                          <Check className="w-3.5 h-3.5 text-white drop-shadow-md stroke-[3]" />
-                        )}
-                      </span>
-                      <span className="text-[9px] font-mono font-semibold text-obsidian truncate max-w-full">
-                        {shade.code}
-                      </span>
-                    </button>
-                  );
-                })}
+              {/* Swatch Pill - ONLY the exact selected product color/shade */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <div
+                  className="relative flex flex-col items-center gap-1.5 px-2 py-1.5 rounded-[14px] border-[2px] border-obsidian bg-black/[0.03] shadow-xs scale-102"
+                  title={`${selectedShade.code} - ${selectedShade.name}`}
+                >
+                  <span
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-black/10 shadow-xs flex items-center justify-center relative overflow-hidden"
+                    style={{ backgroundColor: selectedShade.hex }}
+                  >
+                    <Check className="w-4 h-4 text-white drop-shadow-md stroke-[3]" />
+                  </span>
+                  <span className="text-[10px] sm:text-[11px] font-mono font-medium text-obsidian tracking-tight">
+                    {selectedShade.code}
+                  </span>
+                </div>
               </div>
 
               <div className="p-3 rounded-xl bg-white border border-ash/30 flex items-center justify-between">
@@ -592,7 +578,7 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                     >
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-headline font-bold text-obsidian uppercase">
+                          <span className="text-xs font-montserrat font-bold text-obsidian uppercase">
                             {kit.name}
                           </span>
                           <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-platinum/60 text-obsidian border border-ash/20">
@@ -605,7 +591,10 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                       </div>
 
                       <div className="text-right shrink-0 ml-3">
-                        <span className="text-xs sm:text-sm font-mono font-bold text-obsidian block">
+                        <span
+                          className="text-xs sm:text-sm font-mono !font-normal font-[400] text-obsidian block"
+                          style={{ fontWeight: 400 }}
+                        >
                           {store.formatPrice(kit.priceInr)}
                         </span>
                         <span className="text-[10px] font-mono text-ash line-through">
@@ -664,19 +653,53 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                 </button>
               </div>
 
-              {/* Buy Now (ColourPig Signature Obsidian Black) */}
-              <button
-                type="button"
-                onClick={handleBuyNow}
-                className="w-full py-4 px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
-              >
-                <Lock className="w-4 h-4" />
-                <span>BUY IT NOW — {store.formatPrice(selectedKit.priceInr * quantity)}</span>
-              </button>
+              {/* Buy Now & Favorite Button Row */}
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleBuyNow}
+                  className="flex-1 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-[11px] sm:text-xs md:text-sm font-bold tracking-wider sm:tracking-widest uppercase flex items-center justify-center gap-1.5 sm:gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer"
+                >
+                  <Lock className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">BUY IT NOW — {store.formatPrice(selectedKit.priceInr * quantity)}</span>
+                </button>
+
+                {/* Favorite / Wishlist Button next to Buy It Now */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    store.toggleWishlist({
+                      id: selectedShade.id,
+                      name: `Colourpig Starter System (${selectedShade.name})`,
+                      category: selectedShade.category,
+                      price: selectedKit.priceInr,
+                      originalPrice: selectedKit.originalInr,
+                      image: selectedShade.cardImage,
+                      shadeCode: selectedShade.code,
+                      shadeHex: selectedShade.hex,
+                    })
+                  }
+                  className={`h-[52px] w-[52px] sm:h-[56px] sm:w-[56px] rounded-xl border border-ash/30 flex items-center justify-center transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer shrink-0 ${
+                    store.isInWishlist(selectedShade.id)
+                      ? "bg-rose-50 border-rose-300 text-rose-600"
+                      : "bg-white hover:bg-platinum/50 text-obsidian"
+                  }`}
+                  aria-label={store.isInWishlist(selectedShade.id) ? "Remove from Favorites" : "Save to Favorites"}
+                  title={store.isInWishlist(selectedShade.id) ? "Remove from Favorites" : "Add to Favorites"}
+                >
+                  <Heart
+                    className={`w-5 h-5 stroke-[2] transition-colors ${
+                      store.isInWishlist(selectedShade.id)
+                        ? "fill-rose-600 text-rose-600"
+                        : "text-obsidian"
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
 
             {/* 5. Four Core Trust Guarantee Badges Row (Matching Inspiration Screenshot) */}
-            <div className="grid grid-cols-4 gap-2 pt-4 border-t border-ash/25 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 pt-4 border-t border-ash/25 text-center">
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
                 <CheckCircle2 className="w-4 h-4 mx-auto text-[#7AC142]" />
                 <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
@@ -848,64 +871,12 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
         </div>
       </section>
 
-      {/* 3. Four Core Pillars Full-Width Dark Ribbon Bar (Matching Reference) */}
-      <section className="w-full bg-obsidian text-platinum py-8 sm:py-10 border-y border-white/10">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-          <div className="space-y-1.5">
-            <SnoutIcon className="w-5 h-5 mx-auto text-[#FFC72C]" color="#FFC72C" />
-            <h4 className="font-headline font-bold text-xs sm:text-sm text-white uppercase tracking-wider">
-              100% ROOT COVERAGE
-            </h4>
-            <p className="text-[11px] font-mono text-ash">
-              Penetrates coarse, resistant white and grey hair shafts effortlessly.
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <Wind className="w-5 h-5 mx-auto text-[#00A3E0]" />
-            <h4 className="font-headline font-bold text-xs sm:text-sm text-white uppercase tracking-wider">
-              PATENTED DUAL-CHAMBER
-            </h4>
-            <p className="text-[11px] font-mono text-ash">
-              Isolated vacuum preservation ensures maximum pigment potency.
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <Droplets className="w-5 h-5 mx-auto text-[#7AC142]" />
-            <h4 className="font-headline font-bold text-xs sm:text-sm text-white uppercase tracking-wider">
-              NO-DRIP IN-SHOWER FOAM
-            </h4>
-            <p className="text-[11px] font-mono text-ash">
-              Adheres directly to roots without running onto forehead or clothing.
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <Sparkles className="w-5 h-5 mx-auto text-[#B584C4]" />
-            <h4 className="font-headline font-bold text-xs sm:text-sm text-white uppercase tracking-wider">
-              PANTONE PRECISION
-            </h4>
-            <p className="text-[11px] font-mono text-ash">
-              9 calibrated salon tones formulate seamless transitions.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* 4. "DESIGNED FOR YOUR TRUE SHADE" — Editorial Lookbook Section */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 py-14 sm:py-20">
-        <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
-          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-            EDITORIAL ARCHIVE
-          </span>
-          <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
+        <div className="text-center max-w-4xl mx-auto mb-10 overflow-hidden px-2">
+          <h2 className="font-headline font-bold text-xs xs:text-sm sm:text-2xl md:text-3xl lg:text-4xl text-obsidian tracking-wide sm:tracking-wider uppercase whitespace-nowrap">
             DESIGNED FOR YOUR TRUE SHADE
           </h2>
-          <p className="text-xs sm:text-sm font-mono text-graphite">
-            Explore true-to-tone pigment results across different regrowth textures.
-          </p>
-          <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -923,16 +894,10 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                   className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
-                  <span className="text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md">
-                    {look.shade}
-                  </span>
+                <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="font-headline font-bold text-base sm:text-lg uppercase">
                     {look.title}
                   </h3>
-                  <p className="text-[11px] font-mono text-platinum/90 line-clamp-2">
-                    {look.description}
-                  </p>
                 </div>
               </div>
             </div>
@@ -985,6 +950,7 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                         price: prod.priceInr,
                         image: prod.image,
                         shadeCode: prod.shadeCode,
+                        shadeHex: prod.shadeHex,
                       })
                     }
                     className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
@@ -1003,13 +969,27 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
 
                   {/* Floating Pill Action Button (Desktop/Laptop hover only) */}
                   <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                    <Link
-                      href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
-                      className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        store.addToCart({
+                          id: `${prod.id}-starter-system`,
+                          name: `Colourpig Starter System | ${prod.name}`,
+                          variant: prod.category,
+                          price: prod.priceInr,
+                          image: prod.image,
+                          shadeCode: prod.shadeCode,
+                          shadeHex: prod.shadeHex,
+                        });
+                      }}
+                      className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
+                      aria-label={`Add ${prod.name} to cart`}
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
-                      <span className="truncate">VIEW PRODUCT</span>
-                    </Link>
+                      <span className="truncate">ADD TO CART</span>
+                    </button>
                   </div>
                 </div>
 
@@ -1018,14 +998,20 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                   href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
                   className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
                 >
-                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                  <p
+                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate"
+                    style={{ fontWeight: 400 }}
+                  >
                     {prod.name}
-                  </h3>
+                  </p>
                   <p className="text-[10px] sm:text-[11px] font-mono text-graphite truncate">
                     {prod.category}
                   </p>
                   <div className="flex items-baseline gap-2 mt-0.5">
-                    <span className="text-xs sm:text-sm font-mono font-bold text-obsidian">
+                    <span
+                      className="text-xs sm:text-sm font-mono !font-normal font-[400] text-obsidian"
+                      style={{ fontWeight: 400 }}
+                    >
                       {store.formatPrice(prod.priceInr)}
                     </span>
                     <span className="text-[10px] font-mono text-ash line-through">
@@ -1038,12 +1024,13 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
                 <button
                   onClick={() =>
                     store.addToCart({
-                      id: `cart-${prod.id}`,
-                      name: prod.name,
+                      id: `${prod.id}-starter-system`,
+                      name: `Colourpig Starter System | ${prod.name}`,
                       variant: prod.category,
                       price: prod.priceInr,
                       image: prod.image,
                       shadeCode: prod.shadeCode,
+                      shadeHex: prod.shadeHex,
                     })
                   }
                   className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
@@ -1058,7 +1045,10 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
       </section>
 
       {/* 6. "WHAT OUR CUSTOMERS SAY" Testimonial Section with Breakdown */}
-      <section className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 py-14 sm:py-20">
+      <section
+        id="reviews"
+        className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 py-14 sm:py-20 scroll-mt-24 sm:scroll-mt-32"
+      >
         <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
           <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
             REAL CLIENT RESULTS
@@ -1158,29 +1148,6 @@ export function ProductDetailView({ initialShadeId = "shade-4" }: ProductDetailV
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* 7. Bottom Brand Banner ("OWN YOUR COLOR #AIRHEADS") */}
-      <section className="w-full bg-obsidian text-white py-14 sm:py-20 border-t border-white/10 text-center relative overflow-hidden">
-        <div className="max-w-xl mx-auto px-4 space-y-4 relative z-10">
-          <SnoutIcon className="w-7 h-7 mx-auto text-[#FFC72C]" color="#FFC72C" />
-          <h2 className="font-headline font-bold text-2xl sm:text-4xl uppercase tracking-wider">
-            OWN YOUR COLOR #AIRHEADS
-          </h2>
-          <p className="text-xs sm:text-sm font-mono text-platinum leading-relaxed">
-            Never wait 6 weeks for a root appointment again. Patented salon permanence at your vanity.
-          </p>
-          <div className="pt-2">
-            <button
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="py-3 px-8 rounded-full bg-white text-obsidian hover:bg-platinum font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-lg active:scale-95"
-            >
-              SELECT YOUR SHADE NOW
-            </button>
-          </div>
         </div>
       </section>
     </div>

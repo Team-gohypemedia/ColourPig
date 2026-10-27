@@ -1,113 +1,114 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShoppingBag, Heart, Star } from "lucide-react";
-import { ShadeItem } from "@/components/sections/hero-section";
+import { ArrowRight, ShoppingBag, Heart } from "lucide-react";
 import { useStore } from "@/context/store-context";
 import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
 const BESTSELLER_ITEMS = [
   {
-    id: "best-shade-3",
-    name: "No.3 Brown Kit",
-    category: "Dark Espresso • Reusable System",
+    id: "prod-shade-4",
+    shadeId: "shade-4",
+    name: "NO.4 MEDIUM BROWN SYSTEM",
+    category: "Natural Chestnut • Air-Driven Touch Up",
+    shadeCode: "No.4",
+    shadeName: "Medium Brown",
+    shadeHex: "#4E4136",
     price: 89,
-    shadeHex: "#241E1C",
-    shadeCode: "No.3",
-    rating: 4.9,
-    reviews: 195,
-    image: "/Brown/Brown.jpg",
-    sideImage: "/Brown/Side.jpg",
-    video: "/Brown/Brown.mp4",
+    tag: "MOST POPULAR",
+    pantoneColor: "#FFC72C",
+    image: "/Medium Brown/MediumBrown.jpg",
   },
   {
-    id: "best-shade-5",
-    name: "No.5 Light Brown Kit",
-    category: "Warm Amber • Reusable System",
+    id: "prod-shade-7",
+    shadeId: "shade-7",
+    name: "NO.7 MEDIUM BLONDE SYSTEM",
+    category: "Warm Golden • Air-Driven Touch Up",
+    shadeCode: "No.7",
+    shadeName: "Medium Blonde",
+    shadeHex: "#BE966C",
     price: 89,
-    shadeHex: "#624F44",
-    shadeCode: "No.5",
-    rating: 4.8,
-    reviews: 167,
-    image: "/Light Brown/LightBrown01.jpg",
-    sideImage: "/Light Brown/Side.jpg",
-    video: "/Light Brown/Light Brown.mp4",
+    tag: "HIGH DEMAND",
+    pantoneColor: "#FF671F",
+    image: "/Medium Blonde/MediumBlonde.jpg",
   },
   {
-    id: "best-shade-6",
-    name: "No.6 Dark Blonde Kit",
-    category: "Deep Honey Blonde • Reusable System",
+    id: "prod-shade-1",
+    shadeId: "shade-1",
+    name: "NO.1 BLACK SYSTEM",
+    category: "Pure Mineral Jet • 100% Coverage",
+    shadeCode: "No.1",
+    shadeName: "Black",
+    shadeHex: "#2D2C2D",
     price: 89,
-    shadeHex: "#755A42",
-    shadeCode: "No.6",
-    rating: 4.9,
-    reviews: 182,
-    image: "/Dark Blonde/DarkBlonde.jpg",
-    sideImage: "/Dark Blonde/Side.jpg",
-    video: "/Dark Blonde/Dark Blonde.mp4",
+    tag: "INTENSE PIGMENT",
+    pantoneColor: "#00A3E0",
+    image: "/Black/Black.jpg",
   },
   {
-    id: "best-shade-8",
-    name: "No.8 Light Blonde Kit",
-    category: "Luminous Sunlit • Reusable System",
+    id: "prod-shade-0-0",
+    shadeId: "shade-0-0",
+    name: "NO.0/0 CLEAR GLOSS SYSTEM",
+    category: "Universal Sheen • Multi-Use",
+    shadeCode: "No.0/0",
+    shadeName: "Clear",
+    shadeHex: "#F2EFF0",
     price: 89,
-    shadeHex: "#D2A982",
-    shadeCode: "No.8",
-    rating: 4.9,
-    reviews: 149,
-    image: "/Light Blonde/LightBlonde.jpg",
-    sideImage: "/Light Blonde/Side.jpg",
-    video: "/Light Blonde/Nob Light blonde.mp4",
+    tag: "MULTI-USE",
+    pantoneColor: "#B584C4",
+    image: "/images/products/cards/shade_card_1.jpg",
   },
 ];
 
-export function Bestsellers({
-  onAddToCart,
-}: {
-  onAddToCart?: (shade: ShadeItem) => void;
-}) {
+interface BestsellersProps {
+  onAddToCart?: (shade: any) => void;
+}
+
+export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
   const store = useStore();
 
   const handleToggleWishlist = (item: (typeof BESTSELLER_ITEMS)[0], e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     store.toggleWishlist({
       id: item.id,
       name: item.name,
       category: item.category,
-      price: item.price,
+      price: 2499,
       image: item.image,
       shadeCode: item.shadeCode,
+      shadeHex: item.shadeHex,
     });
   };
 
   return (
-    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full">
+    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full select-none">
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-10 sm:mb-16 space-y-2">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
         <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
           CLIENT FAVORITES
         </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase">
+        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase leading-tight">
           BESTSELLERS
         </h2>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-3" />
+        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
       </Reveal>
 
       {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
         {BESTSELLER_ITEMS.map((item, idx) => (
           <RevealCard
             key={item.id}
             index={idx}
             className="group flex flex-col"
           >
-            {/* Portrait Image Container with Minimal Corners */}
-            <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
+            {/* Portrait Image Container with Rounded Corners matching Reference Screenshot */}
+            <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#EAECEB] shadow-xs group-hover:shadow-md transition-all duration-300">
               <RevealImage>
                 <Link
-                  href={`/product?shade=${item.id.replace("best-", "")}`}
+                  href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}
                   className="block w-full h-full relative"
                 >
                   <Image
@@ -120,13 +121,6 @@ export function Bestsellers({
                 </Link>
               </RevealImage>
 
-              {/* Reviews rating pill on top left */}
-              <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5 z-10 flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur text-obsidian text-[9px] sm:text-[10px] font-mono shadow-xs pointer-events-none">
-                <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-amber-500 text-amber-500" />
-                <span className="font-bold">{item.rating}</span>
-                <span className="text-graphite hidden xs:inline sm:inline">({item.reviews})</span>
-              </div>
-
               {/* Top-Right Circular Wishlist Button */}
               <button
                 type="button"
@@ -136,7 +130,7 @@ export function Bestsellers({
                     ? "opacity-100 text-rose-600"
                     : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
                 }`}
-                aria-label="Wishlist"
+                aria-label={`Wishlist ${item.name}`}
               >
                 <Heart
                   className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
@@ -147,26 +141,46 @@ export function Bestsellers({
 
               {/* Floating Pill Action Button (Desktop hover only) */}
               <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                <Link
-                  href={`/product?shade=${item.id.replace("best-", "")}`}
-                  className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95"
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    store.addToCart({
+                      id: `${item.id}-system`,
+                      name: item.name,
+                      variant: item.category,
+                      price: 2499,
+                      image: item.image,
+                      shadeCode: item.shadeCode,
+                      shadeHex: item.shadeHex,
+                    });
+                  }}
+                  className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-montserrat font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
+                  aria-label={`Add ${item.name} to cart`}
                 >
                   <ShoppingBag className="w-3.5 h-3.5" />
-                  <span className="truncate">VIEW PRODUCT</span>
-                </Link>
+                  <span className="truncate">ADD TO CART</span>
+                </button>
               </div>
             </div>
 
-            {/* Left-Aligned Product Typography below Image */}
+            {/* Left-Aligned Product Typography below Image (Matching Reference Screenshot) */}
             <RevealLabel>
               <Link
-                href={`/product?shade=${item.id.replace("best-", "")}`}
+                href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}
                 className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
               >
-                <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                <p
+                  className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate"
+                  style={{ fontWeight: 400 }}
+                >
                   {item.name}
-                </h3>
-                <p className="font-mono text-xs sm:text-sm font-semibold text-obsidian">
+                </p>
+                <p
+                  className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] text-obsidian"
+                  style={{ fontWeight: 400 }}
+                >
                   ${item.price} USD
                 </p>
               </Link>
@@ -176,15 +190,16 @@ export function Bestsellers({
             <button
               onClick={() =>
                 store.addToCart({
-                  id: item.id,
+                  id: `${item.id}-system`,
                   name: item.name,
                   variant: item.category,
-                  price: item.price,
+                  price: 2499,
                   image: item.image,
                   shadeCode: item.shadeCode,
+                  shadeHex: item.shadeHex,
                 })
               }
-              className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
+              className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-montserrat font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
             >
               <ShoppingBag className="w-3 h-3" />
               <span>ADD TO BAG</span>
@@ -195,13 +210,15 @@ export function Bestsellers({
 
       <div className="text-center mt-10 sm:mt-14">
         <Link
-          href="#shades"
-          className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-obsidian border-b border-obsidian/40 pb-1 hover:border-obsidian hover:text-black transition-all font-semibold"
+          href="/collection"
+          className="inline-flex items-center gap-2 text-xs font-montserrat tracking-[0.2em] uppercase text-obsidian border-b border-obsidian/40 pb-1 hover:border-obsidian hover:text-black transition-all font-semibold"
         >
-          <span>VIEW ALL BESTSELLERS</span>
+          <span>VIEW FULL ARCHIVE COLLECTION</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </section>
   );
 }
+
+export default Bestsellers;

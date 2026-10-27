@@ -3,6 +3,7 @@
 import React from "react";
 import { ColourpigLogo } from "@/components/brand/logo";
 import { Mail, MapPin, Globe } from "lucide-react";
+import { scrollToStarterSystems } from "@/lib/scroll-utils";
 
 function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -92,15 +93,32 @@ export function EcommFooter() {
                 SHADES
               </span>
               <ul className="space-y-2.5 text-xs sm:text-[13px] text-ash/80">
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.0/0 Clear Gloss</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.1 Mineral Black</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.3 Espresso Brown</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.4 Medium Brown</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.5 Light Brown</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.6 Dark Blonde</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.7 Medium Blonde</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.8 Light Blonde</a></li>
-                <li><a href="#bestsellers" className="hover:text-white transition-colors">No.9 Light Ash Blonde</a></li>
+                {[
+                  "No.0/0 Clear Gloss",
+                  "No.1 Mineral Black",
+                  "No.3 Espresso Brown",
+                  "No.4 Medium Brown",
+                  "No.5 Light Brown",
+                  "No.6 Dark Blonde",
+                  "No.7 Medium Blonde",
+                  "No.8 Light Blonde",
+                  "No.9 Light Ash Blonde",
+                ].map((shadeName) => (
+                  <li key={shadeName}>
+                    <a
+                      href="/#shades"
+                      onClick={(e) => {
+                        if (typeof window !== "undefined" && window.location.pathname === "/") {
+                          e.preventDefault();
+                          scrollToStarterSystems();
+                        }
+                      }}
+                      className="hover:text-white transition-colors cursor-pointer"
+                    >
+                      {shadeName}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -169,7 +187,7 @@ export function EcommFooter() {
           <p className="text-center md:text-left">
             © 2026 ColourPig by Norman &amp; Brown. All rights reserved. Registered Norman Brown Pty Ltd.
           </p>
-          <div className="flex items-center gap-4 sm:gap-6 text-ash/70">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-4 sm:gap-x-6 gap-y-2 text-ash/70">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
             <a href="#" className="hover:text-white transition-colors">Shipping &amp; Returns</a>

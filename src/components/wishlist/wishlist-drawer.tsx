@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
-import { useStore } from "@/context/store-context";
+import { useStore, WishlistItem } from "@/context/store-context";
 
 export function WishlistDrawer() {
   const {
@@ -19,6 +19,22 @@ export function WishlistDrawer() {
   } = useStore();
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const getWishlistProductLink = (item: WishlistItem) => {
+    if (item.shadeCode) {
+      const raw = item.shadeCode
+        .toLowerCase()
+        .replace("no.", "")
+        .replace("#", "")
+        .replace("/", "-")
+        .trim();
+      return `/product?shade=${raw}`;
+    }
+    if (item.id && item.id.startsWith("shade-")) {
+      return `/product?shade=${item.id}`;
+    }
+    return "/product";
+  };
 
   return (
     <AnimatePresence>
@@ -102,12 +118,13 @@ export function WishlistDrawer() {
                       Tap the heart icon on any shade or applicator to save it for later.
                     </p>
                   </div>
-                  <button
+                  <Link
+                    href="/product"
                     onClick={closeWishlist}
                     className="mt-2 inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-obsidian text-white text-xs font-mono font-semibold tracking-wider uppercase hover:bg-black transition-colors"
                   >
                     Browse Collection
-                  </button>
+                  </Link>
                 </div>
               ) : (
                 wishlist.map((item) => (
@@ -130,18 +147,36 @@ export function WishlistDrawer() {
                     <div className="flex-1 min-w-0 flex flex-col justify-between min-h-[96px] sm:min-h-[104px] py-0.5">
                       <div>
                         <Link
-                          href="/product"
+                          href={getWishlistProductLink(item)}
                           onClick={closeWishlist}
-                          className="text-xs sm:text-[13px] font-headline font-bold text-obsidian leading-snug line-clamp-2 hover:underline block"
+                          className="text-xs sm:text-[13px] font-montserrat font-bold text-obsidian leading-snug line-clamp-2 hover:underline block"
                         >
                           {item.name}
                         </Link>
-                        {item.category && (
-                          <p className="text-[10px] text-graphite font-mono mt-0.5 truncate">
-                            {item.category}
-                          </p>
-                        )}
-                        <p className="text-xs sm:text-sm font-bold font-mono text-obsidian mt-1.5">
+                        {/* Selected Color & Shade Badge */}
+                        <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                          {item.shadeHex && (
+                            <span
+                              className="w-3 h-3 rounded-full border border-black/20 shrink-0 shadow-2xs inline-block"
+                              style={{ backgroundColor: item.shadeHex }}
+                              title={item.shadeCode || item.category}
+                            />
+                          )}
+                          {item.shadeCode && (
+                            <span className="text-[10px] font-mono font-bold text-obsidian px-1.5 py-0.5 rounded bg-platinum/50 border border-ash/30 uppercase">
+                              {item.shadeCode}
+                            </span>
+                          )}
+                          {item.category && (
+                            <span className="text-[10px] text-graphite font-mono truncate max-w-[170px]">
+                              {item.category}
+                            </span>
+                          )}
+                        </div>
+                        <p
+                          className="text-xs sm:text-sm !font-normal font-[400] font-mono text-obsidian mt-1.5"
+                          style={{ fontWeight: 400 }}
+                        >
                           {formatPrice(item.price)}
                         </p>
                       </div>
@@ -159,7 +194,7 @@ export function WishlistDrawer() {
                         {/* View / Add Button in ColourPig Theme Color */}
                         <button
                           onClick={() => moveFromWishlistToCart(item.id)}
-                          className="py-2 px-3 rounded-xl bg-obsidian hover:bg-black text-white text-[11px] font-mono font-bold tracking-wider uppercase text-center transition-colors shadow-2xs"
+                          className="py-2 px-3 rounded-xl bg-obsidian hover:bg-black text-white text-[11px] font-mono font-bold tracking-wider uppercase text-center transition-colors shadow-2xs active:scale-95"
                         >
                           Add to Bag
                         </button>

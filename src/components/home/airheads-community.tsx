@@ -39,7 +39,7 @@ const mediaItems: MediaItemType[] = [
     orientation: "landscape",
     title: "Pallets Ready to Ship",
     desc: "Grey Touch Up Air Driven Systems on the warehouse floor.",
-    url: "/gallary/web/warehouse-wide-2.jpg",
+    url: "/gallary/web/warehouse-wide-2.png",
   },
   {
     id: 5,
@@ -70,10 +70,10 @@ const mediaItems: MediaItemType[] = [
 
 export function AirheadsCommunity() {
   return (
-    <section className="relative w-full overflow-hidden bg-black text-white py-14 sm:py-20 border-t border-white/10 select-none">
+    <section className="relative w-full overflow-hidden bg-black text-white py-10 sm:py-16 border-t border-white/10 select-none">
       <InteractiveBentoGallery
         mediaItems={mediaItems}
-        title="Gallery Shots Collection"
+        title="GALLERY SHOTS COLLECTION"
         description="Drag and explore our curated collection of shots"
       />
     </section>

@@ -31,10 +31,12 @@ function HomeContent() {
     const foundShade = OFFICIAL_SHADES.find((s) => s.code === shade.code);
     const imagePath = foundShade?.cardImage || "/Medium Brown/Medium Brown.00000.png";
 
+    const shadeId = foundShade?.id || `shade-${shade.code.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}`;
+
     addToCart({
-      id: `system-${shade.code.replace("#", "").replace("/", "-")}`,
-      name: `Colourpig Starter System (${shade.name})`,
-      variant: `${shade.undertone} • Air-Driven Touch Up`,
+      id: `${shadeId}-starter-system`,
+      name: `Colourpig Starter System | ${shade.name}`,
+      variant: `${shade.undertone} • Complete Starter System`,
       price: 2499,
       originalPrice: 3499,
       image: imagePath,
@@ -96,7 +98,7 @@ function HomeContent() {
       </div>
 
       {/* 10. COMMUNITY ARCHIVE (#AIRHEADS) */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
+      <div className="w-full bg-black text-white border-b border-white/10">
         <AirheadsCommunity />
       </div>
 

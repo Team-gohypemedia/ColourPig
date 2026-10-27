@@ -30,9 +30,14 @@ const config: Config = {
         },
       },
       fontFamily: {
-        headline: ["'Space Grotesk'", "sans-serif"],
-        body: ["'Inter'", "sans-serif"],
-        mono: ["'JetBrains Mono'", "monospace"],
+        headline: ["'Cormorant Garamond'", "Georgia", "serif"],
+        title: ["'Cormorant Garamond'", "Georgia", "serif"],
+        serif: ["'Cormorant Garamond'", "Georgia", "serif"],
+        cormorant: ["'Cormorant Garamond'", "Georgia", "serif"],
+        body: ["'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        sans: ["'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono: ["'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        montserrat: ["'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
       },
       letterSpacing: {
         tightest: "-0.04em",

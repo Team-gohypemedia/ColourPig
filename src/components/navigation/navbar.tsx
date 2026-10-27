@@ -4,10 +4,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ColourpigLogo, SnoutIcon } from "@/components/brand/logo";
-import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, User, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { useStore } from "@/context/store-context";
 import { StoryModal } from "@/components/navigation/story-modal";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { OFFICIAL_SHADES } from "@/data/shades";
+import { scrollToStarterSystems } from "@/lib/scroll-utils";
 
 // Shown one at a time on mobile; desktop lays them out across the bar
 const ANNOUNCEMENTS = [
@@ -95,6 +97,17 @@ export function Navbar({
 
   const announcementBg = "bg-black border-b border-white/10";
 
+  const handleShadesNavClick = (e?: React.MouseEvent) => {
+    if (typeof window !== "undefined") {
+      if (window.location.pathname === "/") {
+        if (e) e.preventDefault();
+        scrollToStarterSystems();
+      } else {
+        window.location.href = "/#shades";
+      }
+    }
+  };
+
   return (
     <div className="w-full fixed top-0 left-0 right-0 z-50">
       {/* Spectrum Ribbon Line */}
@@ -159,24 +172,52 @@ export function Navbar({
               <Menu className="w-5 h-5" />
             </button>
 
-            <nav className="hidden lg:flex items-center gap-8 text-[12px] font-mono font-medium tracking-[0.16em] uppercase text-platinum/90">
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[12px] font-mono font-medium tracking-[0.14em] uppercase text-platinum/90">
+              {/* Shades Nav Link with Hover Dropdown */}
+              <div className="relative group/shades py-2">
+                <Link
+                  href="/#shades"
+                  onClick={handleShadesNavClick}
+                  className="hover:text-white transition-opacity duration-200 flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Shades</span>
+                  <ChevronDown className="w-3 h-3 text-platinum/70 group-hover/shades:text-white group-hover/shades:rotate-180 transition-transform duration-200" />
+                </Link>
+
+                {/* Flyout Dropdown displaying all 9 official shades */}
+                <div className="absolute top-full left-0 mt-1 w-64 p-2.5 rounded-2xl bg-obsidian/95 backdrop-blur-xl border border-white/10 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/shades:opacity-100 group-hover/shades:translate-y-0 group-hover/shades:pointer-events-auto transition-all duration-200 z-50">
+                  <div className="text-[10px] font-mono tracking-widest uppercase text-ash/80 px-2 py-1 border-b border-white/10 mb-1.5 flex justify-between items-center">
+                    <span>STARTER SYSTEMS</span>
+                    <span>9 SHADES</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-0.5">
+                    {OFFICIAL_SHADES.map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={(e) => {
+                          handleShadesNavClick(e);
+                        }}
+                        className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-white/10 text-left transition-colors group/item w-full cursor-pointer"
+                      >
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-white/20 shrink-0 shadow-xs"
+                          style={{ backgroundColor: s.hex }}
+                        />
+                        <span className="text-[11px] font-mono text-platinum group-hover/item:text-white font-medium block truncate">
+                          {s.code} {s.name.replace(/No\.\S+\s*/, "")}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               <Link
-                href="/product"
-                className="hover:text-white transition-opacity duration-200 text-white font-bold"
-              >
-                Shop System
-              </Link>
-              <Link
-                href="/#shades"
+                href="/collection"
                 className="hover:text-white transition-opacity duration-200"
               >
-                Shades
-              </Link>
-              <Link
-                href="/#bestsellers"
-                className="hover:text-white transition-opacity duration-200"
-              >
-                Bestsellers
+                Collection
               </Link>
             </nav>
           </div>
@@ -319,25 +360,21 @@ export function Navbar({
             {/* Primary Nav Links */}
             <div className="space-y-1">
               <Link
-                href="/#system"
+                href="/collection"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 px-2 rounded-lg transition-colors"
+                className="block py-2 px-2 rounded-lg transition-colors font-medium text-white"
               >
-                The System
+                Collection
               </Link>
               <Link
                 href="/#shades"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleShadesNavClick(e);
+                }}
                 className="block py-2 px-2 rounded-lg transition-colors"
               >
                 Shades
-              </Link>
-              <Link
-                href="/#bestsellers"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 px-2 rounded-lg transition-colors"
-              >
-                Bestsellers
               </Link>
               <Link
                 href="/#shade-finder"

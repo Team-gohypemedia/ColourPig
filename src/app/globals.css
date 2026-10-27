@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -18,18 +18,44 @@
   body {
     background-color: var(--color-obsidian);
     color: var(--color-platinum);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, .font-headline {
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: -0.02em;
+  /* Titles ONLY: Section titles, page headers, editorial headlines */
+  h1, h2, .font-title, .font-cormorant, .cormorant-garamond {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: normal;
   }
 
-  .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+  /* All other elements: Product names, body, descriptions, h3-h6, buttons, metadata */
+  h3, h4, h5, h6, .font-mono, .font-body, .font-sans, .font-montserrat, .montserrat, .product-name {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   }
+}
+
+.product-name, .product-title {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.cormorant-garamond-700 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+}
+
+.cormorant-garamond-600 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+}
+
+.montserrat-500 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+.montserrat-600 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
 }
 
 /* Image 1: Iconic Hero Luminous Spotlight Background (Page 1 & 5) */

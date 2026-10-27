@@ -14,8 +14,113 @@ export interface ShadeProduct {
   modelImage: string;
   description: string;
   undertone: string;
+  colorFamily?: "black" | "brown" | "blonde" | "clear";
   rating: number;
   reviews: number;
+}
+
+export interface ColorFamily {
+  id: "black" | "brown" | "blonde" | "clear";
+  name: string;
+  hex: string;
+  description: string;
+  shadeIds: string[];
+}
+
+export const COLOR_FAMILIES: ColorFamily[] = [
+  {
+    id: "black",
+    name: "Black",
+    hex: "#2D2C2D",
+    description: "Deep mineral jet black with resistant root coverage",
+    shadeIds: ["shade-1"],
+  },
+  {
+    id: "brown",
+    name: "Brown",
+    hex: "#4E4136",
+    description: "Rich espresso, chestnut, and amber brown tones",
+    shadeIds: ["shade-3", "shade-4", "shade-5"],
+  },
+  {
+    id: "blonde",
+    name: "Blonde",
+    hex: "#BE966C",
+    description: "Honey, golden, sunlit, and champagne blonde tones",
+    shadeIds: ["shade-6", "shade-7", "shade-8", "shade-9"],
+  },
+  {
+    id: "clear",
+    name: "Clear",
+    hex: "#F2EFF0",
+    description: "Universal gloss and translucent gray blending",
+    shadeIds: ["shade-0-0"],
+  },
+];
+
+export function getColorFamilyForShade(shadeIdOrCode: string): ColorFamily {
+  const normalized = shadeIdOrCode.trim().toLowerCase();
+
+  if (
+    normalized === "shade-1" ||
+    normalized === "no.1" ||
+    normalized === "1" ||
+    normalized.includes("black")
+  ) {
+    return COLOR_FAMILIES[0];
+  }
+
+  if (
+    normalized === "shade-3" ||
+    normalized === "shade-4" ||
+    normalized === "shade-5" ||
+    normalized === "no.3" ||
+    normalized === "no.4" ||
+    normalized === "no.5" ||
+    normalized === "3" ||
+    normalized === "4" ||
+    normalized === "5" ||
+    normalized.includes("brown")
+  ) {
+    return COLOR_FAMILIES[1];
+  }
+
+  if (
+    normalized === "shade-6" ||
+    normalized === "shade-7" ||
+    normalized === "shade-8" ||
+    normalized === "shade-9" ||
+    normalized === "no.6" ||
+    normalized === "no.7" ||
+    normalized === "no.8" ||
+    normalized === "no.9" ||
+    normalized === "6" ||
+    normalized === "7" ||
+    normalized === "8" ||
+    normalized === "9" ||
+    normalized.includes("blonde")
+  ) {
+    return COLOR_FAMILIES[2];
+  }
+
+  if (
+    normalized === "shade-0-0" ||
+    normalized === "no.0/0" ||
+    normalized === "0/0" ||
+    normalized === "0-0" ||
+    normalized.includes("clear")
+  ) {
+    return COLOR_FAMILIES[3];
+  }
+
+  const found = OFFICIAL_SHADES.find(
+    (s) => s.id === shadeIdOrCode || s.code === shadeIdOrCode || s.code === `No.${shadeIdOrCode}`
+  );
+  if (found) {
+    return getColorFamilyForShade(found.id);
+  }
+
+  return COLOR_FAMILIES[1];
 }
 
 export const OFFICIAL_SHADES: ShadeProduct[] = [
