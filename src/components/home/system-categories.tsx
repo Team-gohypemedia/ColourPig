@@ -15,7 +15,7 @@ const COLLECTIONS = [
     image: "/images/products/cards/shade_card_2.jpg",
     link: "/product?shade=shade-1&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_2.jpg",
     pantone: "123C",
-    hex: "#FFC72C",
+    hex: "#FFFFFF",
     badge: "DEEP DARKS",
   },
   {
@@ -25,7 +25,7 @@ const COLLECTIONS = [
     image: "/images/products/cards/shade_card_4.jpg",
     link: "/product?shade=shade-4&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_4.jpg",
     pantone: "299C",
-    hex: "#00A3E0",
+    hex: "#FFFFFF",
     badge: "RICH BROWNS",
   },
   {
@@ -35,7 +35,7 @@ const COLLECTIONS = [
     image: "/images/products/cards/shade_card_7.jpg",
     link: "/product?shade=shade-7&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_7.jpg",
     pantone: "1905C",
-    hex: "#F08EAB",
+    hex: "#FFFFFF",
     badge: "GOLDEN BLONDES",
   },
   {
@@ -45,7 +45,7 @@ const COLLECTIONS = [
     image: "/images/products/cards/shade_card_9.jpg",
     link: "/product?shade=shade-9&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_9.jpg",
     pantone: "375C",
-    hex: "#7AC142",
+    hex: "#FFFFFF",
     badge: "LIGHT BLONDES",
   },
   {
@@ -55,7 +55,7 @@ const COLLECTIONS = [
     image: "/images/products/cards/shade_card_1.jpg",
     link: "/product?shade=shade-0-0&image=%2Fimages%2Fproducts%2Fcards%2Fshade_card_1.jpg",
     pantone: "165C",
-    hex: "#FF671F",
+    hex: "#FFFFFF",
     badge: "CLEAR GLOSS",
   },
 ];

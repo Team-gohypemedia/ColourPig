@@ -12,7 +12,7 @@ const SPECIFICATION_CARDS = [
     subtitle: "PATENTED COMPRESSION ENGINE",
     desc: "Proprietary zero-propellant air-compression pump simultaneously delivers fresh colour cream and developer in an exact 1:1 synchronized ratio. Eliminates bowls, shaking, and mess.",
     pantone: "299C",
-    hex: "#00A3E0",
+    hex: "#C8CDD2",
     image: "/images/spec_full_dispenser.jpg",
     specs: [
       "Zero Propellants · Zero Air-Oxidation",
@@ -25,7 +25,7 @@ const SPECIFICATION_CARDS = [
     subtitle: "204MM × 74MM CYLINDRICAL TUBE",
     desc: "Pre-calibrated dual delivery engineered for 4–6 precision root touch-ups (10–20ml per application). Keeps fresh for up to 8 weeks, eliminating 90% of waste and 75% of single-use plastic.",
     pantone: "165C",
-    hex: "#FF671F",
+    hex: "#C8CDD2",
     image: "/images/spec_full_packaging.jpg",
     specs: [
       "Dimensions: 204mm (H) × 74mm (Ø)",
@@ -38,7 +38,7 @@ const SPECIFICATION_CARDS = [
     subtitle: "5-PART PRECISION SALON KIT",
     desc: "Every system arrives equipped with salon-grade aftercare and application tools engineered for in-shower root touch-up with zero dripping and complete grey coverage.",
     pantone: "375C",
-    hex: "#7AC142",
+    hex: "#C8CDD2",
     image: "/images/spec_full_aftercare.jpg",
     specs: [
       "Stain Remover (10ml) & Salon Gloves",

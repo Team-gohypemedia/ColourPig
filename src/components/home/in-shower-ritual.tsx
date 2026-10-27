@@ -13,7 +13,7 @@ const RITUAL_STEPS = [
     subtitle: "AIR-DRIVEN DISPENSER",
     pantone: "165C",
     pantoneName: "Tangerine",
-    hex: "#FF671F",
+    hex: "#C8CDD2",
     desc: "Press canister to release pre-measured dual formulas evenly into the tray without mess.",
     image: "/images/ritual_step_1_card.png",
   },
@@ -23,7 +23,7 @@ const RITUAL_STEPS = [
     subtitle: "APPLICATION TRAY",
     pantone: "299C",
     pantoneName: "Cyan",
-    hex: "#00A3E0",
+    hex: "#C8CDD2",
     desc: "Dispense formulas directly into custom tray and blend evenly with precision brush.",
     image: "/images/ritual_step_2_card.png",
   },
@@ -33,7 +33,7 @@ const RITUAL_STEPS = [
     subtitle: "PRECISION BRUSH",
     pantone: "375C",
     pantoneName: "Lime",
-    hex: "#7AC142",
+    hex: "#C8CDD2",
     desc: "Use precision brush to target roots, part line, and resistant grey regrowth.",
     image: "/images/ritual_step_3_card.png",
   },
@@ -43,7 +43,7 @@ const RITUAL_STEPS = [
     subtitle: "30-MIN TIMER",
     pantone: "123C",
     pantoneName: "Yellow",
-    hex: "#FFC72C",
+    hex: "#C8CDD2",
     desc: "Allow 30 minutes for permanent, salon-grade 100% grey coverage.",
     image: "/images/ritual_step_4_card.png",
   },
@@ -53,7 +53,7 @@ const RITUAL_STEPS = [
     subtitle: "SHAMPOO & CARE",
     pantone: "2572C",
     pantoneName: "Lilac",
-    hex: "#B584C4",
+    hex: "#C8CDD2",
     desc: "Rinse thoroughly with warm water, follow with included shampoo and conditioner.",
     image: "/images/ritual_step_5_card.png",
   },
@@ -63,7 +63,7 @@ const RITUAL_STEPS = [
     subtitle: "STAIN REMOVER",
     pantone: "190C",
     pantoneName: "Rose",
-    hex: "#F08EAB",
+    hex: "#C8CDD2",
     desc: "Wipe hairline and skin clean with gentle stain remover sachet for zero residue.",
     image: "/images/ritual_step_6_card.png",
   },
@@ -170,7 +170,7 @@ export function InShowerRitual() {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 lg:px-1"
+          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 lg:px-1 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:pb-0"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {RITUAL_STEPS.map((item, idx) => {
@@ -179,7 +179,7 @@ export function InShowerRitual() {
               <div
                 key={item.step}
                 onClick={() => scrollToIndex(idx)}
-                className={`w-[78vw] max-w-[310px] sm:w-[320px] md:w-[340px] lg:max-w-none lg:w-[calc((100%-3.75rem)/4)] 2xl:w-[calc((100%-5rem)/5)] shrink-0 snap-center lg:snap-start group relative rounded-lg bg-[#13212E] border p-3.5 sm:p-4 flex flex-col justify-between h-auto min-h-[350px] sm:min-h-[380px] overflow-hidden cursor-pointer transition-all duration-300 ${
+                className={`w-[78vw] max-w-[310px] sm:w-[320px] md:w-[340px] lg:max-w-none lg:w-auto shrink-0 snap-center lg:snap-align-none group relative rounded-lg bg-[#13212E] border p-3.5 sm:p-4 flex flex-col justify-between h-auto min-h-[350px] sm:min-h-[380px] lg:min-h-0 lg:p-0 lg:border-0 lg:bg-transparent lg:shadow-none lg:ring-0 lg:cursor-default overflow-hidden cursor-pointer transition-all duration-300 ${
                   isActive
                     ? "border-white/40 shadow-2xl shadow-black/80 ring-1 ring-white/10"
                     : "border-white/10 hover:border-white/25 hover:shadow-lg"
@@ -187,12 +187,12 @@ export function InShowerRitual() {
               >
                 {/* Colored Top Accent Stripe */}
                 <div
-                  className="absolute top-0 inset-x-0 h-1 sm:h-1.5 transition-all duration-300 group-hover:h-2"
+                  className="lg:hidden absolute top-0 inset-x-0 h-1 sm:h-1.5 transition-all duration-300 group-hover:h-2"
                   style={{ backgroundColor: item.hex }}
                 />
 
                 {/* Step Number & Pantone Tag Top */}
-                <div className="flex justify-between items-center z-10 pt-1">
+                <div className="lg:hidden flex justify-between items-center z-10 pt-1">
                   <div className="flex items-center gap-1.5">
                     <span
                       className="font-mono text-base sm:text-lg font-black transition-colors"
@@ -218,18 +218,18 @@ export function InShowerRitual() {
                 </div>
 
                 {/* Packaging Illustration Frame */}
-                <div className="relative w-full aspect-[4/3] rounded overflow-hidden my-2.5 sm:my-3 shadow-xs bg-[#63727D]">
+                <div className="relative w-full aspect-[4/3] rounded overflow-hidden my-2.5 sm:my-3 lg:my-0 shadow-xs bg-[#63727D]">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
                     sizes="(max-width: 640px) 78vw, (max-width: 1024px) 340px, (max-width: 1536px) 25vw, 20vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover object-center lg:group-hover:scale-100 group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
 
                 {/* Bottom Meta */}
-                <div className="space-y-1.5 z-10 text-center">
+                <div className="lg:hidden space-y-1.5 z-10 text-center">
                   <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-white truncate">
                     {item.title}
                   </h3>
@@ -244,7 +244,7 @@ export function InShowerRitual() {
       </Reveal>
 
       {/* Progress Bar Indicator */}
-      <div className="w-full max-w-md mx-auto h-[2px] bg-white/10 rounded-full overflow-hidden mt-6">
+      <div className="lg:hidden w-full max-w-md mx-auto h-[2px] bg-white/10 rounded-full overflow-hidden mt-6">
         <div
           className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
           style={{
@@ -255,7 +255,7 @@ export function InShowerRitual() {
       </div>
 
       {/* Footer Navigation Bar (Step Counter + Pantone Dots + Arrow Controls) */}
-      <div className="flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
+      <div className="lg:hidden flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
         {/* Step Indicator */}
         <span className="text-[11px] font-mono tracking-widest uppercase text-ash/90 font-medium">
           STEP <SwapText value={activeIndex + 1} /> OF {RITUAL_STEPS.length}

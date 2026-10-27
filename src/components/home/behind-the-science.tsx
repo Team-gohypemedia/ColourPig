@@ -78,7 +78,7 @@ export function BehindTheScience() {
             style={animate ? { scaleX: contentScaleX, scaleY: contentScaleY } : undefined}
           >
             {/* Colourpig spectrum accent line */}
-            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#FF671F] via-[#FFC72C] via-[#7AC142] via-[#00A3E0] to-[#B584C4] z-20" />
+            <div className="absolute top-0 inset-x-0 h-1 bg-white/15 z-20" />
 
             {/* Video layer overhangs top and bottom so the parallax drift never shows an edge */}
             <motion.div className="absolute inset-x-0 -top-[6%] -bottom-[6%]" style={animate ? { y: videoY } : undefined}>

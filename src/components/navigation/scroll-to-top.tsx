@@ -62,7 +62,7 @@ export function ScrollToTop() {
             cx="24"
             cy="24"
             r="20"
-            className="stroke-[#7AC142] transition-all duration-150 ease-out"
+            className="stroke-[#C8CDD2] transition-all duration-150 ease-out"
             strokeWidth="2.5"
             strokeDasharray={125.6}
             strokeDashoffset={125.6 - (125.6 * scrollProgress) / 100}

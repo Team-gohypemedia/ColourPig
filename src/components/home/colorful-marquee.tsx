@@ -7,55 +7,53 @@ const MARQUEE_ITEMS = [
     type: "lockup",
     content: (
       <span className="font-headline font-black tracking-wider uppercase">
-        <span className="text-[#FFC72C]">GREY</span>{" "}
-        <span className="text-[#F08EAB]">TOUCH</span>{" "}
-        <span className="text-[#00A3E0]">UP</span>
+        <span className="text-white">GREY TOUCH UP</span>
       </span>
     ),
   },
   {
     type: "text",
-    color: "#FF671F",
+    color: "#E5E5E5",
     text: "AIR DRIVEN DISPENSER",
   },
   {
     type: "text",
-    color: "#7AC142",
+    color: "#E5E5E5",
     text: "NO MIXING • NO MESS",
   },
   {
     type: "text",
-    color: "#B584C4",
+    color: "#E5E5E5",
     text: "PERMANENT SYSTEM",
   },
   {
     type: "text",
-    color: "#00A3E0",
+    color: "#E5E5E5",
     text: "REUSABLE CANISTER HARDWARE",
   },
   {
     type: "text",
-    color: "#F08EAB",
+    color: "#E5E5E5",
     text: "NORMAN & BROWN SYDNEY",
   },
   {
     type: "text",
-    color: "#FFC72C",
+    color: "#E5E5E5",
     text: "30-MINUTE DEVELOPMENT",
   },
   {
     type: "text",
-    color: "#7AC142",
+    color: "#E5E5E5",
     text: "SALON GRADE PIGMENTS",
   },
   {
     type: "text",
-    color: "#FF671F",
+    color: "#E5E5E5",
     text: "DUAL-CHAMBER DELIVERY",
   },
   {
     type: "text",
-    color: "#B584C4",
+    color: "#E5E5E5",
     text: "PANTONE COLOUR SCIENCE",
   },
 ];
@@ -81,14 +79,7 @@ export function ColorfulMarquee() {
           <span
             className="text-[10px] sm:text-xs shrink-0 select-none animate-pulse"
             style={{
-              color: [
-                "#FFC72C",
-                "#F08EAB",
-                "#00A3E0",
-                "#FF671F",
-                "#7AC142",
-                "#B584C4",
-              ][idx % 6],
+              color: "#8A8A8A",
             }}
           >
             ✦

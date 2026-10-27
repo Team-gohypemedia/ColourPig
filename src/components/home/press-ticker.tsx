@@ -4,11 +4,11 @@ import React from "react";
 
 export function PressTicker() {
   const publications = [
-    { name: "VOGUE", quote: "The Dyson moment of haircare.", color: "#FFC72C", code: "123C" },
-    { name: "WIRED", quote: "Precision engineering replacing 100ml waste.", color: "#00A3E0", code: "299C" },
-    { name: "GQ", quote: "Built to last. Single-use is officially over.", color: "#FF671F", code: "165C" },
-    { name: "WALL STREET JOURNAL", quote: "Intelligent luxury DTC disruption.", color: "#7AC142", code: "375C" },
-    { name: "FORBES", quote: "Norman & Brown revolutionizing personal care.", color: "#B584C4", code: "2572C" },
+    { name: "VOGUE", quote: "The Dyson moment of haircare.", color: "#C8CDD2", code: "123C" },
+    { name: "WIRED", quote: "Precision engineering replacing 100ml waste.", color: "#C8CDD2", code: "299C" },
+    { name: "GQ", quote: "Built to last. Single-use is officially over.", color: "#C8CDD2", code: "165C" },
+    { name: "WALL STREET JOURNAL", quote: "Intelligent luxury DTC disruption.", color: "#C8CDD2", code: "375C" },
+    { name: "FORBES", quote: "Norman & Brown revolutionizing personal care.", color: "#C8CDD2", code: "2572C" },
   ];
 
   return (

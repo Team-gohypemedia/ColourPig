@@ -15,42 +15,42 @@ export const PANTONE_PALETTE: PantoneColor[] = [
     code: "123C",
     label: "PANTONE 123C",
     name: "Warm Golden Yellow",
-    hex: "#FFC72C",
+    hex: "#C8CDD2",
     word: "GREY",
   },
   {
     code: "1905C",
     label: "PANTONE 1905C",
     name: "Soft Rose Pink",
-    hex: "#F08EAB",
+    hex: "#C8CDD2",
     word: "TOUCH",
   },
   {
     code: "299C",
     label: "PANTONE 299C",
     name: "Vibrant Cyan Blue",
-    hex: "#00A3E0",
+    hex: "#C8CDD2",
     word: "UP",
   },
   {
     code: "165C",
     label: "PANTONE 165C",
     name: "Tangerine Orange",
-    hex: "#FF671F",
+    hex: "#C8CDD2",
     word: "AIR",
   },
   {
     code: "375C",
     label: "PANTONE 375C",
     name: "Fresh Lime Green",
-    hex: "#7AC142",
+    hex: "#C8CDD2",
     word: "DRIVEN",
   },
   {
     code: "2572C",
     label: "PANTONE 2572C",
     name: "Lilac Lavender",
-    hex: "#B584C4",
+    hex: "#C8CDD2",
     word: "SYSTEM",
   },
 ];
@@ -142,26 +142,26 @@ export function PantoneSystemLockup({
   return (
     <div className={`font-headline select-none ${sizeClasses[size]} ${alignClasses} ${className}`}>
       <div className="flex flex-wrap items-baseline gap-x-2 sm:gap-x-3">
-        <span style={{ color: "#FFC72C" }} className="hover:brightness-110 transition-all">
+        <span style={{ color: "#C8CDD2" }} className="hover:brightness-110 transition-all">
           GREY
         </span>
-        <span style={{ color: "#F08EAB" }} className="hover:brightness-110 transition-all">
+        <span style={{ color: "#C8CDD2" }} className="hover:brightness-110 transition-all">
           TOUCH
         </span>
-        <span style={{ color: "#00A3E0" }} className="hover:brightness-110 transition-all">
+        <span style={{ color: "#C8CDD2" }} className="hover:brightness-110 transition-all">
           UP
         </span>
       </div>
       <div className="flex flex-wrap items-baseline gap-x-2 sm:gap-x-3">
-        <span style={{ color: "#FF671F" }} className="hover:brightness-110 transition-all">
+        <span style={{ color: "#C8CDD2" }} className="hover:brightness-110 transition-all">
           AIR
         </span>
-        <span style={{ color: "#7AC142" }} className="hover:brightness-110 transition-all">
+        <span style={{ color: "#C8CDD2" }} className="hover:brightness-110 transition-all">
           DRIVEN
         </span>
       </div>
       <div>
-        <span style={{ color: "#B584C4" }} className="hover:brightness-110 transition-all">
+        <span style={{ color: "#C8CDD2" }} className="hover:brightness-110 transition-all">
           SYSTEM
         </span>
       </div>
@@ -176,7 +176,7 @@ export function PantoneSystemLockup({
 export function PantoneRainbowLine({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`w-full h-[3px] bg-gradient-to-r from-[#FFC72C] via-[#F08EAB] via-[#00A3E0] via-[#FF671F] via-[#7AC142] to-[#B584C4] ${className}`}
+      className={`w-full h-[3px] bg-white/15 ${className}`}
     />
   );
 }
@@ -195,12 +195,12 @@ export function PantoneBadge({
   className?: string;
 }) {
   const colorMap = {
-    yellow: { bg: "bg-[#FFC72C]/15", text: "text-[#FFC72C]", border: "border-[#FFC72C]/30" },
-    pink: { bg: "bg-[#F08EAB]/15", text: "text-[#F08EAB]", border: "border-[#F08EAB]/30" },
-    blue: { bg: "bg-[#00A3E0]/15", text: "text-[#00A3E0]", border: "border-[#00A3E0]/30" },
-    orange: { bg: "bg-[#FF671F]/15", text: "text-[#FF671F]", border: "border-[#FF671F]/30" },
-    green: { bg: "bg-[#7AC142]/15", text: "text-[#7AC142]", border: "border-[#7AC142]/30" },
-    purple: { bg: "bg-[#B584C4]/15", text: "text-[#B584C4]", border: "border-[#B584C4]/30" },
+    yellow: { bg: "bg-[#C8CDD2]/15", text: "text-[#C8CDD2]", border: "border-[#C8CDD2]/30" },
+    pink: { bg: "bg-[#C8CDD2]/15", text: "text-[#C8CDD2]", border: "border-[#C8CDD2]/30" },
+    blue: { bg: "bg-[#C8CDD2]/15", text: "text-[#C8CDD2]", border: "border-[#C8CDD2]/30" },
+    orange: { bg: "bg-[#C8CDD2]/15", text: "text-[#C8CDD2]", border: "border-[#C8CDD2]/30" },
+    green: { bg: "bg-[#C8CDD2]/15", text: "text-[#C8CDD2]", border: "border-[#C8CDD2]/30" },
+    purple: { bg: "bg-[#C8CDD2]/15", text: "text-[#C8CDD2]", border: "border-[#C8CDD2]/30" },
   };
 
   const c = colorMap[color];
