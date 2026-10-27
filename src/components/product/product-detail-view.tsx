@@ -353,7 +353,7 @@ export function ProductDetailView({
                   <button
                     key={idx}
                     onClick={() => setActiveImageIdx(idx)}
-                    className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${isCardImg ? "bg-[#848F97]" : "bg-[#D6D7D9]"} shadow-2xs group cursor-pointer ${
+                    className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white shadow-2xs group cursor-pointer ${
                       isSelected
                         ? "border-obsidian shadow-sm scale-102"
                         : "border-ash/30 hover:border-ash/70 opacity-80 hover:opacity-100"
@@ -365,7 +365,7 @@ export function ProductDetailView({
                       alt={img.alt}
                       fill
                       sizes="80px"
-                      className={isCardImg ? "object-cover object-center" : "object-contain object-center p-1"}
+                      className={"object-cover object-center"}
                     />
                     {isVid ? (
                       <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center text-white p-1 transition-colors group-hover:bg-black/30">
@@ -385,7 +385,7 @@ export function ProductDetailView({
             </div>
 
             {/* Main High-Resolution Showcase Frame */}
-            <div className={`flex-1 relative aspect-[3/4] sm:aspect-[4/5] max-h-[720px] rounded-2xl overflow-hidden ${activeItem.src.includes("shade_card_") ? "bg-[#848F97]" : "bg-[#D6D7D9]"} border border-ash/30 shadow-sm flex items-center justify-center group`}>
+            <div className={`flex-1 relative aspect-[3/4] sm:aspect-[4/5] max-h-[720px] rounded-2xl overflow-hidden bg-white border border-ash/30 shadow-sm flex items-center justify-center group`}>
               {activeItem.type === "video" ? (
                 <div className="relative w-full h-full flex items-center justify-center bg-[#070D12] p-2 sm:p-4">
                   <video
@@ -410,9 +410,7 @@ export function ProductDetailView({
                   priority
                   sizes="(max-width: 1024px) 100vw, 700px"
                   className={
-                    activeItem.src.includes("shade_card_")
-                      ? "object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
-                      : "object-contain object-center p-2 sm:p-4 transition-transform duration-500 group-hover:scale-[1.02]"
+                    "object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
                   }
                 />
               )}
