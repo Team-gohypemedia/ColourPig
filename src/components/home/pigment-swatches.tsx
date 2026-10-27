@@ -183,7 +183,7 @@ export function PigmentSwatches() {
               </div>
 
               {/* Full-Bleed Product Image from PDF */}
-              <div className="relative w-full aspect-[4/3] my-4 rounded-xl overflow-hidden border border-ash/20 shadow-xs z-10 group-hover:border-obsidian/30 transition-all bg-[#EAECEB]">
+              <div className="relative w-full aspect-[4/3] my-4 rounded-xl overflow-hidden border border-ash/20 shadow-xs z-10 group-hover:border-obsidian/30 transition-all bg-white">
                 <Image
                   src={card.image}
                   alt={card.title}

@@ -316,7 +316,7 @@ export function ProductDetailView({
   };
 
   return (
-    <div className="w-full bg-[#F5F6F6] text-obsidian min-h-screen">
+    <div className="w-full bg-white text-obsidian min-h-screen">
       {/* 1. Breadcrumbs Bar */}
       <div className="w-full border-b border-ash/25 bg-white/80 backdrop-blur-sm px-4 sm:px-10 lg:px-14 py-3">
         <div className="max-w-[1600px] mx-auto flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-graphite overflow-x-auto whitespace-nowrap">
@@ -467,9 +467,9 @@ export function ProductDetailView({
                   className="inline-flex items-center gap-3 group text-left cursor-pointer focus:outline-none"
                   aria-label={`Scroll to customer reviews (${selectedShade.reviews} verified reviews, rated 4.9 out of 5 stars)`}
                 >
-                  <div className="flex items-center gap-1 text-[#FFC72C] transition-transform group-hover:scale-105">
+                  <div className="flex items-center gap-1 text-[#374151] transition-transform group-hover:scale-105">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#FFC72C] stroke-[#FFC72C]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#374151] stroke-[#374151]" />
                     ))}
                   </div>
                   <span className="text-xs font-mono font-bold text-obsidian group-hover:text-black">
@@ -495,7 +495,7 @@ export function ProductDetailView({
                 <span className="text-sm sm:text-base font-mono text-ash line-through">
                   {store.formatPrice(selectedKit.originalInr)}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#7AC142]/20 border border-[#7AC142]/40 text-[#4e8721] font-mono text-xs font-normal">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#374151]/20 border border-[#374151]/40 text-[#4e8721] font-mono text-xs font-normal">
                   Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} (28% OFF)
                 </span>
               </div>
@@ -515,7 +515,7 @@ export function ProductDetailView({
                     {selectedShade.code} {selectedShade.name.replace(/No\.\S+\s*/, "")}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-[#00A3E0] font-semibold">
+                <span className="text-[10px] font-mono text-[#374151] font-semibold">
                   100% BLEND MATCH
                 </span>
               </div>
@@ -550,7 +550,7 @@ export function ProductDetailView({
                 </div>
                 <Link
                   href="#shade-finder"
-                  className="text-[10px] font-mono text-[#00A3E0] hover:underline font-semibold"
+                  className="text-[10px] font-mono text-[#374151] hover:underline font-semibold"
                 >
                   View Before &amp; After →
                 </Link>
@@ -573,7 +573,7 @@ export function ProductDetailView({
                       className={`w-full p-3.5 rounded-xl border text-left transition-all flex items-center justify-between ${
                         isSelected
                           ? "border-obsidian bg-white shadow-xs"
-                          : "border-ash/30 bg-platinum/20 hover:bg-white/80"
+                          : "border-ash/30 bg-white hover:bg-white/80"
                       }`}
                     >
                       <div className="space-y-0.5">
@@ -610,7 +610,7 @@ export function ProductDetailView({
             {/* 3. In-Stock Indicator & Live Urgency */}
             <div className="flex items-center justify-between text-xs font-mono text-graphite pt-1">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#7AC142] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#374151] animate-pulse" />
                 <span className="text-obsidian font-semibold">
                   In Stock: Ready for immediate dispatch
                 </span>
@@ -646,7 +646,7 @@ export function ProductDetailView({
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="flex-1 py-3.5 px-4 rounded-xl border border-ash/30 bg-platinum/30 hover:bg-platinum/60 text-obsidian font-mono text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-2xs"
+                  className="flex-1 py-3.5 px-4 rounded-xl border border-ash/30 bg-white hover:bg-black/5 text-obsidian font-mono text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-2xs"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>ADD TO BAG</span>
@@ -701,25 +701,25 @@ export function ProductDetailView({
             {/* 5. Four Core Trust Guarantee Badges Row (Matching Inspiration Screenshot) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 pt-4 border-t border-ash/25 text-center">
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
-                <CheckCircle2 className="w-4 h-4 mx-auto text-[#7AC142]" />
+                <CheckCircle2 className="w-4 h-4 mx-auto text-[#374151]" />
                 <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
                   100% GREY COVER
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
-                <Droplets className="w-4 h-4 mx-auto text-[#00A3E0]" />
+                <Droplets className="w-4 h-4 mx-auto text-[#374151]" />
                 <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
                   AMMONIA FREE
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
-                <Truck className="w-4 h-4 mx-auto text-[#FF671F]" />
+                <Truck className="w-4 h-4 mx-auto text-[#374151]" />
                 <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
                   FREE DISPATCH
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
-                <RotateCcw className="w-4 h-4 mx-auto text-[#B584C4]" />
+                <RotateCcw className="w-4 h-4 mx-auto text-[#374151]" />
                 <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
                   30-DAY TRIAL
                 </span>
@@ -727,10 +727,10 @@ export function ProductDetailView({
             </div>
 
             {/* 6. Promotional Discount Card with Copyable Code */}
-            <div className="p-3.5 rounded-xl border border-dashed border-obsidian/40 bg-platinum/25 flex items-center justify-between gap-3">
+            <div className="p-3.5 rounded-xl border border-dashed border-obsidian/40 bg-white flex items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-obsidian">
-                  <Sparkles className="w-3.5 h-3.5 text-[#FFC72C]" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#374151]" />
                   <span>EXTRA 10% OFF PREPAID ORDERS</span>
                 </div>
                 <p className="text-[10px] font-mono text-graphite">
@@ -743,7 +743,7 @@ export function ProductDetailView({
                 onClick={handleCopyCode}
                 className="py-1.5 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs"
               >
-                {copiedCode ? <Check className="w-3 h-3 text-[#7AC142]" /> : <Copy className="w-3 h-3" />}
+                {copiedCode ? <Check className="w-3 h-3 text-[#374151]" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedCode ? "COPIED!" : "COLOUR10"}</span>
               </button>
             </div>
@@ -885,7 +885,7 @@ export function ProductDetailView({
               key={look.id}
               className="group relative rounded-2xl overflow-hidden bg-white border border-ash/30 shadow-sm flex flex-col"
             >
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-platinum/30">
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
                 <Image
                   src={look.image}
                   alt={look.title}
@@ -906,7 +906,7 @@ export function ProductDetailView({
       </section>
 
       {/* 5. "YOU MIGHT ALSO LIKE" (Related 4-Card Grid matching Reference) */}
-      <section className="w-full bg-platinum/30 border-y border-ash/30 py-14 sm:py-20">
+      <section className="w-full bg-white border-y border-ash/30 py-14 sm:py-20">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14">
           <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
             <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
@@ -925,7 +925,7 @@ export function ProductDetailView({
                 className="group flex flex-col"
               >
                 {/* Portrait Image Container with Minimal Corners & Aspect Ratio matching Image 2 */}
-                <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
+                <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
                   <Link
                     href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
                     className="block w-full h-full relative"
@@ -1068,9 +1068,9 @@ export function ProductDetailView({
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2">
                 <span className="text-3xl font-headline font-bold text-obsidian">4.9</span>
-                <div className="flex text-[#FFC72C]">
+                <div className="flex text-[#374151]">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#FFC72C] stroke-[#FFC72C]" />
+                    <Star key={i} className="w-4 h-4 fill-[#374151] stroke-[#374151]" />
                   ))}
                 </div>
               </div>
@@ -1078,7 +1078,7 @@ export function ProductDetailView({
                 Based on 310 verified root touch-up reviews
               </p>
             </div>
-            <div className="px-4 py-2 rounded-xl bg-platinum/30 border border-ash/30 text-center">
+            <div className="px-4 py-2 rounded-xl bg-white border border-ash/30 text-center">
               <span className="text-xs font-mono font-bold text-obsidian block">
                 98% RECOMMEND RATE
               </span>
@@ -1099,7 +1099,7 @@ export function ProductDetailView({
             ].map((bar) => (
               <div key={bar.stars} className="flex items-center gap-3">
                 <span className="w-14 text-graphite text-[11px] shrink-0">{bar.stars}</span>
-                <div className="flex-1 h-2 rounded-full bg-platinum/40 overflow-hidden">
+                <div className="flex-1 h-2 rounded-full bg-white overflow-hidden">
                   <div
                     className="h-full bg-obsidian rounded-full"
                     style={{ width: `${bar.pct}%` }}
@@ -1122,9 +1122,9 @@ export function ProductDetailView({
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="flex text-[#FFC72C]">
+                  <div className="flex text-[#374151]">
                     {[...Array(t.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#FFC72C] stroke-[#FFC72C]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#374151] stroke-[#374151]" />
                     ))}
                   </div>
                   <span className="text-[10px] font-mono text-graphite">{t.date}</span>
@@ -1142,7 +1142,7 @@ export function ProductDetailView({
                   <h5 className="font-headline font-bold text-xs text-obsidian">{t.name}</h5>
                   <span className="text-[10px] font-mono text-ash">{t.location}</span>
                 </div>
-                <div className="w-6 h-6 rounded-full bg-[#7AC142]/20 text-[#4e8721] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[#374151]/20 text-[#4e8721] flex items-center justify-center">
                   <Check className="w-3 h-3 stroke-[3]" />
                 </div>
               </div>

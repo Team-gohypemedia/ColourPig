@@ -74,7 +74,7 @@ export function HamburgerMenu() {
             onTouchMove={(e) => e.stopPropagation()}
           >
             {/* Top Spectrum Ribbon Line (Brand Theme) */}
-            <div className="w-full h-[3px] bg-gradient-to-r from-[#FFC72C] via-[#F08EAB] via-[#00A3E0] via-[#FF671F] via-[#7AC142] to-[#B584C4] flex-shrink-0" />
+            <div className="w-full h-[3px] bg-black flex-shrink-0" />
 
             {/* 1. Header with Logo & Close */}
             <div className="px-6 py-4 sm:py-5 border-b border-ash/20 flex items-center justify-between bg-white flex-shrink-0 z-20">
@@ -203,7 +203,7 @@ export function HamburgerMenu() {
                 <p className="text-xs text-ash font-mono leading-relaxed">
                   Permanent salon-grade pigment micro-dispensed in 60 seconds with 100% root coverage.
                 </p>
-                <div className="flex items-center gap-2 pt-1 text-[10px] font-mono text-[#FFC72C]">
+                <div className="flex items-center gap-2 pt-1 text-[10px] font-mono text-[#C8CDD2]">
                   <Sparkles className="w-3 h-3" />
                   <span>30-Day Happiness Guarantee</span>
                 </div>

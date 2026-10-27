@@ -12,13 +12,13 @@ import { Reveal, RevealCard, RevealImage, RevealLabel, SwapText } from "@/compon
 
 // Mapping Pantone accent styling for each shade in the collection
 const SHADE_PANTONE_TAGS: Record<string, { tag: string; pantoneColor: string }> = {
-  "shade-0-0": { tag: "Multi-Use Gloss", pantoneColor: "#B584C4" },
-  "shade-1": { tag: "100% Resistant", pantoneColor: "#00A3E0" },
+  "shade-0-0": { tag: "Multi-Use Gloss", pantoneColor: "#374151" },
+  "shade-1": { tag: "100% Resistant", pantoneColor: "#374151" },
   "shade-3": { tag: "Deep Velvet", pantoneColor: "#7A431D" },
-  "shade-4": { tag: "Most Popular", pantoneColor: "#FFC72C" },
+  "shade-4": { tag: "Most Popular", pantoneColor: "#374151" },
   "shade-5": { tag: "Warm Luminous", pantoneColor: "#E05A47" },
   "shade-6": { tag: "Caramel Depth", pantoneColor: "#C59B27" },
-  "shade-7": { tag: "High Demand", pantoneColor: "#FF671F" },
+  "shade-7": { tag: "High Demand", pantoneColor: "#374151" },
   "shade-8": { tag: "Sunlit Clarity", pantoneColor: "#F4C430" },
   "shade-9": { tag: "Platinum Shine", pantoneColor: "#D8C0B0" },
 };
@@ -46,7 +46,7 @@ const NEW_ARRIVALS = [
     shadeHex: "#4E4136",
     price: 89,
     tag: "Most Popular",
-    pantoneColor: "#FFC72C",
+    pantoneColor: "#374151",
     pantoneCode: "123C",
     image: "/Medium Brown/MediumBrown.jpg",
     video: "/Medium Brown/Medium Brown.mp4",
@@ -60,7 +60,7 @@ const NEW_ARRIVALS = [
     shadeHex: "#BE966C",
     price: 89,
     tag: "High Demand",
-    pantoneColor: "#FF671F",
+    pantoneColor: "#374151",
     pantoneCode: "165C",
     image: "/Medium Blonde/MediumBlonde.jpg",
     video: "/Medium Blonde/Medium Blonde.mp4",
@@ -74,7 +74,7 @@ const NEW_ARRIVALS = [
     shadeHex: "#2D2C2D",
     price: 89,
     tag: "Intense Pigment",
-    pantoneColor: "#00A3E0",
+    pantoneColor: "#374151",
     pantoneCode: "299C",
     image: "/Black/Black.jpg",
     video: "/Black/Black.mp4",
@@ -88,7 +88,7 @@ const NEW_ARRIVALS = [
     shadeHex: "#F2EFF0",
     price: 89,
     tag: "Multi-Use",
-    pantoneColor: "#B584C4",
+    pantoneColor: "#374151",
     pantoneCode: "2572C",
     image: "/Clear/Clear.jpg",
     video: "/system-exploded-hd.mp4",
@@ -359,7 +359,7 @@ export function NewDispatches({
             FEATURED DISPATCHES
           </span>
           <h3 className="font-headline font-bold text-xl sm:text-2xl text-obsidian tracking-wider uppercase">
-            STARTER SYSTEMS
+            NEW ARRIVALS
           </h3>
           <div className="w-8 h-[2px] bg-obsidian/30 mx-auto mt-2" />
         </Reveal>
@@ -373,7 +373,7 @@ export function NewDispatches({
               className="group flex flex-col"
             >
               {/* Portrait Image Container with Minimal Corners */}
-              <div className="relative aspect-[2/3] max-h-[46vh] sm:max-h-[48vh] xl:max-h-[52vh] w-full rounded-md overflow-hidden bg-[#E2E5E4] shadow-xs group-hover:shadow-md transition-all duration-300">
+              <div className="relative aspect-[2/3] max-h-[46vh] sm:max-h-[48vh] xl:max-h-[52vh] w-full rounded-md overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
                 <RevealImage>
                   <Link
                     href={`/product?shade=${item.id.replace("prod-", "")}`}

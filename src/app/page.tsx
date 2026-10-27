@@ -46,7 +46,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F5F6F6] text-obsidian flex flex-col overflow-x-clip selection:bg-steel selection:text-white">
+    <div className="min-h-screen w-full bg-white text-obsidian flex flex-col overflow-x-clip selection:bg-steel selection:text-white">
       {/* Side-Page Drawers */}
       <CartDrawer />
       <WishlistDrawer />
@@ -62,7 +62,7 @@ function HomeContent() {
       <ColorfulMarquee />
 
       {/* 3. EXPLORE YOUR SHADE Product Grid */}
-      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <NewDispatches onAddToCart={handleAddToCart} />
       </div>
 
@@ -80,7 +80,7 @@ function HomeContent() {
       </div>
 
       {/* 6. BESTSELLERS 4-Card Grid */}
-      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <Bestsellers onAddToCart={handleAddToCart} />
       </div>
 
@@ -103,7 +103,7 @@ function HomeContent() {
       </div>
 
       {/* 11. WHAT OUR CLIENTS SAY */}
-      <div className="w-full bg-platinum text-obsidian border-b border-ash/30">
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <CustomerReviews />
       </div>
 

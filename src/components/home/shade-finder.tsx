@@ -380,7 +380,7 @@ export function ShadeFinder({
                     }`}
                   >
                     {/* Swatch circular element */}
-                    <div className="w-10 h-10 rounded-lg overflow-hidden border border-black/10 relative shadow-inner bg-[#EAECEB]">
+                    <div className="w-10 h-10 rounded-lg overflow-hidden border border-black/10 relative shadow-inner bg-white">
                       <Image
                         src={shade.swatchImage}
                         alt={shade.name}

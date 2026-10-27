@@ -250,7 +250,7 @@ export const TestimonialCard = ({
                     <h3 className="font-headline font-bold text-lg text-obsidian">
                       {testimonial.name}
                     </h3>
-                    <CheckCircle className="w-4 h-4 text-[#7AC142]" />
+                    <CheckCircle className="w-4 h-4 text-[#374151]" />
                   </div>
                   <p className="font-mono text-xs text-graphite">
                     {testimonial.designation}
@@ -268,13 +268,13 @@ export const TestimonialCard = ({
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-4 h-4 fill-[#FFC72C] text-[#FFC72C]"
+                    className="w-4 h-4 fill-[#374151] text-[#374151]"
                   />
                 ))}
               </div>
 
               <div className="relative py-4 text-obsidian text-lg sm:text-xl font-normal font-headline leading-relaxed">
-                <Quote className="h-8 w-8 text-[#FFC72C]/40 mb-2" />
+                <Quote className="h-8 w-8 text-[#374151]/40 mb-2" />
                 <p>&ldquo;{testimonial.description}&rdquo;</p>
               </div>
             </motion.div>
@@ -300,7 +300,7 @@ export const TestimonialCard = ({
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className="w-3.5 h-3.5 fill-[#FFC72C] text-[#FFC72C]"
+                  className="w-3.5 h-3.5 fill-[#374151] text-[#374151]"
                 />
               ))}
             </div>

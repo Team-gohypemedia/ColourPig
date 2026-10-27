@@ -22,7 +22,7 @@ function CollectionPageInner() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[#F5F6F6] text-obsidian flex flex-col overflow-x-clip selection:bg-steel selection:text-white">
+    <div className="min-h-screen w-full bg-white text-obsidian flex flex-col overflow-x-clip selection:bg-steel selection:text-white">
       {/* Side-Page Drawers */}
       <CartDrawer />
       <WishlistDrawer />
@@ -45,7 +45,7 @@ function CollectionPageInner() {
 export default function CollectionPage() {
   return (
     <StoreProvider>
-      <Suspense fallback={<div className="min-h-screen bg-[#F5F6F6]" />}>
+      <Suspense fallback={<div className="min-h-screen bg-white" />}>
         <CollectionPageInner />
       </Suspense>
     </StoreProvider>

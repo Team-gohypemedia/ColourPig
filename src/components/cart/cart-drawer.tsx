@@ -65,7 +65,7 @@ export function CartDrawer() {
             onTouchMove={(e) => e.stopPropagation()}
           >
             {/* Top Spectrum Ribbon Line (Brand Theme) */}
-            <div className="w-full h-[3px] bg-gradient-to-r from-[#FFC72C] via-[#F08EAB] via-[#00A3E0] via-[#FF671F] via-[#7AC142] to-[#B584C4] flex-shrink-0" />
+            <div className="w-full h-[3px] bg-black flex-shrink-0" />
 
             {/* 1. Sticky Header */}
             <div className="px-6 py-4 sm:py-5 border-b border-ash/20 flex items-center justify-between bg-white flex-shrink-0 z-20">
@@ -180,7 +180,7 @@ export function CartDrawer() {
                           </div>
 
                           <div className="flex items-center gap-1.5 mt-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#7AC142]" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#C8CDD2]" />
                             <span className="text-[10px] text-graphite font-mono">
                               In stock: {item.inStock}
                             </span>

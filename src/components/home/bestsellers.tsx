@@ -18,7 +18,7 @@ const BESTSELLER_ITEMS = [
     shadeHex: "#4E4136",
     price: 89,
     tag: "MOST POPULAR",
-    pantoneColor: "#FFC72C",
+    pantoneColor: "#374151",
     image: "/Medium Brown/MediumBrown.jpg",
   },
   {
@@ -31,7 +31,7 @@ const BESTSELLER_ITEMS = [
     shadeHex: "#BE966C",
     price: 89,
     tag: "HIGH DEMAND",
-    pantoneColor: "#FF671F",
+    pantoneColor: "#374151",
     image: "/Medium Blonde/MediumBlonde.jpg",
   },
   {
@@ -44,7 +44,7 @@ const BESTSELLER_ITEMS = [
     shadeHex: "#2D2C2D",
     price: 89,
     tag: "INTENSE PIGMENT",
-    pantoneColor: "#00A3E0",
+    pantoneColor: "#374151",
     image: "/Black/Black.jpg",
   },
   {
@@ -57,7 +57,7 @@ const BESTSELLER_ITEMS = [
     shadeHex: "#F2EFF0",
     price: 89,
     tag: "MULTI-USE",
-    pantoneColor: "#B584C4",
+    pantoneColor: "#374151",
     image: "/images/products/cards/shade_card_1.jpg",
   },
 ];
@@ -105,7 +105,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
             className="group flex flex-col"
           >
             {/* Portrait Image Container with Rounded Corners matching Reference Screenshot */}
-            <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#EAECEB] shadow-xs group-hover:shadow-md transition-all duration-300">
+            <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
               <RevealImage>
                 <Link
                   href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}

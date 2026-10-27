@@ -373,7 +373,7 @@ export function CollectionView() {
                 className="group flex flex-col"
               >
                 {/* Portrait Image Container with Rounded Corners matching Reference Screenshot */}
-                <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#EAECEB] shadow-xs group-hover:shadow-md transition-all duration-300">
+                <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
                   <Link
                     href={getProductHref(item)}
                     className="block w-full h-full relative"
@@ -478,7 +478,7 @@ export function CollectionView() {
               return (
                 <div key={item.id} className="group flex flex-col">
                   {/* Portrait Image Container */}
-                  <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#EAECEB] shadow-xs group-hover:shadow-md transition-all duration-300">
+                  <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
                     <Link
                       href={`/product?shade=${item.id}&image=${encodeURIComponent(item.image)}`}
                       className="block w-full h-full relative"
@@ -621,7 +621,7 @@ export function CollectionView() {
             exit={{ opacity: 0, y: 20 }}
             className="fixed bottom-6 right-6 z-50 py-3 px-4 rounded-xl bg-obsidian text-white text-xs font-montserrat shadow-2xl flex items-center gap-2.5 border border-white/20"
           >
-            <div className="w-5 h-5 rounded-full bg-[#7AC142] text-white flex items-center justify-center">
+            <div className="w-5 h-5 rounded-full bg-[#374151] text-white flex items-center justify-center">
               <Check className="w-3 h-3 stroke-[3]" />
             </div>
             <span>

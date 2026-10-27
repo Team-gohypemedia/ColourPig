@@ -13,11 +13,11 @@ import { scrollToStarterSystems } from "@/lib/scroll-utils";
 
 // Shown one at a time on mobile; desktop lays them out across the bar
 const ANNOUNCEMENTS = [
-  { text: "International shipping available", color: "#7AC142" },
-  { text: "Free shipping over $75", color: "#FFC72C" },
-  { text: "Pantone system launch", color: "#F08EAB" },
-  { text: "30-day trial", color: "#00A3E0" },
-  { text: "Air-driven dispenser allocation open", color: "#B584C4" },
+  { text: "International shipping available", color: "#BDBDBD" },
+  { text: "Free shipping over $75", color: "#BDBDBD" },
+  { text: "Pantone system launch", color: "#BDBDBD" },
+  { text: "30-day trial", color: "#BDBDBD" },
+  { text: "Air-driven dispenser allocation open", color: "#BDBDBD" },
 ];
 const ANNOUNCEMENT_INTERVAL_MS = 3500;
 
@@ -111,7 +111,7 @@ export function Navbar({
   return (
     <div className="w-full fixed top-0 left-0 right-0 z-50">
       {/* Spectrum Ribbon Line */}
-      <div className="w-full h-[2.5px] bg-gradient-to-r from-[#FFC72C] via-[#F08EAB] via-[#00A3E0] via-[#FF671F] via-[#7AC142] to-[#B584C4]" />
+      <div className="w-full h-[2.5px] bg-black" />
 
       {/* 1. Top Announcement Bar - Solid Black */}
       <div
@@ -119,7 +119,7 @@ export function Navbar({
       >
         <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4">
           <div className="hidden lg:flex items-center gap-2 text-left whitespace-nowrap flex-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#7AC142] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
             <span>INTERNATIONAL SHIPPING AVAILABLE</span>
           </div>
           {/* Mobile / tablet: one announcement at a time, rotating */}
@@ -144,13 +144,13 @@ export function Navbar({
 
           <div className="hidden lg:flex text-center whitespace-nowrap flex-shrink-0 lg:mx-0 truncate max-w-full items-center justify-center gap-2">
             <span>FREE SHIPPING OVER $75</span>
-            <span className="text-[#FFC72C] text-xs">◆</span>
-            <span className="text-[#F08EAB]">PANTONE SYSTEM LAUNCH</span>
-            <span className="text-[#00A3E0] text-xs">◆</span>
+            <span className="text-white/40 text-xs">◆</span>
+            <span>PANTONE SYSTEM LAUNCH</span>
+            <span className="text-white/40 text-xs">◆</span>
             <span>30-DAY TRIAL</span>
           </div>
           <div className="hidden lg:flex items-center justify-end gap-2 text-right whitespace-nowrap flex-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00A3E0]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
             <span>AIR-DRIVEN DISPENSER ALLOCATION OPEN</span>
           </div>
         </div>
