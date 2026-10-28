@@ -425,18 +425,12 @@ export function CollectionView() {
                   className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
                 >
                   {/* Line 1: Product Name */}
-                  <p
-                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate"
-                    style={{ fontWeight: 400 }}
-                  >
+                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
                     {item.name}
                   </p>
 
                   {/* Line 2: Price */}
-                  <p
-                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] text-obsidian"
-                    style={{ fontWeight: 400 }}
-                  >
+                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
                     ${item.priceUsd} USD
                   </p>
                 </Link>
@@ -556,10 +550,7 @@ export function CollectionView() {
                     className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
                   >
                     {/* Line 1: Product Name */}
-                    <p
-                      className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate"
-                      style={{ fontWeight: 400 }}
-                    >
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
                       {item.name}
                     </p>
 
@@ -570,10 +561,7 @@ export function CollectionView() {
 
                     {/* Line 3: Price with Strikethrough (matching reference screenshot) */}
                     <div className="flex items-baseline gap-2 mt-0.5">
-                      <span
-                        className="text-xs sm:text-sm font-montserrat !font-normal font-[400] text-obsidian"
-                        style={{ fontWeight: 400 }}
-                      >
+                      <span className="text-xs sm:text-sm font-montserrat font-semibold text-obsidian">
                         {store.formatPrice(item.priceInr)}
                       </span>
                       <span className="text-[10px] font-montserrat text-ash line-through">

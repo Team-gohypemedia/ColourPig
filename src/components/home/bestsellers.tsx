@@ -58,7 +58,7 @@ const BESTSELLER_ITEMS = [
     price: 89,
     tag: "MULTI-USE",
     pantoneColor: "#374151",
-    image: "/images/products/cards/shade_card_1.jpg",
+    image: "/Clear/Clear.jpg",
   },
 ];
 
@@ -171,16 +171,10 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
                 href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}
                 className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
               >
-                <p
-                  className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate"
-                  style={{ fontWeight: 400 }}
-                >
+                <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
                   {item.name}
                 </p>
-                <p
-                  className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] text-obsidian"
-                  style={{ fontWeight: 400 }}
-                >
+                <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
                   ${item.price} USD
                 </p>
               </Link>

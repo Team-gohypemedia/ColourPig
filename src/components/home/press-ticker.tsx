@@ -4,11 +4,11 @@ import React from "react";
 
 export function PressTicker() {
   const publications = [
-    { name: "VOGUE", quote: "The Dyson moment of haircare.", color: "#C8CDD2", code: "123C" },
-    { name: "WIRED", quote: "Precision engineering replacing 100ml waste.", color: "#C8CDD2", code: "299C" },
-    { name: "GQ", quote: "Built to last. Single-use is officially over.", color: "#C8CDD2", code: "165C" },
-    { name: "WALL STREET JOURNAL", quote: "Intelligent luxury DTC disruption.", color: "#C8CDD2", code: "375C" },
-    { name: "FORBES", quote: "Norman & Brown revolutionizing personal care.", color: "#C8CDD2", code: "2572C" },
+    { name: "VOGUE", quote: "The Dyson moment of haircare.", dotColor: "#111827" },
+    { name: "WIRED", quote: "Precision engineering replacing 100ml waste.", dotColor: "#111827" },
+    { name: "GQ", quote: "Built to last. Single-use is officially over.", dotColor: "#111827" },
+    { name: "WALL STREET JOURNAL", quote: "Intelligent luxury DTC disruption.", dotColor: "#111827" },
+    { name: "FORBES", quote: "Norman & Brown revolutionizing personal care.", dotColor: "#111827" },
   ];
 
   return (
@@ -16,19 +16,16 @@ export function PressTicker() {
       <div className="max-w-[1600px] mx-auto flex flex-wrap items-center justify-around gap-6 sm:gap-8 text-center">
         {publications.map((p, idx) => (
           <div key={idx} className="group space-y-1 transition-transform hover:-translate-y-0.5">
-            <div className="flex items-center justify-center gap-1.5">
+            <div className="flex items-center justify-center gap-2">
               <span
                 className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: p.color }}
+                style={{ backgroundColor: p.dotColor }}
               />
-              <span
-                className="font-headline font-black text-base sm:text-lg tracking-widest uppercase"
-                style={{ color: p.color }}
-              >
+              <span className="font-headline font-black text-base sm:text-lg tracking-widest uppercase text-obsidian">
                 {p.name}
               </span>
             </div>
-            <p className="text-[10px] font-mono text-graphite tracking-wide italic font-medium">
+            <p className="text-[11px] font-mono text-obsidian/80 tracking-wide italic font-medium">
               &ldquo;{p.quote}&rdquo;
             </p>
           </div>

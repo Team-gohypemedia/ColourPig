@@ -308,7 +308,7 @@ export const TestimonialCard = ({
 
           {/* Center: Quote Preview */}
           <div className="py-2 flex-1 flex items-center justify-center">
-            <p className="text-obsidian font-headline text-sm sm:text-base font-normal leading-relaxed italic line-clamp-6 px-1">
+            <p className="text-obsidian font-headline text-sm sm:text-base font-semibold leading-relaxed italic line-clamp-6 px-1">
               &ldquo;
               {testimonial.description.length > 180
                 ? `${testimonial.description.slice(0, 180)}...`

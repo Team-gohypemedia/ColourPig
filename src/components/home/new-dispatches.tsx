@@ -256,10 +256,10 @@ export function NewDispatches({
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
                   className="mt-4 space-y-1 block group/link"
                 >
-                  <h3 className="font-montserrat font-normal text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
+                  <h3 className="font-montserrat font-semibold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
                     {item.name} System
                   </h3>
-                  <p className="font-montserrat font-normal text-xs sm:text-sm text-obsidian">
+                  <p className="font-montserrat font-semibold text-xs sm:text-sm text-obsidian">
                     ${item.price} USD
                   </p>
                 </Link>
@@ -439,16 +439,10 @@ export function NewDispatches({
                   href={`/product?shade=${item.id.replace("prod-", "")}`}
                   className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
                 >
-                  <p
-                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate"
-                    style={{ fontWeight: 400 }}
-                  >
+                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
                     {item.name}
                   </p>
-                  <p
-                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] text-obsidian"
-                    style={{ fontWeight: 400 }}
-                  >
+                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
                     ${item.price} USD
                   </p>
                 </Link>

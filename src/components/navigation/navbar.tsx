@@ -13,11 +13,11 @@ import { scrollToStarterSystems } from "@/lib/scroll-utils";
 
 // Shown one at a time on mobile; desktop lays them out across the bar
 const ANNOUNCEMENTS = [
-  { text: "International shipping available", color: "#BDBDBD" },
-  { text: "Free shipping over $75", color: "#BDBDBD" },
-  { text: "Pantone system launch", color: "#BDBDBD" },
-  { text: "30-day trial", color: "#BDBDBD" },
-  { text: "Air-driven dispenser allocation open", color: "#BDBDBD" },
+  { text: "International shipping available", color: "#000000" },
+  { text: "Free shipping over $75", color: "#000000" },
+  { text: "Pantone system launch", color: "#000000" },
+  { text: "30-day trial", color: "#000000" },
+  { text: "Air-driven dispenser allocation open", color: "#000000" },
 ];
 const ANNOUNCEMENT_INTERVAL_MS = 3500;
 
@@ -95,7 +95,7 @@ export function Navbar({
     ? "bg-obsidian/95 backdrop-blur-md border-b border-white/10 shadow-lg"
     : "bg-transparent border-b border-transparent";
 
-  const announcementBg = "bg-black border-b border-white/10";
+  const announcementBg = "bg-white border-b border-black/10";
 
   const handleShadesNavClick = (e?: React.MouseEvent) => {
     if (typeof window !== "undefined") {
@@ -110,16 +110,12 @@ export function Navbar({
 
   return (
     <div className="w-full fixed top-0 left-0 right-0 z-50">
-      {/* Spectrum Ribbon Line */}
-      <div className="w-full h-[2.5px] bg-black" />
-
-      {/* 1. Top Announcement Bar - Solid Black */}
+      {/* 1. Top Announcement Bar - White with Black text, no icons */}
       <div
-        className={`text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-platinum px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden ${announcementBg}`}
+        className={`text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-black px-4 sm:px-8 py-2 whitespace-nowrap overflow-hidden ${announcementBg}`}
       >
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4">
-          <div className="hidden lg:flex items-center gap-2 text-left whitespace-nowrap flex-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4 font-medium">
+          <div className="hidden lg:flex items-center text-left whitespace-nowrap flex-1">
             <span>INTERNATIONAL SHIPPING AVAILABLE</span>
           </div>
           {/* Mobile / tablet: one announcement at a time, rotating */}
@@ -127,30 +123,23 @@ export function Navbar({
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={announcementIndex}
-                className="absolute inset-0 flex items-center justify-center gap-2"
+                className="absolute inset-0 flex items-center justify-center"
                 initial={reduceMotion ? { opacity: 0 } : { y: 12, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={reduceMotion ? { opacity: 0 } : { y: -12, opacity: 0 }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
               >
-                <span
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: ANNOUNCEMENTS[announcementIndex].color }}
-                />
                 <span className="truncate">{ANNOUNCEMENTS[announcementIndex].text}</span>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="hidden lg:flex text-center whitespace-nowrap flex-shrink-0 lg:mx-0 truncate max-w-full items-center justify-center gap-2">
+          <div className="hidden lg:flex text-center whitespace-nowrap flex-shrink-0 lg:mx-0 truncate max-w-full items-center justify-center gap-6">
             <span>FREE SHIPPING OVER $75</span>
-            <span className="text-white/40 text-xs">◆</span>
             <span>PANTONE SYSTEM LAUNCH</span>
-            <span className="text-white/40 text-xs">◆</span>
             <span>30-DAY TRIAL</span>
           </div>
-          <div className="hidden lg:flex items-center justify-end gap-2 text-right whitespace-nowrap flex-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
+          <div className="hidden lg:flex items-center justify-end text-right whitespace-nowrap flex-1">
             <span>AIR-DRIVEN DISPENSER ALLOCATION OPEN</span>
           </div>
         </div>
