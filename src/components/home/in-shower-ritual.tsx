@@ -155,14 +155,10 @@ export function InShowerRitual() {
       }}
     >
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-ash font-semibold">
-          HOW IT WORKS
-        </span>
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-white tracking-wider uppercase leading-tight">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-white tracking-wider uppercase leading-tight">
           THE 6-STEP RITUAL
         </h2>
-        <div className="w-10 h-[2px] bg-white/20 mx-auto mt-2" />
       </Reveal>
 
       {/* Carousel Track */}

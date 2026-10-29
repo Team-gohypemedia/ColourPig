@@ -95,7 +95,7 @@ export function RevealImage({ children }: { children: React.ReactNode }) {
     >
       <motion.div
         className="absolute inset-0"
-        initial={{ scale: 1.18 }}
+        initial={{ scale: 1 }}
         animate={inView ? { scale: 1 } : undefined}
         transition={{ duration: 1.6, ease: EASE, delay }}
       >

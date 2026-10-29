@@ -453,7 +453,7 @@ export function ProductDetailView({
                 </span>
               </div>
 
-              <h1 className="font-headline font-bold text-2xl sm:text-3xl text-obsidian uppercase tracking-tight leading-snug">
+              <h1 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian uppercase tracking-wider leading-tight">
                 COLOURPIG PERMANENT ROOT SYSTEM — {selectedShade.name}
               </h1>
 
@@ -906,14 +906,10 @@ export function ProductDetailView({
       {/* 5. "YOU MIGHT ALSO LIKE" (Related 4-Card Grid matching Reference) */}
       <section className="w-full bg-white border-y border-ash/30 py-14 sm:py-20">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14">
-          <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
-            <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-              COMPANION ESSENTIALS
-            </span>
-            <h2 className="font-headline font-bold text-2xl sm:text-3xl text-obsidian tracking-wider uppercase">
+          <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+            <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
               YOU MIGHT ALSO LIKE
             </h2>
-            <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
@@ -1047,17 +1043,10 @@ export function ProductDetailView({
         id="reviews"
         className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 py-14 sm:py-20 scroll-mt-24 sm:scroll-mt-32"
       >
-        <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
-          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-            REAL CLIENT RESULTS
-          </span>
-          <h2 className="font-headline font-bold text-2xl sm:text-3xl text-obsidian tracking-wider uppercase">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+          <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
             WHAT OUR CUSTOMERS SAY
           </h2>
-          <p className="text-xs sm:text-sm font-mono text-graphite">
-            Over 2,400+ clients trust ColourPig for permanent salon-grade root care.
-          </p>
-          <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
         </div>
 
         {/* Rating Breakdown Bar & Overall Score Box */}

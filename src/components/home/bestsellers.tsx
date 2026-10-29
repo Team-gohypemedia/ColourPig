@@ -33,6 +33,7 @@ const BESTSELLER_ITEMS = [
     tag: "HIGH DEMAND",
     pantoneColor: "#374151",
     image: "/Medium Blonde/MediumBlonde.jpg",
+    video: "/Medium Blonde/Medium Blonde.mp4",
   },
   {
     id: "prod-shade-1",
@@ -84,63 +85,85 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
   };
 
   return (
-    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full select-none">
+    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-          CLIENT FAVORITES
-        </span>
-        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase leading-tight">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           BESTSELLERS
         </h2>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
       </Reveal>
 
-      {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
+      {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid (Full-width End-to-End on Desktop) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-6 xl:gap-8 w-full max-w-[1720px] mx-auto">
         {BESTSELLER_ITEMS.map((item, idx) => (
           <RevealCard
             key={item.id}
             index={idx}
             className="group flex flex-col"
           >
-            {/* Portrait Image Container with Rounded Corners matching Reference Screenshot */}
-            <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
+            {/* Portrait Container with Rounded Corners (Transparent background, no fill behind image/video) */}
+            <div className="relative aspect-[4/5] sm:aspect-[4/5] w-full rounded-2xl overflow-hidden bg-transparent transition-all duration-300">
               <RevealImage>
                 <Link
                   href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}
                   className="block w-full h-full relative"
                 >
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
-                  />
+                  {item.video ? (
+                    <video
+                      src={item.video}
+                      poster={item.image}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover object-center"
+                    />
+                  ) : (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                    />
+                  )}
                 </Link>
               </RevealImage>
 
-              {/* Top-Right Circular Wishlist Button */}
+              {/* Top-Right Circular Wishlist Button (Always visible, no hover effect needed) */}
               <button
                 type="button"
                 onClick={(e) => handleToggleWishlist(item, e)}
-                className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${
                   store.isInWishlist(item.id)
-                    ? "opacity-100 text-rose-600"
-                    : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
+                    ? "text-rose-600"
+                    : "text-obsidian hover:text-black"
                 }`}
                 aria-label={`Wishlist ${item.name}`}
               >
                 <Heart
-                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
+                  className={`w-4 h-4 stroke-[1.5] ${
                     store.isInWishlist(item.id) ? "fill-rose-600 text-rose-600" : ""
                   }`}
                 />
               </button>
+            </div>
 
-              {/* Floating Pill Action Button (Desktop hover only) */}
-              <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
+            {/* Bottom Row: Product Title & Price on Left, Cart Icon Button on Right */}
+            <RevealLabel>
+              <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between gap-2">
+                <Link
+                  href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}
+                  className="space-y-0.5 sm:space-y-1 text-left block group/link min-w-0 flex-1"
+                >
+                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                    {item.name}
+                  </p>
+                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
+                    ${item.price} USD
+                  </p>
+                </Link>
+
                 <button
                   type="button"
                   onClick={(e) => {
@@ -156,48 +179,14 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
                       shadeHex: item.shadeHex,
                     });
                   }}
-                  className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-montserrat font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
+                  className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EAECEB] hover:bg-obsidian text-obsidian hover:text-white transition-colors flex items-center justify-center shadow-2xs active:scale-95 cursor-pointer"
                   aria-label={`Add ${item.name} to cart`}
+                  title="Add to cart"
                 >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span className="truncate">ADD TO CART</span>
+                  <ShoppingBag className="w-4 h-4" />
                 </button>
               </div>
-            </div>
-
-            {/* Left-Aligned Product Typography below Image (Matching Reference Screenshot) */}
-            <RevealLabel>
-              <Link
-                href={`/product?shade=${item.shadeId}&image=${encodeURIComponent(item.image)}`}
-                className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
-              >
-                <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
-                  {item.name}
-                </p>
-                <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                  ${item.price} USD
-                </p>
-              </Link>
             </RevealLabel>
-
-            {/* Mobile-Only: Add to Bag button directly on mobile card */}
-            <button
-              onClick={() =>
-                store.addToCart({
-                  id: `${item.id}-system`,
-                  name: item.name,
-                  variant: item.category,
-                  price: 2499,
-                  image: item.image,
-                  shadeCode: item.shadeCode,
-                  shadeHex: item.shadeHex,
-                })
-              }
-              className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-montserrat font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
-            >
-              <ShoppingBag className="w-3 h-3" />
-              <span>ADD TO BAG</span>
-            </button>
           </RevealCard>
         ))}
       </div>

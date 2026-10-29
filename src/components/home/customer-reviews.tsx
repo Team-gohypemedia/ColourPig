@@ -293,8 +293,8 @@ export const TestimonialCard = ({
         }}
       >
         <div className="rounded-2xl bg-white border border-ash/30 h-[380px] sm:h-[410px] w-72 sm:w-80 lg:w-full p-6 flex flex-col justify-between items-center text-center relative z-10 shadow-sm hover:shadow-xl hover:border-obsidian transition-all duration-300 group">
-          {/* Top: Avatar & Rating */}
-          <div className="flex flex-col items-center space-y-3 pt-2">
+          {/* Top: Avatar, Name & Rating */}
+          <div className="flex flex-col items-center space-y-2 pt-1 w-full">
             <ProfileImage src={testimonial.profileImage} alt={testimonial.name} />
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
@@ -303,6 +303,14 @@ export const TestimonialCard = ({
                   className="w-3.5 h-3.5 fill-[#374151] text-[#374151]"
                 />
               ))}
+            </div>
+            <div>
+              <p className="font-headline font-bold text-base text-obsidian tracking-wide">
+                {testimonial.name}
+              </p>
+              <p className="font-mono text-[11px] text-graphite truncate max-w-[220px]">
+                {testimonial.designation}
+              </p>
             </div>
           </div>
 
@@ -404,14 +412,10 @@ export function CustomerReviews() {
   return (
     <section className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full overflow-hidden">
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
-        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase leading-tight">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           WHAT OUR CLIENTS SAY
         </h2>
-        <p className="text-[11px] font-mono tracking-widest uppercase text-graphite font-semibold">
-          REAL REVIEWS FROM REAL CLIENTS
-        </p>
-        <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
       </Reveal>
 
       {/* Interactive Carousel */}

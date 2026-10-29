@@ -205,22 +205,20 @@ export function NewDispatches({
   const activeShade = OFFICIAL_SHADES[activeIndex] || OFFICIAL_SHADES[0];
 
   return (
-    <section id="system" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full select-none">
+    <section id="system" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
       {/* Editorial Heading - Center Aligned */}
       <Reveal className="text-center max-w-7xl mx-auto mb-6 sm:mb-10">
-        <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase">
+        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           EXPLORE YOUR SHADE
         </h2>
       </Reveal>
 
-      {/* 1. Pure Circle Shades Slider (No card containers, no white background circles) */}
-      {/* Mobile/tablet: full-viewport bleed with a centered card peeking neighbours.
-          Laptop/desktop: contained track showing exactly 5 whole shades, no cut-off previews. */}
-      <Reveal className="relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] lg:mx-auto lg:max-w-7xl" amount={0.2} delay={0.15}>
+      {/* 1. Pure Circle Shades Slider - End-to-End full width on desktop */}
+      <Reveal className="relative w-full max-w-[1720px] mx-auto" amount={0.2} delay={0.15}>
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-6 sm:gap-10 lg:gap-6 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-4"
+          className="flex gap-6 sm:gap-10 lg:gap-8 xl:gap-10 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
@@ -231,7 +229,7 @@ export function NewDispatches({
               <div
                 key={item.id}
                 onClick={() => scrollToIndex(idx)}
-                className={`group flex-none w-[180px] sm:w-[220px] lg:w-[calc((100%-6rem)/5)] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 ${
+                className={`group flex-none w-[180px] sm:w-[220px] lg:w-[calc((100%-8rem)/5)] xl:w-[calc((100%-10rem)/5)] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 ${
                   isActive ? "scale-105 opacity-100" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
                 }`}
               >
@@ -239,13 +237,13 @@ export function NewDispatches({
                 {/* Pure Circular Hair Shade Swatch - Clean Transparent Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-full lg:max-w-48 lg:h-auto lg:aspect-square my-2 rounded-full overflow-hidden shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-[0_20px_36px_rgba(0,0,0,0.22)]"
+                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 xl:w-56 xl:h-56 my-2 rounded-full overflow-hidden shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-[0_20px_36px_rgba(0,0,0,0.22)]"
                 >
                   <Image
                     src={circleSrc}
                     alt={item.name}
                     fill
-                    sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
+                    sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 240px"
                     className="object-cover scale-[1.02]"
                     priority={idx < 4}
                   />
@@ -354,18 +352,14 @@ export function NewDispatches({
 
       {/* 2. Divider & Header for the 4 Product Cards Grid (Target for Shades nav button) */}
       <div id="shades" className="mt-8 sm:mt-12 pt-3 sm:pt-4 border-t border-ash/30 scroll-mt-[120px]">
-        <Reveal className="text-center max-w-xl mx-auto mb-4 sm:mb-6 space-y-1 sm:space-y-1.5">
-          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-            FEATURED DISPATCHES
-          </span>
-          <h3 className="font-headline font-bold text-xl sm:text-2xl text-obsidian tracking-wider uppercase">
+        <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
+          <h3 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
             NEW ARRIVALS
           </h3>
-          <div className="w-8 h-[2px] bg-obsidian/30 mx-auto mt-2" />
         </Reveal>
 
-        {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 items-start">
+        {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid (Full Width End-to-End on Desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-6 xl:gap-8 items-start w-full max-w-[1720px] mx-auto">
           {NEW_ARRIVALS.map((item, idx) => (
             <RevealCard
               key={item.id}
@@ -373,7 +367,7 @@ export function NewDispatches({
               className="group flex flex-col"
             >
               {/* Portrait Image Container with Minimal Corners */}
-              <div className="relative aspect-[2/3] max-h-[46vh] sm:max-h-[48vh] xl:max-h-[52vh] w-full rounded-md overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
+              <div className="relative aspect-[4/5] sm:aspect-[4/5] w-full rounded-2xl overflow-hidden bg-transparent transition-all duration-300">
                 <RevealImage>
                   <Link
                     href={`/product?shade=${item.id.replace("prod-", "")}`}
@@ -384,7 +378,7 @@ export function NewDispatches({
                       alt={item.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
                     />
                   </Link>
                 </RevealImage>
@@ -393,22 +387,36 @@ export function NewDispatches({
                 <button
                   type="button"
                   onClick={(e) => handleToggleWishlistProduct(item, e)}
-                  className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                  className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${
                     store.isInWishlist(item.id)
-                      ? "opacity-100 text-rose-600"
-                      : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
+                      ? "text-rose-600"
+                      : "text-obsidian hover:text-black"
                   }`}
                   aria-label="Wishlist"
                 >
                   <Heart
-                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
+                    className={`w-4 h-4 stroke-[1.5] ${
                       store.isInWishlist(item.id) ? "fill-rose-600 text-rose-600" : ""
                     }`}
                   />
                 </button>
+              </div>
 
-                {/* Floating Pill Action Button (Desktop hover only) */}
-                <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
+              {/* Left-Aligned Product Typography below Image with Cart Icon */}
+              <RevealLabel>
+                <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between gap-2">
+                  <Link
+                    href={`/product?shade=${item.id.replace("prod-", "")}`}
+                    className="space-y-0.5 sm:space-y-1 text-left block group/link min-w-0 flex-1"
+                  >
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                      {item.name}
+                    </p>
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
+                      ${item.price} USD
+                    </p>
+                  </Link>
+
                   <button
                     type="button"
                     onClick={(e) => {
@@ -424,48 +432,16 @@ export function NewDispatches({
                         shadeHex: item.shadeHex,
                       });
                     }}
-                    className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
+                    className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EAECEB] hover:bg-obsidian text-obsidian hover:text-white transition-colors flex items-center justify-center shadow-2xs active:scale-95 cursor-pointer"
                     aria-label={`Add ${item.name} to cart`}
+                    title="Add to cart"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5" />
-                    <span className="truncate">ADD TO CART</span>
+                    <ShoppingBag className="w-4 h-4" />
                   </button>
                 </div>
-              </div>
-
-              {/* Left-Aligned Product Typography below Image */}
-              <RevealLabel>
-                <Link
-                  href={`/product?shade=${item.id.replace("prod-", "")}`}
-                  className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
-                >
-                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
-                    {item.name}
-                  </p>
-                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                    ${item.price} USD
-                  </p>
-                </Link>
               </RevealLabel>
 
-              {/* Mobile-Only: Add to Bag button directly on mobile card */}
-              <button
-                onClick={() =>
-                  store.addToCart({
-                    id: `shade-${item.shadeCode.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}-starter-system`,
-                    name: `Colourpig Starter System | ${item.name.replace(/ System$/i, "")}`,
-                    variant: item.category,
-                    price: 2499,
-                    image: item.image,
-                    shadeCode: item.shadeCode,
-                    shadeHex: item.shadeHex,
-                  })
-                }
-                className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
-              >
-                <ShoppingBag className="w-3 h-3" />
-                <span>ADD TO BAG</span>
-              </button>
+              {/* Mobile-Only: Add to Bag button removed in favor of inline cart icon */}
             </RevealCard>
           ))}
         </div>

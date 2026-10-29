@@ -232,11 +232,8 @@ export function ShadeFinder({
     <section id="shade-finder" ref={sectionRef} className="relative lg:h-[calc(200svh-116px)]">
       <div className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto lg:max-w-none lg:p-0 lg:sticky lg:top-[116px] lg:h-[calc(100svh-116px)] lg:overflow-hidden">
       {/* Title (phones/tablets: centred above; lg: shown in the right column instead) */}
-      <motion.div className="lg:hidden text-center max-w-xl mx-auto mb-6 sm:mb-8 space-y-1" style={textStyle}>
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
-          RESULTS
-        </span>
-        <h2 className="font-headline font-bold text-xl sm:text-2xl lg:text-3xl text-obsidian tracking-wider uppercase">
+      <motion.div className="lg:hidden text-center max-w-xl mx-auto mb-6 sm:mb-8" style={textStyle}>
+        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           BEFORE &amp; AFTER
         </h2>
       </motion.div>
@@ -342,11 +339,8 @@ export function ShadeFinder({
           className="flex flex-col justify-center gap-4 lg:gap-5 w-full origin-center"
           style={fitScale < 1 ? { transform: `scale(${fitScale})` } : undefined}
         >
-          <motion.div className="hidden lg:block space-y-1" style={textStyle}>
-            <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-medium">
-              RESULTS
-            </span>
-            <h2 className="font-headline font-bold text-3xl xl:text-4xl text-obsidian tracking-wider uppercase">
+          <motion.div className="hidden lg:block mb-1" style={textStyle}>
+            <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
               BEFORE &amp; AFTER
             </h2>
           </motion.div>

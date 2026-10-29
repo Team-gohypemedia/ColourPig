@@ -373,7 +373,7 @@ export function CollectionView() {
                 className="group flex flex-col"
               >
                 {/* Portrait Image Container with Rounded Corners matching Reference Screenshot */}
-                <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
+                <div className="relative aspect-[4/5] sm:aspect-[4/5] w-full rounded-2xl overflow-hidden bg-transparent transition-all duration-300">
                   <Link
                     href={getProductHref(item)}
                     className="block w-full h-full relative"
@@ -383,7 +383,7 @@ export function CollectionView() {
                       alt={item.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
                     />
                   </Link>
 
@@ -391,59 +391,50 @@ export function CollectionView() {
                   <button
                     type="button"
                     onClick={(e) => handleToggleWishlist(item, e)}
-                    className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                    className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${
                       inWishlist
-                        ? "opacity-100 text-rose-600"
-                        : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
+                        ? "text-rose-600"
+                        : "text-obsidian hover:text-black"
                     }`}
                     aria-label={`Wishlist ${item.name}`}
                   >
                     <Heart
-                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
+                      className={`w-4 h-4 stroke-[1.5] ${
                         inWishlist ? "fill-rose-600 text-rose-600" : ""
                       }`}
                     />
                   </button>
-
-                  {/* Floating Pill Action Button (Desktop hover only) */}
-                  <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                    <button
-                      type="button"
-                      onClick={(e) => handleQuickAdd(item, e)}
-                      className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-montserrat font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
-                      aria-label={`Add ${item.name} to cart`}
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span className="truncate">ADD TO CART</span>
-                    </button>
-                  </div>
                 </div>
 
-                {/* Left-Aligned Product Typography below Image (Matching Reference Screenshot) */}
-                <Link
-                  href={getProductHref(item)}
-                  className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
-                >
-                  {/* Line 1: Product Name */}
-                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
-                    {item.name}
-                  </p>
+                {/* Bottom Row: Product Title & Price on Left, Cart Icon Button on Right */}
+                <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between gap-2">
+                  <Link
+                    href={getProductHref(item)}
+                    className="space-y-0.5 sm:space-y-1 text-left block group/link min-w-0 flex-1"
+                  >
+                    {/* Line 1: Product Name */}
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
+                      {item.name}
+                    </p>
 
-                  {/* Line 2: Price */}
-                  <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                    ${item.priceUsd} USD
-                  </p>
-                </Link>
+                    {/* Line 2: Price */}
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
+                      ${item.priceUsd} USD
+                    </p>
+                  </Link>
 
-                {/* Mobile-Only: Add to Cart button directly on mobile card */}
-                <button
-                  type="button"
-                  onClick={(e) => handleQuickAdd(item, e)}
-                  className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-montserrat font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
-                >
-                  <ShoppingBag className="w-3 h-3" />
-                  <span>ADD TO BAG</span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={(e) => handleQuickAdd(item, e)}
+                    className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EAECEB] hover:bg-obsidian text-obsidian hover:text-white transition-colors flex items-center justify-center shadow-2xs active:scale-95 cursor-pointer"
+                    aria-label={`Add ${item.name} to cart`}
+                    title="Add to cart"
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Mobile-Only: Add to Cart button removed in favor of inline cart button */}
               </motion.div>
             );
           })}
@@ -454,14 +445,10 @@ export function CollectionView() {
       <section className="w-full mt-16 sm:mt-24 pt-14 sm:pt-20 pb-12 sm:pb-16 border-t border-black/10 bg-[#ECEEEF]/50">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14">
           {/* Section Heading */}
-          <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
-            <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
-              COMPANION ESSENTIALS
-            </span>
-            <h2 className="font-headline font-bold text-2xl sm:text-3xl text-obsidian tracking-wider uppercase leading-tight">
+          <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+            <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
               YOU MIGHT ALSO LIKE
             </h2>
-            <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
           </div>
 
           {/* 4 Cards Editorial Grid matching reference screenshot */}
@@ -472,7 +459,7 @@ export function CollectionView() {
               return (
                 <div key={item.id} className="group flex flex-col">
                   {/* Portrait Image Container */}
-                  <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
+                  <div className="relative aspect-[4/5] sm:aspect-[4/5] w-full rounded-2xl overflow-hidden bg-transparent transition-all duration-300">
                     <Link
                       href={`/product?shade=${item.id}&image=${encodeURIComponent(item.image)}`}
                       className="block w-full h-full relative"
@@ -482,7 +469,7 @@ export function CollectionView() {
                         alt={item.name}
                         fill
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
                       />
                     </Link>
 
@@ -502,46 +489,19 @@ export function CollectionView() {
                           shadeHex: item.shadeHex,
                         });
                       }}
-                      className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                      className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${
                         inWishlist
-                          ? "opacity-100 text-rose-600"
-                          : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
+                          ? "text-rose-600"
+                          : "text-obsidian hover:text-black"
                       }`}
                       aria-label={`Wishlist ${item.name}`}
                     >
                       <Heart
-                        className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
+                        className={`w-4 h-4 stroke-[1.5] ${
                           inWishlist ? "fill-rose-600 text-rose-600" : ""
                         }`}
                       />
                     </button>
-
-                    {/* Floating Pill Action Button (Desktop hover only) */}
-                    <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          store.addToCart({
-                            id: `${item.id}-system`,
-                            name: item.name,
-                            variant: item.category,
-                            price: item.priceInr,
-                            image: item.image,
-                            shadeCode: item.shadeCode,
-                            shadeHex: item.shadeHex,
-                          });
-                          setAddedItemNotice(item.name);
-                          setTimeout(() => setAddedItemNotice(null), 2500);
-                        }}
-                        className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-montserrat font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
-                        aria-label={`Add ${item.name} to cart`}
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                        <span className="truncate">ADD TO CART</span>
-                      </button>
-                    </div>
                   </div>
 
                   {/* Left-Aligned Product Typography below Image */}
