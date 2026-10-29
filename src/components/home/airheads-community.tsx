@@ -71,23 +71,19 @@ export function AirheadsCommunity() {
   // Mouse position for custom interactive cursor pill
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
   const [isHoveringTrack, setIsHoveringTrack] = useState(false);
-  const [isSectionActive, setIsSectionActive] = useState(false);
   const [cursorContent, setCursorContent] = useState<"VIEW" | "PLAY" | "SCROLL">("SCROLL");
 
-  // Track if section viewport is actively pinned on screen
+  // Instantly hide custom cursor on any vertical scroll or resize so it never leaks onto adjacent sections
   useEffect(() => {
-    const checkActive = () => {
-      if (!targetRef.current) return;
-      const rect = targetRef.current.getBoundingClientRect();
-      const active = rect.top <= 20 && rect.bottom >= window.innerHeight - 20;
-      setIsSectionActive(active);
+    const handleScrollOrResize = () => {
+      setIsHoveringTrack(false);
+      setCursorContent("SCROLL");
     };
-    window.addEventListener("scroll", checkActive, { passive: true });
-    window.addEventListener("resize", checkActive);
-    checkActive();
+    window.addEventListener("scroll", handleScrollOrResize, { passive: true });
+    window.addEventListener("resize", handleScrollOrResize);
     return () => {
-      window.removeEventListener("scroll", checkActive);
-      window.removeEventListener("resize", checkActive);
+      window.removeEventListener("scroll", handleScrollOrResize);
+      window.removeEventListener("resize", handleScrollOrResize);
     };
   }, []);
 
@@ -152,14 +148,26 @@ export function AirheadsCommunity() {
       {/* Sticky Screen Viewport pinned during vertical scroll */}
       <div
         onMouseMove={(e) => {
-          setMousePos({ x: e.clientX, y: e.clientY });
+          const rect = e.currentTarget.getBoundingClientRect();
+          setMousePos({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+          });
+          setIsHoveringTrack(true);
         }}
-        onMouseEnter={() => setIsHoveringTrack(true)}
+        onMouseEnter={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          setMousePos({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+          });
+          setIsHoveringTrack(true);
+        }}
         onMouseLeave={() => {
           setIsHoveringTrack(false);
           setCursorContent("SCROLL");
         }}
-        className="sticky top-0 h-screen w-full flex flex-col justify-center py-4 sm:py-6 lg:py-8 overflow-hidden"
+        className="sticky top-0 h-screen w-full flex flex-col justify-center py-4 sm:py-6 lg:py-8 overflow-hidden relative"
       >
         {/* 1. Header with Brand Style */}
         <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center shrink-0 mb-3 sm:mb-4 lg:mb-5">
@@ -242,6 +250,30 @@ export function AirheadsCommunity() {
             />
           </div>
         </div>
+
+        {/* 4. Custom Floating Circular Cursor: Scoped strictly inside this sticky overflow-hidden viewport */}
+        <motion.div
+          className="pointer-events-none absolute top-0 left-0 z-50 hidden lg:flex items-center justify-center w-[78px] h-[78px] rounded-full border border-obsidian/80 bg-white text-obsidian shadow-[0_14px_35px_rgba(0,0,0,0.2)]"
+          animate={{
+            x: mousePos.x - 39,
+            y: mousePos.y - 39,
+            opacity: isHoveringTrack && !selectedItem ? 1 : 0,
+            scale: isHoveringTrack && !selectedItem ? 1 : 0.35,
+          }}
+          transition={{
+            type: "spring",
+            damping: 26,
+            stiffness: 280,
+            mass: 0.1,
+          }}
+        >
+          <div className="flex items-center justify-center gap-1 select-none">
+            <span className="font-montserrat font-bold text-[11px] tracking-[0.2em] uppercase text-obsidian">
+              {cursorContent}
+            </span>
+            {cursorContent === "SCROLL" && <span className="text-[10px] text-obsidian font-bold ml-0.5">▸</span>}
+          </div>
+        </motion.div>
       </div>
 
       {/* 4. Fullscreen Lightbox Modal on Click */}
@@ -309,30 +341,6 @@ export function AirheadsCommunity() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* 5. Custom Floating Circular Cursor: Placed at ROOT with z-[9999] so it is ALWAYS on top of all images and videos */}
-      <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999] hidden lg:flex items-center justify-center w-[78px] h-[78px] rounded-full border border-obsidian/80 bg-white text-obsidian shadow-[0_14px_35px_rgba(0,0,0,0.2)]"
-        animate={{
-          x: mousePos.x - 39,
-          y: mousePos.y - 39,
-          opacity: isHoveringTrack && isSectionActive && !selectedItem ? 1 : 0,
-          scale: isHoveringTrack && isSectionActive && !selectedItem ? 1 : 0.35,
-        }}
-        transition={{
-          type: "spring",
-          damping: 26,
-          stiffness: 280,
-          mass: 0.1,
-        }}
-      >
-        <div className="flex items-center justify-center gap-1 select-none">
-          <span className="font-montserrat font-bold text-[11px] tracking-[0.2em] uppercase text-obsidian">
-            {cursorContent}
-          </span>
-          {cursorContent === "SCROLL" && <span className="text-[10px] text-obsidian font-bold ml-0.5">▸</span>}
-        </div>
-      </motion.div>
     </section>
   );
 }
