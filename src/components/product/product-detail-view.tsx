@@ -319,7 +319,7 @@ export function ProductDetailView({
     <div className="w-full bg-white text-obsidian min-h-screen">
       {/* 1. Breadcrumbs Bar */}
       <div className="w-full border-b border-ash/25 bg-white/80 backdrop-blur-sm px-4 sm:px-10 lg:px-14 py-3">
-        <div className="max-w-[1600px] mx-auto flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-graphite overflow-x-auto whitespace-nowrap">
+        <div className="max-w-[1600px] mx-auto flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-wider uppercase text-obsidian overflow-x-auto whitespace-nowrap">
           <Link href="/" className="hover:text-obsidian transition-colors">
             HOME
           </Link>
@@ -448,7 +448,7 @@ export function ProductDetailView({
             {/* Header: Title, Category & Reviews */}
             <div className="space-y-2 border-b border-ash/25 pb-5">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-graphite font-semibold">
+                <span className="text-[10px] font-mono tracking-widest uppercase text-obsidian font-semibold">
                   FORMULA {selectedShade.formula} • {selectedShade.category}
                 </span>
               </div>
@@ -474,7 +474,7 @@ export function ProductDetailView({
                     4.9
                   </span>
                   <span className="text-ash text-xs">•</span>
-                  <span className="text-xs font-mono text-graphite underline group-hover:text-obsidian transition-colors">
+                  <span className="text-xs font-mono text-obsidian underline group-hover:text-obsidian transition-colors">
                     {selectedShade.reviews} Verified Reviews
                   </span>
                 </a>
@@ -497,7 +497,7 @@ export function ProductDetailView({
                   Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} (28% OFF)
                 </span>
               </div>
-              <p className="text-[11px] font-mono text-graphite">
+              <p className="text-[11px] font-mono text-obsidian">
                 Inclusive of all taxes • Free express climate-controlled delivery
               </p>
             </div>
@@ -509,7 +509,7 @@ export function ProductDetailView({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider text-obsidian">
                     SELECT SHADE:
                   </span>
-                  <span className="text-xs font-mono text-graphite font-semibold">
+                  <span className="text-xs font-mono text-obsidian font-semibold">
                     {selectedShade.code} {selectedShade.name.replace(/No\.\S+\s*/, "")}
                   </span>
                 </div>
@@ -583,7 +583,7 @@ export function ProductDetailView({
                             {kit.tag}
                           </span>
                         </div>
-                        <p className="text-[11px] font-mono text-graphite">
+                        <p className="text-[11px] font-mono text-obsidian">
                           {kit.subtitle}
                         </p>
                       </div>
@@ -606,14 +606,14 @@ export function ProductDetailView({
             </div>
 
             {/* 3. In-Stock Indicator & Live Urgency */}
-            <div className="flex items-center justify-between text-xs font-mono text-graphite pt-1">
+            <div className="flex items-center justify-between text-xs font-mono text-obsidian pt-1">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#374151] animate-pulse" />
                 <span className="text-obsidian font-semibold">
                   In Stock: Ready for immediate dispatch
                 </span>
               </div>
-              <span className="text-[10px] text-graphite">Ships in 24 hrs</span>
+              <span className="text-[10px] text-obsidian">Ships in 24 hrs</span>
             </div>
 
             {/* 4. Quantity Pill & Primary Call To Action Buttons */}
@@ -623,7 +623,7 @@ export function ProductDetailView({
                 <div className="inline-flex items-center gap-3 border border-ash/30 rounded-xl px-3 py-3 bg-white shadow-2xs">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="text-graphite hover:text-obsidian transition-colors"
+                    className="text-obsidian hover:text-obsidian transition-colors"
                     aria-label="Decrease quantity"
                   >
                     <Minus className="w-3.5 h-3.5" />
@@ -633,7 +633,7 @@ export function ProductDetailView({
                   </span>
                   <button
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="text-graphite hover:text-obsidian transition-colors"
+                    className="text-obsidian hover:text-obsidian transition-colors"
                     aria-label="Increase quantity"
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -731,7 +731,7 @@ export function ProductDetailView({
                   <Sparkles className="w-3.5 h-3.5 text-[#374151]" />
                   <span>EXTRA 10% OFF PREPAID ORDERS</span>
                 </div>
-                <p className="text-[10px] font-mono text-graphite">
+                <p className="text-[10px] font-mono text-obsidian">
                   Use coupon code at final dispatch checkout
                 </p>
               </div>
@@ -766,7 +766,7 @@ export function ProductDetailView({
                   />
                 </button>
                 {openAccordion === "how-it-works" && (
-                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-graphite space-y-2 border-t border-ash/15">
+                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-obsidian space-y-2 border-t border-ash/15">
                     <p>
                       Unlike traditional hair dye bottles that expose developer and pigment to oxygen the moment they are mixed, ColourPig keeps both components isolated in separate vacuum chambers.
                     </p>
@@ -795,7 +795,7 @@ export function ProductDetailView({
                   />
                 </button>
                 {openAccordion === "ritual" && (
-                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-graphite space-y-2 border-t border-ash/15">
+                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-obsidian space-y-2 border-t border-ash/15">
                     <ul className="list-disc pl-4 space-y-1.5">
                       <li><strong>Step 1: Dispense</strong> — Press nozzle once directly onto the ergonomic precision applicator comb.</li>
                       <li><strong>Step 2: Trace Regrowth</strong> — Part dry hair along the root line and gently brush through.</li>
@@ -824,7 +824,7 @@ export function ProductDetailView({
                   />
                 </button>
                 {openAccordion === "ingredients" && (
-                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-graphite space-y-2 border-t border-ash/15">
+                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-obsidian space-y-2 border-t border-ash/15">
                     <p>
                       Formulated without Ammonia, Parabens, PPD, Resorcinol, Phthalates, or synthetic fragrance.
                     </p>
@@ -853,7 +853,7 @@ export function ProductDetailView({
                   />
                 </button>
                 {openAccordion === "shipping" && (
-                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-graphite space-y-2 border-t border-ash/15">
+                  <div className="px-4 pb-4 pt-1 text-xs font-mono text-obsidian space-y-2 border-t border-ash/15">
                     <p>
                       Orders dispatched within 24 hours in insulated, carbon-neutral protective packaging.
                     </p>
@@ -918,8 +918,8 @@ export function ProductDetailView({
                 key={prod.id}
                 className="group flex flex-col"
               >
-                {/* Portrait Image Container with Minimal Corners & Aspect Ratio matching Image 2 */}
-                <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-white shadow-xs group-hover:shadow-md transition-all duration-300">
+                {/* Portrait Image Container matching Home Product Cards */}
+                <div className="relative aspect-[4/5] sm:aspect-[4/5] w-full rounded-2xl overflow-hidden bg-transparent transition-all duration-300">
                   <Link
                     href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
                     className="block w-full h-full relative"
@@ -929,7 +929,7 @@ export function ProductDetailView({
                       alt={prod.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
                     />
                   </Link>
 
@@ -947,91 +947,57 @@ export function ProductDetailView({
                         shadeHex: prod.shadeHex,
                       })
                     }
-                    className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+                    className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${
                       store.isInWishlist(prod.id)
-                        ? "opacity-100 text-rose-600"
-                        : "opacity-80 sm:opacity-0 sm:group-hover:opacity-100 text-obsidian hover:text-black"
+                        ? "text-rose-600"
+                        : "text-obsidian hover:text-black"
                     }`}
                     aria-label="Wishlist"
                   >
                     <Heart
-                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5] ${
+                      className={`w-4 h-4 stroke-[1.5] ${
                         store.isInWishlist(prod.id) ? "fill-rose-600 text-rose-600" : ""
                       }`}
                     />
                   </button>
-
-                  {/* Floating Pill Action Button (Desktop/Laptop hover only) */}
-                  <div className="hidden sm:flex absolute bottom-4 inset-x-0 mx-auto z-20 justify-center px-4 pointer-events-none group-hover:pointer-events-auto">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        store.addToCart({
-                          id: `${prod.id}-starter-system`,
-                          name: `Colourpig Starter System | ${prod.name}`,
-                          variant: prod.category,
-                          price: prod.priceInr,
-                          image: prod.image,
-                          shadeCode: prod.shadeCode,
-                          shadeHex: prod.shadeHex,
-                        });
-                      }}
-                      className="w-full max-w-[210px] py-2.5 px-4 rounded-full bg-[#EAECEB]/95 hover:bg-obsidian text-obsidian hover:text-white backdrop-blur-md shadow-md border border-black/5 text-[11px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-1.5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 active:scale-95 cursor-pointer"
-                      aria-label={`Add ${prod.name} to cart`}
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span className="truncate">ADD TO CART</span>
-                    </button>
-                  </div>
                 </div>
 
-                {/* Left-Aligned Product Typography below Image */}
-                <Link
-                  href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
-                  className="mt-2.5 sm:mt-3.5 space-y-0.5 sm:space-y-1 text-left block group/link"
-                >
-                  <p
-                    className="font-montserrat !font-normal font-[400] text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate"
-                    style={{ fontWeight: 400 }}
+                {/* Bottom Row: Product Title & Price on Left, Cart Icon Button on Right */}
+                <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between gap-2">
+                  <Link
+                    href={`/product?shade=${prod.id.replace("shade-", "shade-")}`}
+                    className="space-y-0.5 sm:space-y-1 text-left block group/link min-w-0 flex-1"
                   >
-                    {prod.name}
-                  </p>
-                  <p className="text-[10px] sm:text-[11px] font-mono text-graphite truncate">
-                    {prod.category}
-                  </p>
-                  <div className="flex items-baseline gap-2 mt-0.5">
-                    <span
-                      className="text-xs sm:text-sm font-mono !font-normal font-[400] text-obsidian"
-                      style={{ fontWeight: 400 }}
-                    >
-                      {store.formatPrice(prod.priceInr)}
-                    </span>
-                    <span className="text-[10px] font-mono text-ash line-through">
-                      {store.formatPrice(prod.originalInr)}
-                    </span>
-                  </div>
-                </Link>
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] tracking-wider uppercase text-obsidian group-hover/link:text-black group-hover/link:underline transition-colors truncate">
+                      {prod.name}
+                    </p>
+                    <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
+                      $89 USD
+                    </p>
+                  </Link>
 
-                {/* Mobile-Only: Add to Bag button directly on mobile card */}
-                <button
-                  onClick={() =>
-                    store.addToCart({
-                      id: `${prod.id}-starter-system`,
-                      name: `Colourpig Starter System | ${prod.name}`,
-                      variant: prod.category,
-                      price: prod.priceInr,
-                      image: prod.image,
-                      shadeCode: prod.shadeCode,
-                      shadeHex: prod.shadeHex,
-                    })
-                  }
-                  className="sm:hidden mt-2.5 w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
-                >
-                  <ShoppingBag className="w-3 h-3" />
-                  <span>ADD TO BAG</span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      store.addToCart({
+                        id: `${prod.id}-starter-system`,
+                        name: `Colourpig Starter System | ${prod.name}`,
+                        variant: prod.category,
+                        price: prod.priceInr,
+                        image: prod.image,
+                        shadeCode: prod.shadeCode,
+                        shadeHex: prod.shadeHex,
+                      });
+                    }}
+                    className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EAECEB] hover:bg-obsidian text-obsidian hover:text-white transition-colors flex items-center justify-center shadow-2xs active:scale-95 cursor-pointer"
+                    aria-label={`Add ${prod.name} to cart`}
+                    title="Add to cart"
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -1061,7 +1027,7 @@ export function ProductDetailView({
                   ))}
                 </div>
               </div>
-              <p className="text-xs font-mono text-graphite mt-1">
+              <p className="text-xs font-mono text-obsidian mt-1">
                 Based on 310 verified root touch-up reviews
               </p>
             </div>
@@ -1069,7 +1035,7 @@ export function ProductDetailView({
               <span className="text-xs font-mono font-bold text-obsidian block">
                 98% RECOMMEND RATE
               </span>
-              <span className="text-[10px] font-mono text-graphite">
+              <span className="text-[10px] font-mono text-obsidian">
                 Would repurchase the refill pod
               </span>
             </div>
@@ -1085,14 +1051,14 @@ export function ProductDetailView({
               { stars: "1 Star", pct: 0, count: 0 },
             ].map((bar) => (
               <div key={bar.stars} className="flex items-center gap-3">
-                <span className="w-14 text-graphite text-[11px] shrink-0">{bar.stars}</span>
+                <span className="w-14 text-obsidian text-[11px] shrink-0">{bar.stars}</span>
                 <div className="flex-1 h-2 rounded-full bg-white overflow-hidden">
                   <div
                     className="h-full bg-obsidian rounded-full"
                     style={{ width: `${bar.pct}%` }}
                   />
                 </div>
-                <span className="w-10 text-right text-graphite text-[10px] shrink-0">
+                <span className="w-10 text-right text-obsidian text-[10px] shrink-0">
                   {bar.pct}%
                 </span>
               </div>
@@ -1114,12 +1080,12 @@ export function ProductDetailView({
                       <Star key={i} className="w-3.5 h-3.5 fill-[#374151] stroke-[#374151]" />
                     ))}
                   </div>
-                  <span className="text-[10px] font-mono text-graphite">{t.date}</span>
+                  <span className="text-[10px] font-mono text-obsidian">{t.date}</span>
                 </div>
                 <h4 className="font-headline font-bold text-sm text-obsidian">
                   &ldquo;{t.title}&rdquo;
                 </h4>
-                <p className="text-xs font-mono text-graphite leading-relaxed">
+                <p className="text-xs font-mono text-obsidian leading-relaxed">
                   {t.comment}
                 </p>
               </div>

@@ -6,7 +6,7 @@ const MARQUEE_ITEMS = [
   {
     type: "lockup",
     content: (
-      <span className="font-headline font-black tracking-wider uppercase">
+      <span className="font-headline font-bold text-base sm:text-lg tracking-wider uppercase">
         <span className="text-white">GREY TOUCH UP</span>
       </span>
     ),
@@ -68,7 +68,7 @@ export function ColorfulMarquee() {
               item.content
             ) : (
               <span
-                className="font-headline font-black text-xs sm:text-sm tracking-[0.22em] uppercase whitespace-nowrap transition-transform hover:scale-105"
+                className="font-montserrat font-semibold text-xs sm:text-sm tracking-[0.22em] uppercase whitespace-nowrap transition-transform hover:scale-105"
                 style={{ color: item.color }}
               >
                 {item.text}

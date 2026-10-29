@@ -15,7 +15,7 @@ const RITUAL_STEPS = [
     pantoneName: "Tangerine",
     hex: "#C8CDD2",
     desc: "Press canister to release pre-measured dual formulas evenly into the tray without mess.",
-    image: "/images/ritual_step_1_card.png",
+    image: "/images/ritual_step_1_icon.png",
   },
   {
     step: "02",
@@ -25,7 +25,7 @@ const RITUAL_STEPS = [
     pantoneName: "Cyan",
     hex: "#C8CDD2",
     desc: "Dispense formulas directly into custom tray and blend evenly with precision brush.",
-    image: "/images/ritual_step_2_card.png",
+    image: "/images/ritual_step_2_icon.png",
   },
   {
     step: "03",
@@ -35,7 +35,7 @@ const RITUAL_STEPS = [
     pantoneName: "Lime",
     hex: "#C8CDD2",
     desc: "Use precision brush to target roots, part line, and resistant grey regrowth.",
-    image: "/images/ritual_step_3_card.png",
+    image: "/images/ritual_step_3_icon.png",
   },
   {
     step: "04",
@@ -45,7 +45,7 @@ const RITUAL_STEPS = [
     pantoneName: "Yellow",
     hex: "#C8CDD2",
     desc: "Allow 30 minutes for permanent, salon-grade 100% grey coverage.",
-    image: "/images/ritual_step_4_card.png",
+    image: "/images/ritual_step_4_icon.png",
   },
   {
     step: "05",
@@ -55,7 +55,7 @@ const RITUAL_STEPS = [
     pantoneName: "Lilac",
     hex: "#C8CDD2",
     desc: "Rinse thoroughly with warm water, follow with included shampoo and conditioner.",
-    image: "/images/ritual_step_5_card.png",
+    image: "/images/ritual_step_5_icon.png",
   },
   {
     step: "06",
@@ -65,7 +65,7 @@ const RITUAL_STEPS = [
     pantoneName: "Rose",
     hex: "#C8CDD2",
     desc: "Wipe hairline and skin clean with gentle stain remover sachet for zero residue.",
-    image: "/images/ritual_step_6_card.png",
+    image: "/images/ritual_step_6_icon.png",
   },
 ];
 
@@ -145,7 +145,7 @@ export function InShowerRitual() {
 
   return (
     <section
-      className="pt-14 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-8 lg:px-10 w-full select-none"
+      className="py-8 sm:py-12 lg:py-14 px-4 sm:px-8 lg:px-12 w-full select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}
@@ -155,9 +155,9 @@ export function InShowerRitual() {
       }}
     >
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
-        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-white tracking-wider uppercase leading-tight">
-          THE 6-STEP RITUAL
+      <Reveal className="text-center max-w-xl mx-auto mb-4 sm:mb-6">
+        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-white tracking-wider uppercase leading-tight [font-feature-settings:'lnum'] [font-variant-numeric:lining-nums]">
+          THE <span className="font-montserrat font-bold text-[0.88em] mx-[1px] inline-block align-baseline">6</span>-STEP RITUAL
         </h2>
       </Reveal>
 
@@ -166,7 +166,7 @@ export function InShowerRitual() {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 lg:px-1 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:pb-0"
+          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 lg:px-1 lg:grid lg:grid-cols-6 lg:gap-3 xl:gap-5 lg:overflow-visible lg:pb-0 max-w-[1300px] mx-auto"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {RITUAL_STEPS.map((item, idx) => {
@@ -175,63 +175,26 @@ export function InShowerRitual() {
               <div
                 key={item.step}
                 onClick={() => scrollToIndex(idx)}
-                className={`w-[78vw] max-w-[310px] sm:w-[320px] md:w-[340px] lg:max-w-none lg:w-auto shrink-0 snap-center lg:snap-align-none group relative rounded-lg bg-[#13212E] border p-3.5 sm:p-4 flex flex-col justify-between h-auto min-h-[350px] sm:min-h-[380px] lg:min-h-0 lg:p-0 lg:border-0 lg:bg-transparent lg:shadow-none lg:ring-0 lg:cursor-default overflow-hidden cursor-pointer transition-all duration-300 ${
+                className={`w-[70vw] max-w-[240px] sm:w-[260px] lg:max-w-none lg:w-auto shrink-0 snap-center lg:snap-align-none group relative rounded-lg bg-transparent border-0 p-1 flex flex-col items-center justify-start cursor-pointer transition-all duration-300 ${
                   isActive
-                    ? "border-white/40 shadow-2xl shadow-black/80 ring-1 ring-white/10"
-                    : "border-white/10 hover:border-white/25 hover:shadow-lg"
+                    ? "opacity-100 scale-105"
+                    : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
                 }`}
               >
-                {/* Colored Top Accent Stripe */}
-                <div
-                  className="lg:hidden absolute top-0 inset-x-0 h-1 sm:h-1.5 transition-all duration-300 group-hover:h-2"
-                  style={{ backgroundColor: item.hex }}
-                />
+                {/* Clean Cormorant Garamond Step Title */}
+                <h3 className="font-headline font-bold text-xs sm:text-sm lg:text-[14px] xl:text-[15px] tracking-[0.18em] uppercase text-white mb-2 sm:mb-2.5 text-center">
+                  {item.title}
+                </h3>
 
-                {/* Step Number & Pantone Tag Top */}
-                <div className="lg:hidden flex justify-between items-center z-10 pt-1">
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className="font-mono text-base sm:text-lg font-black transition-colors"
-                      style={{ color: item.hex }}
-                    >
-                      {item.step}
-                    </span>
-                    <span
-                      className="inline-block px-1.5 py-0.5 rounded text-[8px] font-mono font-bold tracking-wider uppercase border"
-                      style={{
-                        backgroundColor: `${item.hex}20`,
-                        color: item.hex,
-                        borderColor: `${item.hex}40`,
-                      }}
-                    >
-                      {item.pantone}
-                    </span>
-                  </div>
-                  <SnoutIcon
-                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-40 group-hover:opacity-100 transition-opacity"
-                    color={item.hex}
-                  />
-                </div>
-
-                {/* Packaging Illustration Frame */}
-                <div className="relative w-full aspect-[4/3] rounded overflow-hidden my-2.5 sm:my-3 lg:my-0 shadow-xs bg-[#63727D]">
+                {/* Packaging Illustration Frame - Clean Transparent */}
+                <div className="relative w-full aspect-[4/3] max-w-[130px] sm:max-w-[150px] lg:max-w-[160px] xl:max-w-[180px] mx-auto bg-transparent">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
-                    sizes="(max-width: 640px) 78vw, (max-width: 1024px) 340px, (max-width: 1536px) 25vw, 20vw"
-                    className="object-cover object-center lg:group-hover:scale-100 group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 130px, (max-width: 1024px) 160px, 180px"
+                    className="object-contain object-center transition-transform duration-500 group-hover:scale-105"
                   />
-                </div>
-
-                {/* Bottom Meta */}
-                <div className="lg:hidden space-y-1.5 z-10 text-center">
-                  <h3 className="font-headline font-bold text-xs sm:text-sm tracking-wider uppercase text-white truncate">
-                    {item.title}
-                  </h3>
-                  <p className="text-[11px] sm:text-xs font-normal text-ash leading-relaxed line-clamp-3">
-                    {item.desc}
-                  </p>
                 </div>
               </div>
             );

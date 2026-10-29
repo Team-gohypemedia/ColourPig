@@ -38,60 +38,60 @@ const SHADE_CLEAN_CIRCLES: Record<string, string> = {
 
 const NEW_ARRIVALS = [
   {
-    id: "prod-shade-4",
-    name: "No.4 Medium Brown System",
-    category: "Natural Chestnut • Air-Driven Touch Up",
-    shadeCode: "No.4",
-    shadeName: "Medium Brown",
-    shadeHex: "#4E4136",
+    id: "prod-shade-3",
+    name: "NO.3 BROWN SYSTEM",
+    category: "Dark Espresso • Air-Driven Touch Up",
+    shadeCode: "No.3",
+    shadeName: "Brown",
+    shadeHex: "#241E1C",
     price: 89,
-    tag: "Most Popular",
+    tag: "Deep Velvet",
     pantoneColor: "#374151",
     pantoneCode: "123C",
-    image: "/Medium Brown/MediumBrown.jpg",
-    video: "/Medium Brown/Medium Brown.mp4",
+    image: "/Brown/Brown.jpg",
+    video: "/Brown/Brown.mp4",
   },
   {
-    id: "prod-shade-7",
-    name: "No.7 Medium Blonde System",
-    category: "Warm Golden • Air-Driven Touch Up",
-    shadeCode: "No.7",
-    shadeName: "Medium Blonde",
-    shadeHex: "#BE966C",
+    id: "prod-shade-5",
+    name: "NO.5 LIGHT BROWN SYSTEM",
+    category: "Warm Amber • Air-Driven Touch Up",
+    shadeCode: "No.5",
+    shadeName: "Light Brown",
+    shadeHex: "#624F44",
     price: 89,
-    tag: "High Demand",
+    tag: "Warm Luminous",
     pantoneColor: "#374151",
     pantoneCode: "165C",
-    image: "/Medium Blonde/MediumBlonde.jpg",
-    video: "/Medium Blonde/Medium Blonde.mp4",
+    image: "/Light Brown/LightBrown01.jpg",
+    video: "/Light Brown/Light Brown.mp4",
   },
   {
-    id: "prod-shade-1",
-    name: "No.1 Black System",
-    category: "Pure Mineral Jet • 100% Coverage",
-    shadeCode: "No.1",
-    shadeName: "Black",
-    shadeHex: "#2D2C2D",
+    id: "prod-shade-6",
+    name: "NO.6 DARK BLONDE SYSTEM",
+    category: "Deep Honey • Air-Driven Touch Up",
+    shadeCode: "No.6",
+    shadeName: "Dark Blonde",
+    shadeHex: "#755A42",
     price: 89,
-    tag: "Intense Pigment",
+    tag: "Caramel Depth",
     pantoneColor: "#374151",
     pantoneCode: "299C",
-    image: "/Black/Black.jpg",
-    video: "/Black/Black.mp4",
+    image: "/Dark Blonde/DarkBlonde.jpg",
+    video: "/Dark Blonde/Dark Blonde.mp4",
   },
   {
-    id: "prod-shade-0-0",
-    name: "No.0/0 Clear Gloss System",
-    category: "Universal Gloss • Translucent Blending",
-    shadeCode: "No.0/0",
-    shadeName: "Clear",
-    shadeHex: "#F2EFF0",
+    id: "prod-shade-8",
+    name: "NO.8 LIGHT BLONDE SYSTEM",
+    category: "Luminous Sunlit • Air-Driven Touch Up",
+    shadeCode: "No.8",
+    shadeName: "Light Blonde",
+    shadeHex: "#D2A982",
     price: 89,
-    tag: "Multi-Use",
+    tag: "Sunlit Clarity",
     pantoneColor: "#374151",
     pantoneCode: "2572C",
-    image: "/Clear/Clear.jpg",
-    video: "/system-exploded-hd.mp4",
+    image: "/Light Blonde/LightBlonde.jpg",
+    video: "/Light Blonde/Nob Light blonde.mp4",
   },
 ];
 
@@ -134,7 +134,7 @@ export function NewDispatches({
     const cards = container.children;
     if (cards[index]) {
       const targetCard = cards[index] as HTMLElement;
-      
+
       // Calculate exact scroll position so the target card is dead center
       const cardCenter = targetCard.offsetLeft + targetCard.clientWidth / 2;
       const containerHalf = container.clientWidth / 2;
@@ -213,12 +213,12 @@ export function NewDispatches({
         </h2>
       </Reveal>
 
-      {/* 1. Pure Circle Shades Slider - End-to-End full width on desktop */}
-      <Reveal className="relative w-full max-w-[1720px] mx-auto" amount={0.2} delay={0.15}>
+      {/* 1. Pure Circle Shades Slider - Exactly 5 items visible on laptop and desktop with zero peek */}
+      <Reveal className="relative w-full max-w-[1720px] mx-auto overflow-hidden" amount={0.2} delay={0.15}>
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-6 sm:gap-10 lg:gap-8 xl:gap-10 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-[calc(50%-90px)] sm:px-[calc(50%-110px)] lg:px-4"
+          className="flex gap-4 sm:gap-6 md:gap-4 lg:gap-6 xl:gap-8 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-4 sm:px-6 md:px-0"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
@@ -229,15 +229,17 @@ export function NewDispatches({
               <div
                 key={item.id}
                 onClick={() => scrollToIndex(idx)}
-                className={`group flex-none w-[180px] sm:w-[220px] lg:w-[calc((100%-8rem)/5)] xl:w-[calc((100%-10rem)/5)] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 ${
-                  isActive ? "scale-105 opacity-100" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
+                className={`group flex-none w-[170px] sm:w-[200px] md:w-[calc((100%-4rem)/5)] lg:w-[calc((100%-6rem)/5)] xl:w-[calc((100%-8rem)/5)] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 px-1 ${
+                  isActive ? "opacity-100" : "opacity-85 hover:opacity-100"
                 }`}
               >
 
                 {/* Pure Circular Hair Shade Swatch - Clean Transparent Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="relative block w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 xl:w-56 xl:h-56 my-2 rounded-full overflow-hidden shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-[0_20px_36px_rgba(0,0,0,0.22)]"
+                  className={`relative block w-32 h-32 sm:w-36 sm:h-36 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 2xl:w-48 2xl:h-48 my-2 rounded-full overflow-hidden transition-all duration-500 ease-out group-hover:scale-105 ${
+                    isActive ? "scale-105 shadow-[0_20px_36px_rgba(0,0,0,0.22)]" : "shadow-[0_14px_30px_rgba(0,0,0,0.16)]"
+                  }`}
                 >
                   <Image
                     src={circleSrc}
@@ -252,12 +254,12 @@ export function NewDispatches({
                 {/* Typography below Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="mt-4 space-y-1 block group/link"
+                  className="mt-3 space-y-1 block group/link w-full px-1"
                 >
-                  <h3 className="font-montserrat font-semibold text-xs sm:text-sm tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors truncate">
+                  <h3 className="font-montserrat font-semibold text-[11px] sm:text-xs xl:text-xs tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors whitespace-normal leading-tight">
                     {item.name} System
                   </h3>
-                  <p className="font-montserrat font-semibold text-xs sm:text-sm text-obsidian">
+                  <p className="font-montserrat font-semibold text-xs text-obsidian">
                     ${item.price} USD
                   </p>
                 </Link>
@@ -279,7 +281,7 @@ export function NewDispatches({
                   <Link
                     href={`/product?shade=${item.id.replace("shade-", "")}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="text-[10px] font-mono font-bold tracking-wider uppercase text-graphite hover:text-obsidian border-b border-graphite/30 hover:border-obsidian transition-colors pb-0.5"
+                    className="text-[10px] font-mono font-bold tracking-wider uppercase text-obsidian hover:text-obsidian border-b border-graphite/30 hover:border-obsidian transition-colors pb-0.5"
                   >
                     VIEW PRODUCT
                   </Link>
@@ -304,7 +306,7 @@ export function NewDispatches({
       {/* Slider Footer Navigation Bar (Step Counter + Dots + Arrow Controls) */}
       <div className="flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
         {/* Step Indicator */}
-        <span className="text-[11px] font-mono tracking-widest uppercase text-graphite font-semibold">
+        <span className="text-[11px] font-mono tracking-widest uppercase text-obsidian font-semibold">
           SHADE <SwapText value={activeIndex + 1} /> OF {OFFICIAL_SHADES.length}
         </span>
 
@@ -373,13 +375,25 @@ export function NewDispatches({
                     href={`/product?shade=${item.id.replace("prod-", "")}`}
                     className="block w-full h-full relative"
                   >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
-                    />
+                    {idx === 1 && item.video ? (
+                      <video
+                        src={item.video}
+                        poster={item.image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover object-center"
+                      />
+                    ) : (
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                      />
+                    )}
                   </Link>
                 </RevealImage>
 
@@ -387,17 +401,15 @@ export function NewDispatches({
                 <button
                   type="button"
                   onClick={(e) => handleToggleWishlistProduct(item, e)}
-                  className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${
-                    store.isInWishlist(item.id)
+                  className={`absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow-xs flex items-center justify-center transition-transform active:scale-95 ${store.isInWishlist(item.id)
                       ? "text-rose-600"
                       : "text-obsidian hover:text-black"
-                  }`}
+                    }`}
                   aria-label="Wishlist"
                 >
                   <Heart
-                    className={`w-4 h-4 stroke-[1.5] ${
-                      store.isInWishlist(item.id) ? "fill-rose-600 text-rose-600" : ""
-                    }`}
+                    className={`w-4 h-4 stroke-[1.5] ${store.isInWishlist(item.id) ? "fill-rose-600 text-rose-600" : ""
+                      }`}
                   />
                 </button>
               </div>

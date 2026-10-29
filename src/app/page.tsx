@@ -78,17 +78,17 @@ function HomeContent() {
       <PressTicker />
 
       {/* 8. THE IN-SHOWER RITUAL */}
-      <div className="w-full bg-toc text-platinum border-b border-white/10">
+      <div className="w-full bg-obsidian text-platinum border-b border-white/10">
         <InShowerRitual />
       </div>
 
       {/* 9. THE SYSTEM (BEHIND THE SCIENCE) */}
-      <div className="w-full bg-toc text-platinum border-b border-white/10">
+      <div className="w-full bg-obsidian text-platinum border-b border-white/10">
         <BehindTheScience />
       </div>
 
       {/* 10. COMMUNITY ARCHIVE (#AIRHEADS) */}
-      <div className="w-full bg-black text-white border-b border-white/10">
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <AirheadsCommunity />
       </div>
 

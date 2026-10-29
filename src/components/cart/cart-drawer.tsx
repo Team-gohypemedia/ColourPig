@@ -74,13 +74,13 @@ export function CartDrawer() {
                 <h2 className="text-base sm:text-lg font-headline font-bold tracking-wider text-obsidian uppercase">
                   YOUR CART
                 </h2>
-                <span className="text-xs font-mono text-graphite font-semibold px-2 py-0.5 rounded-full bg-platinum/50 border border-ash/30">
+                <span className="text-xs font-mono text-obsidian font-semibold px-2 py-0.5 rounded-full bg-platinum/50 border border-ash/30">
                   {cart.reduce((a, b) => a + b.quantity, 0)}
                 </span>
               </div>
               <button
                 onClick={closeCart}
-                className="w-8 h-8 rounded-full border border-ash/30 flex items-center justify-center text-graphite hover:text-obsidian hover:border-obsidian transition-colors"
+                className="w-8 h-8 rounded-full border border-ash/30 flex items-center justify-center text-obsidian hover:text-obsidian hover:border-obsidian transition-colors"
                 aria-label="Close cart"
               >
                 <X className="w-4 h-4 stroke-[2]" />
@@ -101,14 +101,14 @@ export function CartDrawer() {
               {/* Cart Items List */}
               {cart.length === 0 ? (
                 <div className="py-16 text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-platinum/40 flex items-center justify-center text-graphite">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-platinum/40 flex items-center justify-center text-obsidian">
                     <ShoppingBag className="w-8 h-8 stroke-[1.5]" />
                   </div>
                   <div className="space-y-1">
                     <h3 className="font-headline font-bold text-obsidian text-sm tracking-wide uppercase">
                       Your bag is empty
                     </h3>
-                    <p className="text-xs text-graphite max-w-[220px] mx-auto font-mono">
+                    <p className="text-xs text-obsidian max-w-[220px] mx-auto font-mono">
                       Explore our root touch-up systems and refill pods.
                     </p>
                   </div>
@@ -174,14 +174,14 @@ export function CartDrawer() {
                                 {item.shadeCode}
                               </span>
                             )}
-                            <span className="text-[11px] text-graphite font-mono truncate max-w-[180px]">
+                            <span className="text-[11px] text-obsidian font-mono truncate max-w-[180px]">
                               {item.variant}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-1.5 mt-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#C8CDD2]" />
-                            <span className="text-[10px] text-graphite font-mono">
+                            <span className="text-[10px] text-obsidian font-mono">
                               In stock: {item.inStock}
                             </span>
                           </div>
@@ -193,7 +193,7 @@ export function CartDrawer() {
                           <div className="inline-flex items-center gap-2 border border-ash/30 rounded-full px-2 py-0.5 bg-platinum/20">
                             <button
                               onClick={() => updateCartQuantity(item.id, -1)}
-                              className="text-graphite hover:text-obsidian transition-colors p-1"
+                              className="text-obsidian hover:text-obsidian transition-colors p-1"
                               aria-label="Decrease quantity"
                             >
                               <Minus className="w-3 h-3" />
@@ -203,7 +203,7 @@ export function CartDrawer() {
                             </span>
                             <button
                               onClick={() => updateCartQuantity(item.id, 1)}
-                              className="text-graphite hover:text-obsidian transition-colors p-1"
+                              className="text-obsidian hover:text-obsidian transition-colors p-1"
                               aria-label="Increase quantity"
                             >
                               <Plus className="w-3 h-3" />
@@ -219,7 +219,7 @@ export function CartDrawer() {
                               {formatPrice(item.price * item.quantity)}
                             </div>
                             {item.quantity > 1 && (
-                              <div className="text-[10px] text-graphite font-mono">
+                              <div className="text-[10px] text-obsidian font-mono">
                                 {formatPrice(item.price)} each
                               </div>
                             )}
@@ -237,7 +237,7 @@ export function CartDrawer() {
                   <h3 className="text-xs sm:text-sm font-headline font-bold tracking-wider uppercase text-obsidian">
                     You may also like
                   </h3>
-                  <span className="text-[10px] font-mono text-graphite">
+                  <span className="text-[10px] font-mono text-obsidian">
                     PRECISION ESSENTIALS
                   </span>
                 </div>
@@ -264,7 +264,7 @@ export function CartDrawer() {
                         <h4 className="text-xs font-montserrat font-semibold text-obsidian line-clamp-1">
                           {rec.name}
                         </h4>
-                        <p className="text-[10px] text-graphite font-mono truncate mt-0.5">
+                        <p className="text-[10px] text-obsidian font-mono truncate mt-0.5">
                           {rec.variant}
                         </p>
                         <div className="flex items-baseline gap-2 mt-1">
@@ -315,7 +315,7 @@ export function CartDrawer() {
               <div className="p-5 sm:p-6 border-t border-ash/25 bg-white space-y-3.5 flex-shrink-0 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-20">
                 {/* Subtotal row */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono uppercase tracking-widest font-bold text-graphite">
+                  <span className="text-xs font-mono uppercase tracking-widest font-bold text-obsidian">
                     SUBTOTAL
                   </span>
                   <span
@@ -326,7 +326,7 @@ export function CartDrawer() {
                   </span>
                 </div>
 
-                <p className="text-[10px] sm:text-[11px] text-graphite font-mono">
+                <p className="text-[10px] sm:text-[11px] text-obsidian font-mono">
                   Taxes &amp; shipping calculated at checkout.
                 </p>
 

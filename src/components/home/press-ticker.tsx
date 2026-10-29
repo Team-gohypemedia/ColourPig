@@ -21,11 +21,11 @@ export function PressTicker() {
                 className="w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: p.dotColor }}
               />
-              <span className="font-headline font-black text-base sm:text-lg tracking-widest uppercase text-obsidian">
+              <span className="font-headline font-bold text-base sm:text-lg tracking-widest uppercase text-obsidian">
                 {p.name}
               </span>
             </div>
-            <p className="text-[11px] font-mono text-obsidian/80 tracking-wide italic font-medium">
+            <p className="text-xs font-montserrat text-obsidian/85 tracking-wide italic font-medium">
               &ldquo;{p.quote}&rdquo;
             </p>
           </div>

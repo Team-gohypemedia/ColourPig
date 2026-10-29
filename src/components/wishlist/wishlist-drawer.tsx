@@ -75,11 +75,11 @@ export function WishlistDrawer() {
                   <h2 className="text-base sm:text-lg font-headline font-bold tracking-wider text-obsidian uppercase">
                     My Favorites
                   </h2>
-                  <span className="text-xs font-mono text-graphite font-semibold px-2 py-0.5 rounded-full bg-platinum/50 border border-ash/30">
+                  <span className="text-xs font-mono text-obsidian font-semibold px-2 py-0.5 rounded-full bg-platinum/50 border border-ash/30">
                     {wishlist.length}
                   </span>
                 </div>
-                <p className="text-[11px] font-mono text-graphite mt-1">
+                <p className="text-[11px] font-mono text-obsidian mt-1">
                   Products you’ve hearted recently
                 </p>
               </div>
@@ -87,7 +87,7 @@ export function WishlistDrawer() {
               {/* Circular close button */}
               <button
                 onClick={closeWishlist}
-                className="w-8 h-8 rounded-full border border-ash/30 flex items-center justify-center text-graphite hover:text-obsidian hover:border-obsidian transition-colors"
+                className="w-8 h-8 rounded-full border border-ash/30 flex items-center justify-center text-obsidian hover:text-obsidian hover:border-obsidian transition-colors"
                 aria-label="Close favorites"
               >
                 <X className="w-4 h-4 stroke-[2]" />
@@ -107,14 +107,14 @@ export function WishlistDrawer() {
             >
               {wishlist.length === 0 ? (
                 <div className="py-20 text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-platinum/40 flex items-center justify-center text-graphite">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-platinum/40 flex items-center justify-center text-obsidian">
                     <Heart className="w-8 h-8 stroke-[1.5]" />
                   </div>
                   <div className="space-y-1">
                     <h3 className="font-headline font-bold text-obsidian text-sm tracking-wide uppercase">
                       No favorites saved yet
                     </h3>
-                    <p className="text-xs text-graphite max-w-[240px] mx-auto font-mono">
+                    <p className="text-xs text-obsidian max-w-[240px] mx-auto font-mono">
                       Tap the heart icon on any shade or applicator to save it for later.
                     </p>
                   </div>
@@ -168,7 +168,7 @@ export function WishlistDrawer() {
                             </span>
                           )}
                           {item.category && (
-                            <span className="text-[10px] text-graphite font-mono truncate max-w-[170px]">
+                            <span className="text-[10px] text-obsidian font-mono truncate max-w-[170px]">
                               {item.category}
                             </span>
                           )}

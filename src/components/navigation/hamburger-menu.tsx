@@ -84,7 +84,7 @@ export function HamburgerMenu() {
 
               <button
                 onClick={closeMenu}
-                className="w-8 h-8 rounded-full border border-ash/30 flex items-center justify-center text-graphite hover:text-obsidian hover:border-obsidian transition-colors"
+                className="w-8 h-8 rounded-full border border-ash/30 flex items-center justify-center text-obsidian hover:text-obsidian hover:border-obsidian transition-colors"
                 aria-label="Close navigation menu"
               >
                 <X className="w-4 h-4 stroke-[2]" />
@@ -100,7 +100,7 @@ export function HamburgerMenu() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="SEARCH SHADES, PODS, KITS..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-platinum/25 border border-ash/30 text-xs font-mono text-obsidian placeholder:text-graphite/60 focus:outline-none focus:border-obsidian focus:bg-white transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-platinum/25 border border-ash/30 text-xs font-mono text-obsidian placeholder:text-obsidian/60 focus:outline-none focus:border-obsidian focus:bg-white transition-colors"
                 />
               </div>
             </div>
@@ -120,7 +120,7 @@ export function HamburgerMenu() {
                     <div className="text-[11px] font-montserrat font-bold text-obsidian truncate">
                       Favorites
                     </div>
-                    <div className="text-[10px] text-graphite font-mono">
+                    <div className="text-[10px] text-obsidian font-mono">
                       {wishlistCount} saved
                     </div>
                   </div>
@@ -141,7 +141,7 @@ export function HamburgerMenu() {
                     <div className="text-[11px] font-montserrat font-bold text-obsidian truncate">
                       Your Cart
                     </div>
-                    <div className="text-[10px] text-graphite font-mono">
+                    <div className="text-[10px] text-obsidian font-mono">
                       {cartCount} items
                     </div>
                   </div>
@@ -161,7 +161,7 @@ export function HamburgerMenu() {
               }}
               onWheel={(e) => e.stopPropagation()}
             >
-              <div className="text-[10px] font-mono tracking-widest uppercase text-graphite font-semibold px-2 py-1.5">
+              <div className="text-[10px] font-mono tracking-widest uppercase text-obsidian font-semibold px-2 py-1.5">
                 DISCOVER &amp; EXPLORE
               </div>
 
@@ -183,7 +183,7 @@ export function HamburgerMenu() {
                   </span>
                   <div className="flex items-center gap-2">
                     {item.badge && (
-                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-platinum/50 border border-ash/25 text-graphite transition-colors">
+                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-platinum/50 border border-ash/25 text-obsidian transition-colors">
                         {item.badge}
                       </span>
                     )}
@@ -215,7 +215,7 @@ export function HamburgerMenu() {
             {/* 5. Footer: Currency & Concierge Actions */}
             <div className="p-5 sm:p-6 border-t border-ash/25 bg-white flex-shrink-0 space-y-3 z-20">
               {/* Currency Selector */}
-              <div className="flex items-center justify-between text-xs font-mono text-graphite">
+              <div className="flex items-center justify-between text-xs font-mono text-obsidian">
                 <span className="flex items-center gap-1.5">
                   <Globe className="w-3.5 h-3.5 text-ash" />
                   <span>CURRENCY</span>
@@ -226,7 +226,7 @@ export function HamburgerMenu() {
                     className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
                       currency === "INR"
                         ? "bg-white text-obsidian shadow-2xs"
-                        : "text-graphite hover:text-obsidian"
+                        : "text-obsidian hover:text-obsidian"
                     }`}
                   >
                     INR (₹)
@@ -236,7 +236,7 @@ export function HamburgerMenu() {
                     className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
                       currency === "USD"
                         ? "bg-white text-obsidian shadow-2xs"
-                        : "text-graphite hover:text-obsidian"
+                        : "text-obsidian hover:text-obsidian"
                     }`}
                   >
                     USD ($)
@@ -256,7 +256,7 @@ export function HamburgerMenu() {
               </a>
 
               {/* User Account */}
-              <div className="flex items-center justify-between pt-1 text-[11px] text-graphite font-mono">
+              <div className="flex items-center justify-between pt-1 text-[11px] text-obsidian font-mono">
                 <span className="flex items-center gap-2">
                   <User className="w-3.5 h-3.5" />
                   <span>Account &amp; Orders</span>

@@ -120,7 +120,7 @@ export function SystemCategories() {
     >
       {/* Title */}
       <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12 px-4 space-y-1 sm:space-y-1.5">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-obsidian font-semibold">
           SHADE FAMILIES
         </span>
         <h2 className="font-headline font-bold text-[24px] text-obsidian tracking-wider uppercase leading-tight">
@@ -148,7 +148,7 @@ export function SystemCategories() {
           {COLLECTIONS.map((cat, idx) => (
             <div
               key={cat.id}
-              className="relative shrink-0 overflow-hidden group bg-toc h-[440px] sm:h-[500px] md:h-[540px] lg:h-[600px] xl:h-[640px]"
+              className="relative shrink-0 overflow-hidden group bg-obsidian h-[440px] sm:h-[500px] md:h-[540px] lg:h-[600px] xl:h-[640px]"
               style={{
                 width: isMobile
                   ? "100%"

@@ -101,13 +101,13 @@ export function PigmentSwatches() {
     <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-12 max-w-[1600px] mx-auto overflow-hidden">
       {/* Title */}
       <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1 sm:space-y-1.5">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-graphite font-semibold">
+        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-obsidian font-semibold">
           SYSTEM DETAILS
         </span>
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-obsidian tracking-wider uppercase leading-tight">
           PRODUCT SPECIFICATIONS
         </h2>
-        <p className="text-xs sm:text-sm font-mono text-graphite">
+        <p className="text-xs sm:text-sm font-mono text-obsidian">
           Engineered by Norman &amp; Brown • Designed in Australia
         </p>
         <div className="w-10 h-[2px] bg-obsidian/30 mx-auto mt-2" />
@@ -195,13 +195,13 @@ export function PigmentSwatches() {
 
               {/* Typography & Description */}
               <div className="space-y-1.5 z-10">
-                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-graphite font-semibold block">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-obsidian font-semibold block">
                   {card.subtitle}
                 </span>
                 <h3 className="font-headline font-bold text-lg sm:text-xl text-obsidian tracking-wide">
                   {card.title}
                 </h3>
-                <p className="text-xs sm:text-[13px] font-normal text-graphite leading-relaxed">
+                <p className="text-xs sm:text-[13px] font-normal text-obsidian leading-relaxed">
                   {card.desc}
                 </p>
               </div>

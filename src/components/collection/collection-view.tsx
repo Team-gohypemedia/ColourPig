@@ -263,7 +263,7 @@ export function CollectionView() {
       {/* 1. Breadcrumb & Collection Main Heading (Compact refined vertical gap) */}
       <section className="pt-6 sm:pt-8 pb-4 sm:pb-5 px-4 sm:px-8 lg:px-14 max-w-[1600px] mx-auto text-center space-y-1 sm:space-y-1.5">
         {/* Breadcrumb Navigation: Home / Colourpig */}
-        <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs font-montserrat text-graphite tracking-wide">
+        <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs font-montserrat text-obsidian tracking-wide">
           <Link
             href="/"
             className="hover:text-obsidian transition-colors underline-offset-4 hover:underline"
@@ -280,7 +280,7 @@ export function CollectionView() {
         </h1>
 
         {/* Sub Heading */}
-        <p className="font-montserrat text-xs sm:text-[13px] text-graphite tracking-wide max-w-xl mx-auto">
+        <p className="font-montserrat text-xs sm:text-[13px] text-obsidian tracking-wide max-w-xl mx-auto">
           World&apos;s First Reusable Precision Hair Colour Systems
         </p>
       </section>
@@ -316,7 +316,7 @@ export function CollectionView() {
                   className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-montserrat font-medium tracking-wide transition-all cursor-pointer ${
                     isSelected
                       ? "bg-obsidian text-white shadow-xs scale-105"
-                      : "bg-white text-graphite hover:text-obsidian hover:bg-black/5 border border-black/10"
+                      : "bg-white text-obsidian hover:text-obsidian hover:bg-black/5 border border-black/10"
                   }`}
                 >
                   {filter.colorHex && (
@@ -328,7 +328,7 @@ export function CollectionView() {
                     />
                   )}
                   <span>{filter.label}</span>
-                  <span className={`text-[10px] ${isSelected ? "text-white/70" : "text-graphite/70"}`}>
+                  <span className={`text-[10px] ${isSelected ? "text-white/70" : "text-obsidian/70"}`}>
                     ({filter.count})
                   </span>
                 </button>
@@ -337,7 +337,7 @@ export function CollectionView() {
           </div>
 
           {/* Product Count & Reset */}
-          <div className="flex items-center gap-3 text-xs font-montserrat text-graphite">
+          <div className="flex items-center gap-3 text-xs font-montserrat text-obsidian">
             <span>
               Showing <strong className="font-semibold text-obsidian">{filteredItems.length}</strong> of 9 products
             </span>
@@ -515,7 +515,7 @@ export function CollectionView() {
                     </p>
 
                     {/* Line 2: Category / Subtitle */}
-                    <p className="font-montserrat text-[11px] sm:text-xs text-graphite truncate">
+                    <p className="font-montserrat text-[11px] sm:text-xs text-obsidian truncate">
                       {item.category}
                     </p>
 

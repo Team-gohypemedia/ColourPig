@@ -322,7 +322,7 @@ export function ShadeFinder({
           </motion.div>
 
           {/* Under Slider Caption (phones/tablets) */}
-          <div className="lg:hidden w-full max-w-[360px] flex items-center justify-between mt-2.5 text-[10px] font-mono text-graphite/80 px-1">
+          <div className="lg:hidden w-full max-w-[360px] flex items-center justify-between mt-2.5 text-[10px] font-mono text-obsidian/80 px-1">
             <span>Drag slider to compare</span>
             <span>Root Regrowth vs. Finish</span>
           </div>
@@ -351,7 +351,7 @@ export function ShadeFinder({
               <h3 className="font-headline font-bold text-xs tracking-widest uppercase text-obsidian">
                 SELECT SHADE
               </h3>
-              <span className="text-[10px] font-mono text-graphite">
+              <span className="text-[10px] font-mono text-obsidian">
                 9 Shades
               </span>
             </div>
@@ -390,7 +390,7 @@ export function ShadeFinder({
                     </div>
 
                     <div className="w-full">
-                      <span className="text-[9px] font-mono text-graphite block">
+                      <span className="text-[9px] font-mono text-obsidian block">
                         {shade.code}
                       </span>
                       <h4 className="font-montserrat font-semibold text-[11px] text-obsidian truncate">
@@ -415,7 +415,7 @@ export function ShadeFinder({
                   <h4 className="font-montserrat font-bold text-xs sm:text-sm text-obsidian uppercase truncate">
                     {selectedShade.name}
                   </h4>
-                  <span className="text-[10px] font-mono text-graphite">
+                  <span className="text-[10px] font-mono text-obsidian">
                     {selectedShade.category}
                   </span>
                 </div>

@@ -252,11 +252,11 @@ export const TestimonialCard = ({
                     </h3>
                     <CheckCircle className="w-4 h-4 text-[#374151]" />
                   </div>
-                  <p className="font-mono text-xs text-graphite">
+                  <p className="font-mono text-xs text-obsidian">
                     {testimonial.designation}
                   </p>
                   {testimonial.shade && (
-                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-[#13212E]/5 border border-black/10 text-[9px] font-mono text-graphite font-semibold">
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-[#13212E]/5 border border-black/10 text-[9px] font-mono text-obsidian font-semibold">
                       Verified: {testimonial.shade}
                     </span>
                   )}
@@ -308,7 +308,7 @@ export const TestimonialCard = ({
               <p className="font-headline font-bold text-base text-obsidian tracking-wide">
                 {testimonial.name}
               </p>
-              <p className="font-mono text-[11px] text-graphite truncate max-w-[220px]">
+              <p className="font-mono text-[11px] text-obsidian truncate max-w-[220px]">
                 {testimonial.designation}
               </p>
             </div>

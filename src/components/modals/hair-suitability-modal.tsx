@@ -180,10 +180,10 @@ function LevelScale({ shadeLevel, rootLevel, shadeHex, rootHex }: {
         </div>
         <div className="absolute -bottom-1 -translate-x-1/2 translate-y-full flex flex-col items-center transition-all duration-500" style={{ left: pos(rootLevel) }}>
           <span className="w-3.5 h-3.5 rounded-full border-2 border-white shadow ring-1 ring-black/20 mb-0.5" style={{ backgroundColor: rootHex }} />
-          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-graphite whitespace-nowrap">Your roots</span>
+          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-obsidian whitespace-nowrap">Your roots</span>
         </div>
       </div>
-      <div className="flex justify-between mt-11 text-[9px] font-mono text-graphite/70 uppercase tracking-wider">
+      <div className="flex justify-between mt-11 text-[9px] font-mono text-obsidian/70 uppercase tracking-wider">
         <span>Darkest</span>
         <span>Lightest</span>
       </div>
@@ -278,12 +278,12 @@ export function HairSuitabilityModal({
                 <h2 id="match-title" className="font-headline font-bold text-lg leading-tight">
                   Is {selectedShade.name} right for you?
                 </h2>
-                <p className="text-xs text-graphite mt-0.5">2 quick questions, about 10 seconds</p>
+                <p className="text-xs text-obsidian mt-0.5">2 quick questions, about 10 seconds</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="w-8 h-8 -mr-1 rounded-full hover:bg-black/5 flex items-center justify-center text-graphite hover:text-obsidian transition-colors cursor-pointer shrink-0"
+              className="w-8 h-8 -mr-1 rounded-full hover:bg-black/5 flex items-center justify-center text-obsidian hover:text-obsidian transition-colors cursor-pointer shrink-0"
               aria-label="Close"
             >
               <X className="w-4 h-4" />
@@ -291,7 +291,7 @@ export function HairSuitabilityModal({
           </div>
 
           <div className="mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-1 px-1">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-graphite shrink-0 mr-1">Shade</span>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-obsidian shrink-0 mr-1">Shade</span>
             {OFFICIAL_SHADES.map((s) => {
               const active = s.id === selectedShade.id;
               return (
@@ -317,9 +317,9 @@ export function HairSuitabilityModal({
           <section className="space-y-3">
             <div className="flex items-baseline justify-between gap-2">
               <h3 className="font-headline font-semibold text-sm">
-                <span className="text-graphite font-mono mr-1.5">1</span>What colour are your natural roots?
+                <span className="text-obsidian font-mono mr-1.5">1</span>What colour are your natural roots?
               </h3>
-              {isClear && <span className="text-[10px] font-mono text-graphite shrink-0">Optional for Clear</span>}
+              {isClear && <span className="text-[10px] font-mono text-obsidian shrink-0">Optional for Clear</span>}
             </div>
             <div className="grid grid-cols-4 gap-x-2 gap-y-3">
               {NATURAL_BASES.map((b) => {
@@ -344,7 +344,7 @@ export function HairSuitabilityModal({
                         </span>
                       )}
                     </span>
-                    <span className={`text-[11px] leading-tight text-center ${active ? "font-bold text-obsidian" : "text-graphite"}`}>
+                    <span className={`text-[11px] leading-tight text-center ${active ? "font-bold text-obsidian" : "text-obsidian"}`}>
                       {b.name}
                     </span>
                   </button>
@@ -356,7 +356,7 @@ export function HairSuitabilityModal({
           {/* Q2 */}
           <section className="space-y-3">
             <h3 className="font-headline font-semibold text-sm">
-              <span className="text-graphite font-mono mr-1.5">2</span>How much grey is at your roots?
+              <span className="text-obsidian font-mono mr-1.5">2</span>How much grey is at your roots?
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {GRAY_PERCENTAGES.map((g) => {
@@ -380,7 +380,7 @@ export function HairSuitabilityModal({
                       />
                     </span>
                     <span className="block text-xs font-semibold mt-2 leading-tight">{g.label}</span>
-                    <span className={`block text-[10px] font-mono mt-0.5 ${active ? "text-white/70" : "text-graphite"}`}>{g.sub}</span>
+                    <span className={`block text-[10px] font-mono mt-0.5 ${active ? "text-white/70" : "text-obsidian"}`}>{g.sub}</span>
                   </button>
                 );
               })}
@@ -397,11 +397,11 @@ export function HairSuitabilityModal({
                   {verdict.tone === "switch" && <AlertTriangle className="w-4 h-4" />}
                 </span>
                 <div className="min-w-0">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-graphite">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-obsidian">
                     {TONE_STYLES[verdict.tone].label}
                   </span>
                   <h4 className="font-headline font-bold text-base leading-snug">{verdict.title}</h4>
-                  <p className="text-[13px] text-graphite mt-1 leading-relaxed">{verdict.body}</p>
+                  <p className="text-[13px] text-obsidian mt-1 leading-relaxed">{verdict.body}</p>
                 </div>
               </div>
 
@@ -416,7 +416,7 @@ export function HairSuitabilityModal({
 
               <p className={`text-[13px] leading-relaxed ${!isClear && base ? "" : "mt-3"} pt-3 border-t border-black/10`}>
                 <span className="font-semibold">Grey coverage: </span>
-                <span className="text-graphite">{verdict.coverage}</span>
+                <span className="text-obsidian">{verdict.coverage}</span>
               </p>
 
               {verdict.suggest && (
@@ -427,7 +427,7 @@ export function HairSuitabilityModal({
                 >
                   <span className="w-9 h-9 rounded-full ring-1 ring-black/10 shrink-0" style={{ backgroundColor: verdict.suggest.hex }} />
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[10px] font-mono uppercase tracking-wider text-graphite">
+                    <span className="block text-[10px] font-mono uppercase tracking-wider text-obsidian">
                       {verdict.tone === "switch" ? "We recommend" : "Best match for your roots"}
                     </span>
                     <span className="block text-sm font-bold truncate">{verdict.suggest.name}</span>
@@ -440,7 +440,7 @@ export function HairSuitabilityModal({
             </section>
           ) : (
             <section className="rounded-2xl border border-dashed border-ash/60 bg-[#F7F8F8] p-5 text-center">
-              <p className="text-sm text-graphite">{pendingHint}</p>
+              <p className="text-sm text-obsidian">{pendingHint}</p>
             </section>
           )}
         </div>
@@ -449,7 +449,7 @@ export function HairSuitabilityModal({
         <div className="px-5 sm:px-6 pt-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] bg-[#F9FAFA] border-t border-ash/20 flex items-center justify-between gap-3 shrink-0">
           <div className="min-w-0">
             <span className="block text-sm font-bold truncate">{selectedShade.name} System</span>
-            <span className="block text-xs font-mono text-graphite">${selectedShade.price} USD</span>
+            <span className="block text-xs font-mono text-obsidian">${selectedShade.price} USD</span>
           </div>
           <button
             type="button"

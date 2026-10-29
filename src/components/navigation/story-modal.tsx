@@ -227,7 +227,7 @@ export function StoryModal({ isOpen, onClose, initialIndex = 0 }: StoryModalProp
                 <span className="font-headline font-bold text-xs uppercase tracking-wider text-obsidian block">
                   COLOURPIG
                 </span>
-                <span className="text-[9px] font-mono text-graphite block">
+                <span className="text-[9px] font-mono text-obsidian block">
                   {currentIndex + 1} of {STORIES.length}
                 </span>
               </div>
@@ -299,7 +299,7 @@ export function StoryModal({ isOpen, onClose, initialIndex = 0 }: StoryModalProp
           <h3 className="font-headline font-bold text-lg sm:text-xl text-obsidian tracking-tight">
             {currentStory.title}
           </h3>
-          <p className="text-[11px] sm:text-xs text-graphite leading-relaxed max-w-[280px] mx-auto line-clamp-2">
+          <p className="text-[11px] sm:text-xs text-obsidian leading-relaxed max-w-[280px] mx-auto line-clamp-2">
             {currentStory.description}
           </p>
 
