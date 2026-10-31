@@ -205,9 +205,9 @@ export function NewDispatches({
   const activeShade = OFFICIAL_SHADES[activeIndex] || OFFICIAL_SHADES[0];
 
   return (
-    <section id="system" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
+    <section id="system" className="py-16 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
       {/* Editorial Heading - Center Aligned */}
-      <Reveal className="text-center max-w-7xl mx-auto mb-6 sm:mb-10">
+      <Reveal className="text-center max-w-7xl mx-auto mb-8 sm:mb-10 lg:mb-12">
         <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           EXPLORE YOUR SHADE
         </h2>
@@ -254,12 +254,14 @@ export function NewDispatches({
                 {/* Typography below Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="mt-3 space-y-1 block group/link w-full px-1"
+                  className="mt-3 block group/link w-full px-1"
                 >
-                  <h3 className="font-montserrat font-semibold text-[11px] sm:text-xs xl:text-xs tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors whitespace-normal leading-tight">
-                    {item.name} System
-                  </h3>
-                  <p className="font-montserrat font-semibold text-xs text-obsidian">
+                  <div className="h-8 sm:h-9 flex flex-col justify-start items-center">
+                    <h3 className="font-montserrat font-semibold text-[11px] sm:text-xs xl:text-xs tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors whitespace-normal leading-tight text-center">
+                      {item.name} System
+                    </h3>
+                  </div>
+                  <p className="font-montserrat font-semibold text-xs text-obsidian mt-1 sm:mt-1.5">
                     ${item.price} AUD
                   </p>
                 </Link>
@@ -293,7 +295,7 @@ export function NewDispatches({
       </Reveal>
 
       {/* Progress Bar Line Indicator */}
-      <div className="w-full max-w-lg mx-auto h-[2px] bg-black/10 rounded-full overflow-hidden mt-6 sm:mt-8">
+      <div className="w-full max-w-lg mx-auto h-[2px] bg-black/10 rounded-full overflow-hidden mt-8 sm:mt-10">
         <div
           className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
           style={{
@@ -304,7 +306,7 @@ export function NewDispatches({
       </div>
 
       {/* Slider Footer Navigation Bar (Step Counter + Dots + Arrow Controls) */}
-      <div className="flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mt-6 sm:mt-7 px-1 max-w-4xl mx-auto">
         {/* Step Indicator */}
         <span className="text-[11px] font-mono tracking-widest uppercase text-obsidian font-semibold">
           SHADE <SwapText value={activeIndex + 1} /> OF {OFFICIAL_SHADES.length}
@@ -352,9 +354,9 @@ export function NewDispatches({
         </div>
       </div>
 
-      {/* 2. Divider & Header for the 4 Product Cards Grid (Target for Shades nav button) */}
-      <div id="shades" className="mt-8 sm:mt-12 pt-3 sm:pt-4 border-t border-ash/30 scroll-mt-[120px]">
-        <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
+      {/* 2. Header for the 4 Product Cards Grid (Target for Shades nav button) */}
+      <div id="shades" className="mt-16 sm:mt-24 lg:mt-28 scroll-mt-[120px]">
+        <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-10 lg:mb-12">
           <h3 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
             NEW ARRIVALS
           </h3>
@@ -460,7 +462,7 @@ export function NewDispatches({
       </div>
 
       {/* Footer link to shade finder */}
-      <div className="text-center mt-10 sm:mt-14">
+      <div className="text-center mt-12 sm:mt-16 lg:mt-20 mb-4 sm:mb-8">
         <Link
           href="#shades"
           className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-obsidian border-b border-obsidian/40 pb-1 hover:border-obsidian hover:text-black transition-all font-semibold"

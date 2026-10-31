@@ -146,7 +146,7 @@ export function InShowerRitual() {
 
   return (
     <section
-      className="py-10 sm:py-14 lg:py-16 px-4 sm:px-8 lg:px-12 w-full select-none flex flex-col items-center justify-center text-center"
+      className="py-16 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none flex flex-col items-center justify-center text-center"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}
@@ -156,7 +156,7 @@ export function InShowerRitual() {
       }}
     >
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 lg:mb-10 w-full">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-10 lg:mb-12 w-full">
         <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-[36px] text-white tracking-wider uppercase leading-tight">
           THE RITUAL
         </h2>

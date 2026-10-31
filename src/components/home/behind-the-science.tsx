@@ -61,12 +61,12 @@ export function BehindTheScience() {
     <section
       ref={sectionRef}
       id="engineering"
-      className="relative w-full select-none md:h-[calc(170svh-116px)] bg-midnight"
+      className="relative w-full select-none py-12 sm:py-16 md:py-0 px-4 sm:px-8 md:px-0 md:h-[calc(170svh-116px)] bg-midnight"
     >
       {/* Heading kept for screen readers / SEO only — the video carries the section visually */}
       <h2 className="sr-only">The System</h2>
 
-      <div className="md:sticky md:top-[116px] w-full aspect-video md:aspect-auto md:h-[calc(100svh-116px)] overflow-hidden">
+      <div className="md:sticky md:top-[116px] w-full aspect-video md:aspect-auto md:h-[calc(100svh-116px)] overflow-hidden rounded-xl md:rounded-none">
         {/* The window */}
         <motion.div
           className="relative w-full h-full overflow-hidden bg-black will-change-transform shadow-2xl"

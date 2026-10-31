@@ -132,7 +132,7 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-end gap-2.5 mt-4 px-4 sm:px-8 w-full">
+      <div className="flex justify-end gap-2.5 mt-6 sm:mt-8 px-4 sm:px-8 w-full">
         <button
           className="relative z-40 h-10 w-10 rounded-full bg-obsidian text-white flex items-center justify-center disabled:opacity-30 hover:bg-steel active:scale-95 transition-all shadow-md"
           onClick={handleScrollLeft}
@@ -410,9 +410,9 @@ export function CustomerReviews() {
   ));
 
   return (
-    <section className="py-14 sm:py-24 px-4 sm:px-8 lg:px-10 w-full overflow-hidden">
+    <section className="pt-14 sm:pt-18 lg:pt-20 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-8 lg:px-10 w-full overflow-hidden">
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-10 lg:mb-12">
         <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           WHAT OUR CLIENTS SAY
         </h2>

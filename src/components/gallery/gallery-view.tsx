@@ -290,7 +290,7 @@ export function GalleryView() {
                     onClick={() => setSelectedIdx(idx)}
                     onMouseEnter={() => setCursorContent(item.video ? "PLAY" : "VIEW")}
                     onMouseLeave={() => setCursorContent("SCROLL")}
-                    className={`flex-none flex flex-col group cursor-pointer lg:cursor-none ${item.widthClass}`}
+                    className={`flex-none group cursor-pointer lg:cursor-none ${item.widthClass}`}
                   >
                     <div
                       className={`relative ${item.aspectClass} w-full rounded-none overflow-hidden bg-neutral-100 shadow-md transition-transform duration-500 ease-out group-hover:scale-[1.02]`}
@@ -326,20 +326,6 @@ export function GalleryView() {
                           sizes="(max-width: 640px) 300px, (max-width: 1024px) 440px, 540px"
                           className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                         />
-                      )}
-                      <div className="absolute top-3 left-3 px-2 py-0.5 bg-black/70 text-white text-[10px] font-mono tracking-widest uppercase">
-                        {item.category}
-                      </div>
-                    </div>
-
-                    <div className="mt-2.5">
-                      <p className="font-montserrat font-bold text-xs sm:text-sm tracking-wider uppercase text-obsidian truncate">
-                        {item.title}
-                      </p>
-                      {item.description && (
-                        <p className="mt-1 text-[11px] font-mono text-obsidian/60 line-clamp-1">
-                          {item.description}
-                        </p>
                       )}
                     </div>
                   </div>

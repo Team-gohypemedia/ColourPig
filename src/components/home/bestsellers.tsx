@@ -85,9 +85,9 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
   };
 
   return (
-    <section id="bestsellers" className="py-14 sm:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
+    <section id="bestsellers" className="pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-18 lg:pb-20 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-10 lg:mb-12">
         <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           BESTSELLERS
         </h2>

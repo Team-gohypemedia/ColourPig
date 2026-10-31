@@ -230,9 +230,9 @@ export function ShadeFinder({
   return (
     // lg: two screens tall, so the stage below can pin for one screen of scrolling
     <section id="shade-finder" ref={sectionRef} className="relative lg:h-[calc(200svh-116px)]">
-      <div className="py-10 sm:py-14 px-4 sm:px-8 max-w-5xl mx-auto lg:max-w-none lg:p-0 lg:sticky lg:top-[116px] lg:h-[calc(100svh-116px)] lg:overflow-hidden">
+      <div className="py-16 sm:py-20 px-4 sm:px-8 max-w-5xl mx-auto lg:max-w-none lg:p-0 lg:sticky lg:top-[116px] lg:h-[calc(100svh-116px)] lg:overflow-hidden">
       {/* Title (phones/tablets: centred above; lg: shown in the right column instead) */}
-      <motion.div className="lg:hidden text-center max-w-xl mx-auto mb-6 sm:mb-8" style={textStyle}>
+      <motion.div className="lg:hidden text-center max-w-xl mx-auto mb-8 sm:mb-10" style={textStyle}>
         <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
           BEFORE &amp; AFTER
         </h2>

@@ -74,11 +74,11 @@ function HomeContent() {
       </div>
 
       {/* 6. BESTSELLERS 4-Card Grid */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
+      <div className="w-full bg-white text-obsidian">
         <Bestsellers onAddToCart={handleAddToCart} />
       </div>
 
-      {/* 7. Press & Editorial Bar */}
+      {/* 7. Press & Editorial Bar (Midnight Accent Strip) */}
       <PressTicker />
 
       {/* 8. WHAT OUR CLIENTS SAY (TESTIMONIALS) */}
