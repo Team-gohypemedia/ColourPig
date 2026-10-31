@@ -447,12 +447,6 @@ export function ProductDetailView({
             
             {/* Header: Title, Category & Reviews */}
             <div className="space-y-2 border-b border-ash/25 pb-5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-obsidian font-semibold">
-                  FORMULA {selectedShade.formula} • {selectedShade.category}
-                </span>
-              </div>
-
               <h1 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian uppercase tracking-wider leading-tight">
                 COLOURPIG PERMANENT ROOT SYSTEM — {selectedShade.name}
               </h1>
@@ -534,24 +528,6 @@ export function ProductDetailView({
                     {selectedShade.code}
                   </span>
                 </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-white border border-ash/30 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className="w-3.5 h-3.5 rounded-full border border-black/10 shadow-xs shrink-0"
-                    style={{ backgroundColor: selectedShade.hex }}
-                  />
-                  <span className="text-xs font-mono text-obsidian font-medium">
-                    Undertone: <strong className="font-bold">{selectedShade.undertone}</strong>
-                  </span>
-                </div>
-                <Link
-                  href="#shade-finder"
-                  className="text-[10px] font-mono text-[#374151] hover:underline font-semibold"
-                >
-                  View Before &amp; After →
-                </Link>
               </div>
             </div>
 
