@@ -972,7 +972,7 @@ export function ProductDetailView({
                       {prod.name}
                     </p>
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      $89 USD
+                      $89 AUD
                     </p>
                   </Link>
 

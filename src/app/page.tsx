@@ -78,12 +78,12 @@ function HomeContent() {
       <PressTicker />
 
       {/* 8. THE IN-SHOWER RITUAL */}
-      <div className="w-full bg-obsidian text-platinum border-b border-white/10">
+      <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <InShowerRitual />
       </div>
 
       {/* 9. THE SYSTEM (BEHIND THE SCIENCE) */}
-      <div className="w-full bg-obsidian text-platinum border-b border-white/10">
+      <div className="w-full bg-midnight text-platinum border-b border-white/10">
         <BehindTheScience />
       </div>
 

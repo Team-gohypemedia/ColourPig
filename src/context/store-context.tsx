@@ -73,8 +73,8 @@ interface StoreContextType {
   recommendations: RecommendationItem[];
 
   // Currency
-  currency: "INR" | "USD";
-  setCurrency: (c: "INR" | "USD") => void;
+  currency: "AUD" | "USD" | "INR";
+  setCurrency: (c: "AUD" | "USD" | "INR") => void;
   formatPrice: (amountInInr: number) => string;
 }
 
@@ -342,7 +342,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currency, setCurrency] = useState<"INR" | "USD">("INR");
+  const [currency, setCurrency] = useState<"AUD" | "USD" | "INR">("AUD");
 
   const openCart = () => {
     setIsCartOpen(true);
@@ -366,10 +366,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const closeMenu = () => setIsMenuOpen(false);
 
   const formatPrice = (amountInInr: number) => {
+    if (currency === "AUD") {
+      const audAmount = Math.round(amountInInr / 28);
+      return `$${audAmount} AUD`;
+    }
     if (currency === "USD") {
-      // Approximate 1 USD = 83 INR
       const usdAmount = Math.round(amountInInr / 28);
-      return `$${usdAmount}`;
+      return `$${usdAmount} USD`;
     }
     return `₹${amountInInr.toLocaleString("en-IN")}`;
   };

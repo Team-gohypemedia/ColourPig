@@ -61,7 +61,7 @@ export function BehindTheScience() {
     <section
       ref={sectionRef}
       id="engineering"
-      className="relative w-full select-none md:h-[calc(170svh-116px)]"
+      className="relative w-full select-none md:h-[calc(170svh-116px)] bg-midnight"
     >
       {/* Heading kept for screen readers / SEO only — the video carries the section visually */}
       <h2 className="sr-only">The System</h2>
@@ -69,7 +69,7 @@ export function BehindTheScience() {
       <div className="md:sticky md:top-[116px] w-full aspect-video md:aspect-auto md:h-[calc(100svh-116px)] overflow-hidden">
         {/* The window */}
         <motion.div
-          className="relative w-full h-full overflow-hidden bg-black will-change-transform"
+          className="relative w-full h-full overflow-hidden bg-black will-change-transform shadow-2xl"
           style={animate ? { scaleX: frameScaleX, scaleY: frameScaleY } : undefined}
         >
           {/* Full-size content, counter-scaled so it never stretches while the window opens */}

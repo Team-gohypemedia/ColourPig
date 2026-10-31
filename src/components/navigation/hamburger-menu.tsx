@@ -222,14 +222,14 @@ export function HamburgerMenu() {
                 </span>
                 <div className="inline-flex rounded-lg border border-ash/30 p-0.5 bg-platinum/25">
                   <button
-                    onClick={() => setCurrency("INR")}
+                    onClick={() => setCurrency("AUD")}
                     className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
-                      currency === "INR"
+                      currency === "AUD"
                         ? "bg-white text-obsidian shadow-2xs"
                         : "text-obsidian hover:text-obsidian"
                     }`}
                   >
-                    INR (₹)
+                    AUD ($)
                   </button>
                   <button
                     onClick={() => setCurrency("USD")}
@@ -240,6 +240,16 @@ export function HamburgerMenu() {
                     }`}
                   >
                     USD ($)
+                  </button>
+                  <button
+                    onClick={() => setCurrency("INR")}
+                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
+                      currency === "INR"
+                        ? "bg-white text-obsidian shadow-2xs"
+                        : "text-obsidian hover:text-obsidian"
+                    }`}
+                  >
+                    INR (₹)
                   </button>
                 </div>
               </div>

@@ -260,7 +260,7 @@ export function NewDispatches({
                     {item.name} System
                   </h3>
                   <p className="font-montserrat font-semibold text-xs text-obsidian">
-                    ${item.price} USD
+                    ${item.price} AUD
                   </p>
                 </Link>
 
@@ -425,7 +425,7 @@ export function NewDispatches({
                       {item.name}
                     </p>
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      ${item.price} USD
+                      ${item.price} AUD
                     </p>
                   </Link>
 

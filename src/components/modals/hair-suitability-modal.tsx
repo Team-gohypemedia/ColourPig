@@ -449,7 +449,7 @@ export function HairSuitabilityModal({
         <div className="px-5 sm:px-6 pt-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] bg-[#F9FAFA] border-t border-ash/20 flex items-center justify-between gap-3 shrink-0">
           <div className="min-w-0">
             <span className="block text-sm font-bold truncate">{selectedShade.name} System</span>
-            <span className="block text-xs font-mono text-obsidian">${selectedShade.price} USD</span>
+            <span className="block text-xs font-mono text-obsidian">${selectedShade.price} AUD</span>
           </div>
           <button
             type="button"

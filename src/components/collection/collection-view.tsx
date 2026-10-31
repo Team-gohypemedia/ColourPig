@@ -419,7 +419,7 @@ export function CollectionView() {
 
                     {/* Line 2: Price */}
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      ${item.priceUsd} USD
+                      ${item.priceUsd} AUD
                     </p>
                   </Link>
 

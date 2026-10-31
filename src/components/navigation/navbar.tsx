@@ -92,10 +92,10 @@ export function Navbar({
   const showSolidBg = solidBackground ?? (!isHomePage || isScrolled);
 
   const navBg = showSolidBg
-    ? "bg-obsidian/95 backdrop-blur-md border-b border-white/10 shadow-lg"
+    ? "bg-midnight/95 backdrop-blur-md border-b border-white/10 shadow-lg"
     : "bg-transparent border-b border-transparent";
 
-  const announcementBg = "bg-black border-b border-white/10";
+  const announcementBg = "bg-midnight border-b border-white/10";
 
   const handleShadesNavClick = (e?: React.MouseEvent) => {
     if (typeof window !== "undefined") {
@@ -304,7 +304,7 @@ export function Navbar({
 
         {/* Mobile Navigation Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-white/10 py-5 px-1 space-y-4 text-xs font-mono tracking-widest uppercase text-platinum bg-obsidian/95 backdrop-blur-md">
+          <div className="lg:hidden border-t border-white/10 py-5 px-1 space-y-4 text-xs font-mono tracking-widest uppercase text-platinum bg-midnight/95 backdrop-blur-md">
             {/* Search Input inside mobile menu */}
             <div className="relative pb-1">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ash" />
@@ -396,7 +396,7 @@ export function Navbar({
 
               <div className="flex items-center justify-between py-1.5 px-2 pt-2 border-t border-white/5 text-[10px] text-ash/60">
                 <span>REGION / CURRENCY</span>
-                <span className="text-platinum font-mono">USD ($)</span>
+                <span className="text-platinum font-mono">AUD ($)</span>
               </div>
             </div>
           </div>

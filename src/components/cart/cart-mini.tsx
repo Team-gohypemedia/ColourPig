@@ -145,7 +145,7 @@ export function CartMini({
               <div className="p-6 border-t border-brand bg-obsidian space-y-4">
                 <div className="flex justify-between font-mono text-sm font-semibold">
                   <span className="text-ash">Estimated Subtotal</span>
-                  <span className="text-platinum">${subtotal.toFixed(2)} USD</span>
+                  <span className="text-platinum">${subtotal.toFixed(2)} AUD</span>
                 </div>
 
                 <button
