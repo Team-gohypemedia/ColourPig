@@ -15,7 +15,7 @@ const RITUAL_STEPS = [
     pantoneName: "Tangerine",
     hex: "#C8CDD2",
     desc: "Press canister to release pre-measured dual formulas evenly into the tray without mess.",
-    image: "/images/ritual_step_1_icon_dark.png",
+    image: "/images/ritual_step_1_icon.png",
   },
   {
     step: "02",
@@ -25,7 +25,7 @@ const RITUAL_STEPS = [
     pantoneName: "Cyan",
     hex: "#C8CDD2",
     desc: "Dispense formulas directly into custom tray and blend evenly with precision brush.",
-    image: "/images/ritual_step_2_icon_dark.png",
+    image: "/images/ritual_step_2_icon.png",
   },
   {
     step: "03",
@@ -35,7 +35,7 @@ const RITUAL_STEPS = [
     pantoneName: "Lime",
     hex: "#C8CDD2",
     desc: "Use precision brush to target roots, part line, and resistant grey regrowth.",
-    image: "/images/ritual_step_3_icon_dark.png",
+    image: "/images/ritual_step_3_icon.png",
   },
   {
     step: "04",
@@ -45,7 +45,7 @@ const RITUAL_STEPS = [
     pantoneName: "Yellow",
     hex: "#C8CDD2",
     desc: "Allow 30 minutes for permanent, salon-grade 100% grey coverage.",
-    image: "/images/ritual_step_4_icon_dark.png",
+    image: "/images/ritual_step_4_icon.png",
   },
   {
     step: "05",
@@ -55,7 +55,7 @@ const RITUAL_STEPS = [
     pantoneName: "Lilac",
     hex: "#C8CDD2",
     desc: "Rinse thoroughly with warm water, follow with included shampoo and conditioner.",
-    image: "/images/ritual_step_5_icon_dark.png",
+    image: "/images/ritual_step_5_icon.png",
   },
   {
     step: "06",
@@ -65,7 +65,7 @@ const RITUAL_STEPS = [
     pantoneName: "Rose",
     hex: "#C8CDD2",
     desc: "Wipe hairline and skin clean with gentle stain remover sachet for zero residue.",
-    image: "/images/ritual_step_6_icon_dark.png",
+    image: "/images/ritual_step_6_icon.png",
   },
 ];
 
@@ -82,7 +82,7 @@ export function InShowerRitual() {
     if (cards[index]) {
       const targetCard = cards[index] as HTMLElement;
       // Center card on smaller screens, align smoothly on larger
-      const isMobile = window.innerWidth < 1024;
+      const isMobile = window.innerWidth < 768;
       const scrollPos = isMobile
         ? targetCard.offsetLeft - (container.clientWidth - targetCard.clientWidth) / 2
         : targetCard.offsetLeft - container.offsetLeft;
@@ -113,7 +113,7 @@ export function InShowerRitual() {
     if (cards.length === 0) return;
 
     // Mobile cards snap to the center; laptop/desktop cards snap to the left edge
-    const isMobile = window.innerWidth < 1024;
+    const isMobile = window.innerWidth < 768;
     const target = isMobile
       ? container.scrollLeft + container.clientWidth / 2
       : container.scrollLeft;
@@ -132,9 +132,10 @@ export function InShowerRitual() {
     setActiveIndex(closestIndex);
   };
 
-  // Autoplay / Auto-move effect every 3.5 seconds
+  // Autoplay / Auto-move effect every 3.5 seconds (only for mobile carousel)
   useEffect(() => {
     if (isPaused) return;
+    if (typeof window !== "undefined" && window.innerWidth >= 768) return;
 
     const interval = setInterval(() => {
       scrollNext();
@@ -145,7 +146,7 @@ export function InShowerRitual() {
 
   return (
     <section
-      className="py-8 sm:py-12 lg:py-14 px-4 sm:px-8 lg:px-12 w-full select-none"
+      className="py-10 sm:py-14 lg:py-16 px-4 sm:px-8 lg:px-12 w-full select-none flex flex-col items-center justify-center text-center"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}
@@ -155,18 +156,18 @@ export function InShowerRitual() {
       }}
     >
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-4 sm:mb-6">
-        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
+      <Reveal className="text-center max-w-xl mx-auto mb-6 sm:mb-8 lg:mb-10 w-full">
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-[36px] text-white tracking-wider uppercase leading-tight">
           THE RITUAL
         </h2>
       </Reveal>
 
-      {/* Carousel Track */}
-      <Reveal className="relative" amount={0.2} delay={0.1}>
+      {/* Carousel / Grid Track */}
+      <Reveal className="relative w-full max-w-[1300px] mx-auto flex items-center justify-center" amount={0.2} delay={0.1}>
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 lg:px-1 lg:grid lg:grid-cols-6 lg:gap-3 xl:gap-5 lg:overflow-visible lg:pb-0 max-w-[1300px] mx-auto"
+          className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-5 pb-2 [scrollbar-width:none] -mx-4 sm:mx-0 px-4 sm:px-0 md:px-0 md:grid md:grid-cols-6 md:gap-3 lg:gap-4 xl:gap-6 md:overflow-visible md:pb-0 w-full max-w-[1300px] mx-auto md:place-items-center md:items-center md:justify-center"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {RITUAL_STEPS.map((item, idx) => {
@@ -175,19 +176,19 @@ export function InShowerRitual() {
               <div
                 key={item.step}
                 onClick={() => scrollToIndex(idx)}
-                className={`w-[70vw] max-w-[240px] sm:w-[260px] lg:max-w-none lg:w-auto shrink-0 snap-center lg:snap-align-none group relative rounded-lg bg-transparent border-0 p-1 flex flex-col items-center justify-start cursor-pointer transition-all duration-300 ${
+                className={`w-[70vw] max-w-[240px] sm:w-[260px] md:max-w-none md:w-full shrink-0 snap-center md:snap-align-none group relative rounded-lg bg-transparent border-0 p-1 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
                   isActive
                     ? "opacity-100 scale-105"
                     : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
                 }`}
               >
                 {/* Clean Step Title (Montserrat bold modern uppercase) */}
-                <h3 className="font-montserrat font-bold text-xs sm:text-sm lg:text-[13px] tracking-[0.2em] uppercase text-obsidian mb-2 sm:mb-2.5 text-center">
+                <h3 className="font-montserrat font-bold text-xs sm:text-sm lg:text-[13px] tracking-[0.2em] uppercase text-white mb-2.5 sm:mb-3 text-center whitespace-nowrap">
                   {item.title}
                 </h3>
 
                 {/* Packaging Illustration Frame - Clean Transparent */}
-                <div className="relative w-full aspect-[4/3] max-w-[130px] sm:max-w-[150px] lg:max-w-[160px] xl:max-w-[180px] mx-auto bg-transparent">
+                <div className="relative w-full aspect-[4/3] max-w-[120px] sm:max-w-[140px] md:max-w-[140px] lg:max-w-[160px] xl:max-w-[180px] mx-auto bg-transparent flex items-center justify-center">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -203,9 +204,9 @@ export function InShowerRitual() {
       </Reveal>
 
       {/* Progress Bar Indicator */}
-      <div className="lg:hidden w-full max-w-md mx-auto h-[2px] bg-obsidian/10 rounded-full overflow-hidden mt-6">
+      <div className="md:hidden w-full max-w-md mx-auto h-[2px] bg-white/10 rounded-full overflow-hidden mt-6">
         <div
-          className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full bg-obsidian"
+          className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full bg-white"
           style={{
             width: `${((activeIndex + 1) / RITUAL_STEPS.length) * 100}%`,
           }}
@@ -213,13 +214,13 @@ export function InShowerRitual() {
       </div>
 
       {/* Footer Navigation Bar (Step Counter + Arrow Controls) */}
-      <div className="lg:hidden flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto">
+      <div className="md:hidden flex items-center justify-between mt-5 px-1 max-w-4xl mx-auto w-full">
         {/* Step Indicator */}
-        <span className="text-[11px] font-mono tracking-widest uppercase text-obsidian/70 font-medium">
+        <span className="text-[11px] font-mono tracking-widest uppercase text-platinum/70 font-medium">
           STEP <SwapText value={activeIndex + 1} /> OF {RITUAL_STEPS.length}
         </span>
 
-        {/* Dynamic Pantone Pagination Dots */}
+        {/* Dynamic Pagination Dots */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           {RITUAL_STEPS.map((item, idx) => {
             const isActive = activeIndex === idx;
@@ -230,7 +231,7 @@ export function InShowerRitual() {
                 className="h-2 rounded-full transition-all duration-300"
                 style={{
                   width: isActive ? "24px" : "7px",
-                  backgroundColor: "#0D151C",
+                  backgroundColor: "#FFFFFF",
                   opacity: isActive ? 1 : 0.25,
                 }}
                 aria-label={`Jump to step ${item.step}`}
@@ -243,17 +244,17 @@ export function InShowerRitual() {
         <div className="flex items-center gap-1.5">
           <button
             onClick={scrollPrev}
-            className="h-8 w-8 rounded-md bg-platinum/30 border border-ash/30 hover:bg-platinum/60 text-obsidian flex items-center justify-center active:scale-95 transition-all shadow-xs"
+            className="h-8 w-8 rounded-md bg-white/10 border border-white/15 hover:bg-white/20 text-white flex items-center justify-center active:scale-95 transition-all shadow-xs"
             aria-label="Previous step"
           >
-            <ChevronLeft className="w-4 h-4 text-obsidian group-hover:text-black" />
+            <ChevronLeft className="w-4 h-4 text-white" />
           </button>
           <button
             onClick={scrollNext}
-            className="h-8 w-8 rounded-md bg-platinum/30 border border-ash/30 hover:bg-platinum/60 text-obsidian flex items-center justify-center active:scale-95 transition-all shadow-xs"
+            className="h-8 w-8 rounded-md bg-white/10 border border-white/15 hover:bg-white/20 text-white flex items-center justify-center active:scale-95 transition-all shadow-xs"
             aria-label="Next step"
           >
-            <ChevronRight className="w-4 h-4 text-obsidian group-hover:text-black" />
+            <ChevronRight className="w-4 h-4 text-white" />
           </button>
         </div>
       </div>

@@ -15,7 +15,6 @@ import { Bestsellers } from "@/components/home/bestsellers";
 import { ShadeFinder } from "@/components/home/shade-finder";
 import { PressTicker } from "@/components/home/press-ticker";
 import { InShowerRitual } from "@/components/home/in-shower-ritual";
-import { AirheadsCommunity } from "@/components/home/airheads-community";
 import { BehindTheScience } from "@/components/home/behind-the-science";
 import { CustomerReviews } from "@/components/home/customer-reviews";
 import { EcommFooter } from "@/components/home/ecomm-footer";
@@ -69,6 +68,11 @@ function HomeContent() {
         <ShadeFinder onAddToCart={handleAddToCart} />
       </div>
 
+      {/* 5. THE SYSTEM (BEHIND THE SCIENCE - VIDEO SECTION) */}
+      <div className="w-full bg-midnight text-platinum border-b border-white/10">
+        <BehindTheScience />
+      </div>
+
       {/* 6. BESTSELLERS 4-Card Grid */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <Bestsellers onAddToCart={handleAddToCart} />
@@ -77,27 +81,17 @@ function HomeContent() {
       {/* 7. Press & Editorial Bar */}
       <PressTicker />
 
-      {/* 8. THE IN-SHOWER RITUAL */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <InShowerRitual />
-      </div>
-
-      {/* 9. THE SYSTEM (BEHIND THE SCIENCE) */}
-      <div className="w-full bg-midnight text-platinum border-b border-white/10">
-        <BehindTheScience />
-      </div>
-
-      {/* 10. COMMUNITY ARCHIVE (#AIRHEADS) */}
-      <div className="w-full bg-white text-obsidian border-b border-ash/30">
-        <AirheadsCommunity />
-      </div>
-
-      {/* 11. WHAT OUR CLIENTS SAY */}
+      {/* 8. WHAT OUR CLIENTS SAY (TESTIMONIALS) */}
       <div className="w-full bg-white text-obsidian border-b border-ash/30">
         <CustomerReviews />
       </div>
 
-      {/* 13. Luxury E-Commerce Footer */}
+      {/* 9. THE RITUAL (IN-SHOWER RITUAL) - AFTER TESTIMONIALS WITH MIDNIGHT BG */}
+      <div className="w-full bg-midnight text-platinum">
+        <InShowerRitual />
+      </div>
+
+      {/* 10. Luxury E-Commerce Footer */}
       <EcommFooter />
     </div>
   );

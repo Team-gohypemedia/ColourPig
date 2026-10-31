@@ -39,6 +39,7 @@ export function HamburgerMenu() {
     { label: "Shades & Formulas", href: "/#shades", badge: "9 Shades" },
     { label: "Bestsellers", href: "/#bestsellers", badge: "Top Picks" },
     { label: "Collection", href: "/collection", badge: "Archive" },
+    { label: "Gallery Archive", href: "/gallery", badge: "Facility" },
     { label: "Before & After Results", href: "/#shade-finder", badge: "Real Results" },
     { label: "In-Shower Ritual", href: "/#ritual", badge: "4 Steps" },
     { label: "Behind the Science", href: "/#science", badge: "Clean Formula" },

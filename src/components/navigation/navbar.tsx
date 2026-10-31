@@ -177,6 +177,13 @@ export function Navbar({
               >
                 Collection
               </Link>
+
+              <Link
+                href="/gallery"
+                className="hover:text-white transition-opacity duration-200"
+              >
+                Gallery
+              </Link>
             </nav>
           </div>
 

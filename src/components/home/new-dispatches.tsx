@@ -273,7 +273,7 @@ export function NewDispatches({
                       setSuitabilityShade(item);
                       setIsSuitabilityOpen(true);
                     }}
-                    className="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
+                    className="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-2xs hover:scale-105 active:scale-95 cursor-pointer opacity-100 pointer-events-auto md:opacity-0 md:pointer-events-none md:translate-y-1 md:group-hover:opacity-100 md:group-hover:pointer-events-auto md:group-hover:translate-y-0"
                   >
                     <span>CHECK MATCH</span>
                   </button>
@@ -281,7 +281,7 @@ export function NewDispatches({
                   <Link
                     href={`/product?shade=${item.id.replace("shade-", "")}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="text-[10px] font-mono font-bold tracking-wider uppercase text-obsidian hover:text-obsidian border-b border-graphite/30 hover:border-obsidian transition-colors pb-0.5"
+                    className="text-[10px] font-mono font-medium tracking-widest uppercase text-obsidian/45 hover:text-obsidian border-b border-obsidian/20 hover:border-obsidian transition-colors pb-0.5"
                   >
                     VIEW PRODUCT
                   </Link>

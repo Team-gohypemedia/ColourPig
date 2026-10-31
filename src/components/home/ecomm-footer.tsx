@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { ColourpigLogo } from "@/components/brand/logo";
 import { Mail, MapPin, Globe } from "lucide-react";
 import { scrollToStarterSystems } from "@/lib/scroll-utils";
@@ -135,7 +136,7 @@ export function EcommFooter() {
                 <li><a href="#shades" className="hover:text-white transition-colors">Before &amp; After Results</a></li>
                 <li><a href="#engineering" className="hover:text-white transition-colors">How To Refill</a></li>
                 <li><a href="#about" className="hover:text-white transition-colors">Ingredients &amp; Safety</a></li>
-                <li><a href="#community" className="hover:text-white transition-colors">Airheads Archive</a></li>
+                <li><Link href="/gallery" className="hover:text-white transition-colors">Airheads Archive &amp; Gallery</Link></li>
               </ul>
             </div>
           </div>
