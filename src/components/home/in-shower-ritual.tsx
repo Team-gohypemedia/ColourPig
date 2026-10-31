@@ -146,7 +146,7 @@ export function InShowerRitual() {
 
   return (
     <section
-      className="py-16 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none flex flex-col items-center justify-center text-center"
+      className="py-6 sm:py-8 lg:py-10 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none flex flex-col items-center justify-center text-center"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}
@@ -156,8 +156,8 @@ export function InShowerRitual() {
       }}
     >
       {/* Title */}
-      <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-10 lg:mb-12 w-full">
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-[36px] text-white tracking-wider uppercase leading-tight">
+      <Reveal className="text-center max-w-xl mx-auto mb-4 sm:mb-5 lg:mb-6 w-full">
+        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-[34px] text-white tracking-wider uppercase leading-tight">
           THE RITUAL
         </h2>
       </Reveal>
@@ -183,12 +183,12 @@ export function InShowerRitual() {
                 }`}
               >
                 {/* Clean Step Title (Montserrat bold modern uppercase) */}
-                <h3 className="font-montserrat font-bold text-xs sm:text-sm lg:text-[13px] tracking-[0.2em] uppercase text-white mb-2.5 sm:mb-3 text-center whitespace-nowrap">
+                <h3 className="font-montserrat font-bold text-xs sm:text-sm lg:text-[13px] tracking-[0.2em] uppercase text-white mb-1.5 sm:mb-2 text-center whitespace-nowrap">
                   {item.title}
                 </h3>
 
                 {/* Packaging Illustration Frame - Clean Transparent */}
-                <div className="relative w-full aspect-[4/3] max-w-[120px] sm:max-w-[140px] md:max-w-[140px] lg:max-w-[160px] xl:max-w-[180px] mx-auto bg-transparent flex items-center justify-center">
+                <div className="relative w-full aspect-[4/3] max-w-[110px] sm:max-w-[130px] md:max-w-[125px] lg:max-w-[145px] xl:max-w-[160px] mx-auto bg-transparent flex items-center justify-center">
                   <Image
                     src={item.image}
                     alt={item.title}

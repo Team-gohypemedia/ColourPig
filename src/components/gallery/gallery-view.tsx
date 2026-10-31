@@ -369,14 +369,14 @@ export function GalleryView() {
           </div>
         </section>
       ) : (
-        /* 2B. Editorial Grid Mode */
+        /* 2B. Pure Media Grid Mode - Only Images and Videos, No Titles or Cards */
         <section className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filteredItems.map((item, idx) => (
               <div
                 key={item.id}
                 onClick={() => setSelectedIdx(idx)}
-                className="group cursor-pointer flex flex-col bg-white border border-black/10 overflow-hidden shadow-2xs hover:shadow-lg transition-all duration-300"
+                className="group cursor-pointer overflow-hidden relative shadow-sm hover:shadow-2xl transition-all duration-500 ease-out"
               >
                 <div className={`relative ${item.aspectClass} w-full bg-neutral-100 overflow-hidden`}>
                   {item.video ? (
@@ -387,10 +387,11 @@ export function GalleryView() {
                         muted
                         loop
                         playsInline
-                        className="w-full h-full object-cover object-top"
+                        autoPlay
+                        className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                       />
-                      <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-xs">
-                        <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
+                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-xs">
+                        <Play className="w-4 h-4 fill-white ml-0.5" />
                       </div>
                     </div>
                   ) : (
@@ -402,26 +403,8 @@ export function GalleryView() {
                       className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                   )}
-                  <div className="absolute top-3 left-3 px-2 py-0.5 bg-black/70 text-white text-[10px] font-mono tracking-widest uppercase">
-                    {item.category}
-                  </div>
-                </div>
-
-                <div className="p-4 flex flex-col justify-between flex-1">
-                  <div>
-                    <h3 className="font-montserrat font-bold text-sm tracking-wider uppercase text-obsidian">
-                      {item.title}
-                    </h3>
-                    {item.description && (
-                      <p className="mt-1 text-xs font-mono text-obsidian/70 leading-relaxed">
-                        {item.description}
-                      </p>
-                    )}
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-black/10 flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-obsidian/60 group-hover:text-obsidian transition-colors">
-                    <span>{item.video ? "Watch Walkthrough" : "Enlarge Shot"}</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
+                  {/* Subtle dark hover veil */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 pointer-events-none" />
                 </div>
               </div>
             ))}
@@ -470,14 +453,9 @@ export function GalleryView() {
           >
             {/* Top Bar with Counter and Close */}
             <div className="absolute top-4 sm:top-6 inset-x-4 sm:inset-x-8 flex items-center justify-between text-white z-50">
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono tracking-widest uppercase bg-white/10 px-3 py-1 rounded-full">
-                  {selectedIdx + 1} / {filteredItems.length}
-                </span>
-                <span className="text-xs font-mono tracking-widest uppercase text-white/70 hidden sm:inline">
-                  {activeModalItem.category}
-                </span>
-              </div>
+              <span className="text-xs font-mono tracking-widest uppercase bg-white/10 px-3 py-1 rounded-full">
+                {selectedIdx + 1} / {filteredItems.length}
+              </span>
 
               <button
                 type="button"
@@ -549,18 +527,6 @@ export function GalleryView() {
                     sizes="(max-width: 1024px) 90vw, 1200px"
                     className="object-contain"
                   />
-                )}
-              </div>
-
-              {/* Title & Description Caption */}
-              <div className="mt-4 text-center max-w-xl">
-                <p className="font-montserrat font-bold text-sm sm:text-base text-white tracking-widest uppercase">
-                  {activeModalItem.title}
-                </p>
-                {activeModalItem.description && (
-                  <p className="mt-1 text-xs font-mono text-white/70">
-                    {activeModalItem.description}
-                  </p>
                 )}
               </div>
             </motion.div>
