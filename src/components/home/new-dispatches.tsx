@@ -268,7 +268,7 @@ export function NewDispatches({
                       setSuitabilityShade(item);
                       setIsSuitabilityOpen(true);
                     }}
-                    className="inline-flex items-center justify-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 2xl:px-5 2xl:py-2 rounded-full bg-obsidian hover:bg-black text-white text-[9px] sm:text-[10px] 2xl:text-[11px] font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
+                    className="inline-flex items-center justify-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 2xl:px-5 2xl:py-2 rounded-full bg-graphite hover:bg-steel text-white text-[9px] sm:text-[10px] 2xl:text-[11px] font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
                   >
                     <span>CHECK MATCH</span>
                   </button>
