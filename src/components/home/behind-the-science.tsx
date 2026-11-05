@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import {
   motion,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -10,25 +11,15 @@ import {
 } from "framer-motion";
 import { useHasMounted } from "@/components/motion/motion-primitives";
 
+// The video only starts once the opening "window" is (almost) fully open, and pauses if it closes again
+const OPEN_PLAY_AT = 0.98;
+const OPEN_PAUSE_BELOW = 0.9;
+
 export function BehindTheScience() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-
-  // Ambient loop that only downloads once the section is near the screen (preload="none" + poster),
-  // and pauses while off screen, so it doesn't compete with the hero on first load
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => {});
-        else video.pause();
-      },
-      { rootMargin: "300px 0px" }
-    );
-    io.observe(video);
-    return () => io.disconnect();
-  }, []);
+  const nearScreen = useRef(false);
+  const hasStarted = useRef(false);
 
   // ---- Scroll-driven "window" -----------------------------------------------------------------
   // Tied to scroll position: the banner grows from a small centre window to the full frame while the
@@ -53,6 +44,49 @@ export function BehindTheScience() {
   const mounted = useHasMounted();
   const reduce = useReducedMotion();
   const animate = mounted && !reduce;
+
+  // Start playback only when the window is fully open (from the first frame the first time),
+  // pause again if the user scrolls back up and it starts closing
+  const syncPlayback = (open: number) => {
+    const video = videoRef.current;
+    if (!video || !nearScreen.current) return;
+    if (open >= OPEN_PLAY_AT && video.paused) {
+      if (!hasStarted.current) {
+        video.currentTime = 0;
+        hasStarted.current = true;
+      }
+      video.play().catch(() => {});
+    } else if (open < OPEN_PAUSE_BELOW && !video.paused) {
+      video.pause();
+    }
+  };
+
+  useMotionValueEvent(openSmooth, "change", (v) => {
+    if (animate) syncPlayback(v);
+  });
+
+  // Starts buffering once the section is near the screen (so it's ready the moment the window opens),
+  // pauses while off screen. Reduced-motion users have no opening animation, so it simply plays in view.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        nearScreen.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          if (video.preload !== "auto") video.preload = "auto";
+          if (!animate) video.play().catch(() => {});
+          else syncPlayback(openSmooth.get());
+        } else {
+          video.pause();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+    io.observe(video);
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animate]);
 
   return (
     // md+: the section is taller than the screen, so the frame pins below the navbar and the whole
