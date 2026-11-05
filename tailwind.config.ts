@@ -30,14 +30,22 @@ const config: Config = {
         },
       },
       fontFamily: {
-        headline: ["var(--font-cormorant)", "'Cormorant Garamond'", "serif"],
-        title: ["var(--font-cormorant)", "'Cormorant Garamond'", "serif"],
-        serif: ["var(--font-cormorant)", "'Cormorant Garamond'", "serif"],
-        cormorant: ["var(--font-cormorant)", "'Cormorant Garamond'", "serif"],
-        body: ["var(--font-montserrat)", "'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        sans: ["var(--font-montserrat)", "'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        mono: ["var(--font-montserrat)", "'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        montserrat: ["var(--font-montserrat)", "'Montserrat'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        // Brand Guide pp. 24–26 — stacks defined as CSS variables in globals.css
+        // Primary: PP Agrandir (titles / headlines)
+        headline: ["var(--font-primary)"],
+        title: ["var(--font-primary)"],
+        agrandir: ["var(--font-primary)"],
+        // Secondary: PP Neue Montreal (body / UI)
+        body: ["var(--font-secondary)"],
+        sans: ["var(--font-secondary)"],
+        "neue-montreal": ["var(--font-secondary)"],
+        // Helping: Intel One Mono (labels / codes / metadata)
+        mono: ["var(--font-helping)"],
+        "intel-mono": ["var(--font-helping)"],
+        // Legacy aliases — kept so existing class names keep working
+        serif: ["var(--font-primary)"],
+        cormorant: ["var(--font-primary)"],
+        montserrat: ["var(--font-secondary)"],
       },
       letterSpacing: {
         tightest: "-0.04em",

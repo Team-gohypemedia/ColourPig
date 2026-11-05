@@ -1,61 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
+/* ==========================================================================
+   COLOURPIG BRAND TYPOGRAPHY (Brand Guide pp. 24–26)
+   - Primary   : PP Agrandir       → titles, headlines (h1, h2)
+   - Secondary : PP Neue Montreal  → body copy, product names, h3–h6, UI
+   - Helping   : Intel One Mono    → labels, tags, codes, metadata (font-mono)
 
-/* Local Fallback Font-Faces */
+   PP Agrandir / PP Neue Montreal are licensed Pangram Pangram fonts.
+   Place the font files here (.woff2 preferred, .otf also accepted):
+     public/fonts/pp-agrandir/PPAgrandir-Regular.woff2        (400)
+     public/fonts/pp-agrandir/PPAgrandir-Bold.woff2           (700)
+     public/fonts/pp-neue-montreal/PPNeueMontreal-Regular.woff2 (400)
+     public/fonts/pp-neue-montreal/PPNeueMontreal-Italic.woff2  (400 italic)
+     public/fonts/pp-neue-montreal/PPNeueMontreal-Medium.woff2  (500)
+     public/fonts/pp-neue-montreal/PPNeueMontreal-Bold.woff2    (700)
+   Intel One Mono is open source and self-hosted via next/font (layout.tsx).
+   ========================================================================== */
+
 @font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'PP Agrandir';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/cormorant-garamond-400-normal.woff2') format('woff2');
+  src: local('PP Agrandir Regular'), local('PPAgrandir-Regular'),
+       url('/fonts/pp-agrandir/PPAgrandir-Regular.woff2') format('woff2'),
+       url('/fonts/pp-agrandir/PPAgrandir-Regular.otf') format('opentype');
 }
 @font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/cormorant-garamond-600-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'PP Agrandir';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/cormorant-garamond-700-normal.woff2') format('woff2');
+  src: local('PP Agrandir Bold'), local('PPAgrandir-Bold'),
+       url('/fonts/pp-agrandir/PPAgrandir-Bold.woff2') format('woff2'),
+       url('/fonts/pp-agrandir/PPAgrandir-Bold.otf') format('opentype');
 }
+
 @font-face {
-  font-family: 'Montserrat';
+  font-family: 'PP Neue Montreal';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/montserrat-400-normal.woff2') format('woff2');
+  src: local('PP Neue Montreal Regular'), local('PPNeueMontreal-Regular'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Regular.woff2') format('woff2'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Regular.otf') format('opentype');
 }
 @font-face {
-  font-family: 'Montserrat';
+  font-family: 'PP Neue Montreal';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('PP Neue Montreal Italic'), local('PPNeueMontreal-Italic'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Italic.woff2') format('woff2'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Italic.otf') format('opentype');
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/montserrat-500-normal.woff2') format('woff2');
+  src: local('PP Neue Montreal Medium'), local('PPNeueMontreal-Medium'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Medium.woff2') format('woff2'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Medium.otf') format('opentype');
 }
 @font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/montserrat-600-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Montserrat';
+  font-family: 'PP Neue Montreal';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/montserrat-700-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url('/fonts/montserrat-800-normal.woff2') format('woff2');
+  src: local('PP Neue Montreal Bold'), local('PPNeueMontreal-Bold'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Bold.woff2') format('woff2'),
+       url('/fonts/pp-neue-montreal/PPNeueMontreal-Bold.otf') format('opentype');
 }
 
 @tailwind base;
@@ -71,48 +84,59 @@
     --color-graphite: #495B69;
     --color-ash: #949FA3;
     --color-platinum: #CED1D0; /* Image 3 Light Platinum Grey */
+
+    /* Brand font stacks */
+    --font-primary: 'PP Agrandir', 'Helvetica Neue', Arial, sans-serif;
+    --font-secondary: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    --font-helping: var(--font-intel-mono), 'Intel One Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
   body {
     background-color: var(--color-obsidian);
     color: var(--color-platinum);
-    font-family: var(--font-montserrat), 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-secondary);
     overflow-x: hidden;
   }
 
-  /* Titles ONLY: Section titles, page headers, editorial headlines */
-  h1, h2, .font-title, .font-cormorant, .cormorant-garamond {
-    font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  /* Titles ONLY: Section titles, page headers, editorial headlines — PP Agrandir */
+  h1, h2, .font-title, .font-cormorant, .cormorant-garamond, .font-agrandir {
+    font-family: var(--font-primary);
     letter-spacing: normal;
   }
 
-  /* All other elements: Product names, body, descriptions, h3-h6, buttons, metadata */
-  h3, h4, h5, h6, .font-mono, .font-body, .font-sans, .font-montserrat, .montserrat, .product-name {
-    font-family: var(--font-montserrat), 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* All other elements: Product names, body, descriptions, h3-h6, buttons — PP Neue Montreal */
+  h3, h4, h5, h6, .font-body, .font-sans, .font-montserrat, .montserrat, .product-name, .font-neue-montreal {
+    font-family: var(--font-secondary);
+  }
+
+  /* Labels, tags, codes, metadata — Intel One Mono */
+  .font-mono, .font-intel-mono {
+    font-family: var(--font-helping);
   }
 }
 
 .product-name, .product-title {
-  font-family: var(--font-montserrat), 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-family: var(--font-secondary) !important;
 }
 
+/* Legacy weight helpers (class names kept so existing markup keeps working) */
 .cormorant-garamond-700 {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-primary);
   font-weight: 700;
 }
 
 .cormorant-garamond-600 {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-family: var(--font-primary);
   font-weight: 600;
 }
 
 .montserrat-500 {
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-family: var(--font-secondary);
   font-weight: 500;
 }
 
 .montserrat-600 {
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-family: var(--font-secondary);
   font-weight: 600;
 }
 
