@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import { Intel_One_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ScrollToTop } from "@/components/navigation/scroll-to-top";
 
-// Helping font (Brand Guide p. 26). PP Agrandir & PP Neue Montreal are
-// loaded via @font-face in globals.css.
-const intelOneMono = Intel_One_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-intel-mono",
-  display: "swap",
-  adjustFontFallback: false,
-});
+// All brand fonts (PP Agrandir, PP Neue Montreal, Intel One Mono) are self-hosted
+// via @font-face in globals.css — files live in public/fonts/.
 
 export const metadata: Metadata = {
   title: "Colourpig by Norman & Brown — World's First Reusable Precision Hair Colour System",
@@ -34,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${intelOneMono.variable} antialiased`}>
+    <html lang="en" className="antialiased">
       <body className="bg-obsidian text-platinum font-body selection:bg-steel selection:text-white">
         <SmoothScrollProvider>
           {children}

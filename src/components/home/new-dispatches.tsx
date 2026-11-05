@@ -8,7 +8,7 @@ import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
 import { HairSuitabilityModal } from "@/components/modals/hair-suitability-modal";
-import { Reveal, RevealCard, RevealImage, RevealLabel, SwapText } from "@/components/motion/motion-primitives";
+import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
 // Mapping Pantone accent styling for each shade in the collection
 const SHADE_PANTONE_TAGS: Record<string, { tag: string; pantoneColor: string }> = {
@@ -102,92 +102,47 @@ export function NewDispatches({
 }) {
   const store = useStore();
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(2); // Default to Shade 3 (No.3 Brown System)
   const [isSuitabilityOpen, setIsSuitabilityOpen] = useState(false);
   const [suitabilityShade, setSuitabilityShade] = useState<ShadeProduct | null>(null);
 
-  const isProgrammaticScroll = useRef(false);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+  // Slider position: starts at the first shade; arrows show only when there is somewhere to go
+  const [scrollState, setScrollState] = useState({ atStart: true, atEnd: false, progress: 0 });
 
-  // Position slider to default active Shade 3 on initial page visit
-  useEffect(() => {
-    const centerDefault = () => {
-      const container = sliderRef.current;
-      if (!container) return;
-      const cards = container.children;
-      if (cards[2]) {
-        const targetCard = cards[2] as HTMLElement;
-        const cardCenter = targetCard.offsetLeft + targetCard.clientWidth / 2;
-        const containerHalf = container.clientWidth / 2;
-        container.scrollLeft = Math.max(0, cardCenter - containerHalf);
-      }
-    };
-
-    centerDefault();
-    const timer = setTimeout(centerDefault, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const scrollToIndex = useCallback((index: number) => {
-    const container = sliderRef.current;
-    if (!container) return;
-    const cards = container.children;
-    if (cards[index]) {
-      const targetCard = cards[index] as HTMLElement;
-
-      // Calculate exact scroll position so the target card is dead center
-      const cardCenter = targetCard.offsetLeft + targetCard.clientWidth / 2;
-      const containerHalf = container.clientWidth / 2;
-      const targetScrollLeft = Math.max(0, cardCenter - containerHalf);
-
-      isProgrammaticScroll.current = true;
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-      scrollTimeout.current = setTimeout(() => {
-        isProgrammaticScroll.current = false;
-      }, 600);
-
-      setActiveIndex(index);
-
-      container.scrollTo({
-        left: targetScrollLeft,
-        behavior: "smooth",
-      });
-    }
-  }, []);
-
-  const scrollPrev = () => {
-    const prevIndex = activeIndex === 0 ? OFFICIAL_SHADES.length - 1 : activeIndex - 1;
-    scrollToIndex(prevIndex);
-  };
-
-  const scrollNext = () => {
-    const nextIndex = activeIndex >= OFFICIAL_SHADES.length - 1 ? 0 : activeIndex + 1;
-    scrollToIndex(nextIndex);
-  };
-
-  const handleScroll = () => {
-    if (!sliderRef.current) return;
-    if (isProgrammaticScroll.current) return;
-
-    const container = sliderRef.current;
-    const cards = Array.from(container.children) as HTMLElement[];
-    if (cards.length === 0) return;
-
-    const targetCenter = container.scrollLeft + container.clientWidth / 2;
-    let closestIndex = 0;
-    let minDiff = Infinity;
-
-    cards.forEach((card, idx) => {
-      const cardCenter = card.offsetLeft + card.clientWidth / 2;
-      const diff = Math.abs(cardCenter - targetCenter);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestIndex = idx;
-      }
+  const handleScroll = useCallback(() => {
+    const c = sliderRef.current;
+    if (!c) return;
+    const max = c.scrollWidth - c.clientWidth;
+    setScrollState({
+      atStart: c.scrollLeft <= 4,
+      atEnd: c.scrollLeft >= max - 4,
+      // Fraction of the row that has been revealed (e.g. 3 of 9 visible at the start ≈ 33%)
+      progress: c.scrollWidth > 0 ? Math.min(1, (c.clientWidth + c.scrollLeft) / c.scrollWidth) : 0,
     });
+  }, []);
 
-    setActiveIndex(closestIndex);
+  useEffect(() => {
+    const raf = requestAnimationFrame(handleScroll);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [handleScroll]);
+
+  // Move exactly one card (card width + gap) per click
+  const scrollByCard = (dir: 1 | -1) => {
+    const c = sliderRef.current;
+    if (!c) return;
+    const cards = c.children;
+    const step =
+      cards.length > 1
+        ? (cards[1] as HTMLElement).offsetLeft - (cards[0] as HTMLElement).offsetLeft
+        : c.clientWidth;
+    c.scrollBy({ left: dir * step, behavior: "smooth" });
   };
+
+  const scrollPrev = () => scrollByCard(-1);
+  const scrollNext = () => scrollByCard(1);
 
   const handleToggleWishlistProduct = (item: (typeof NEW_ARRIVALS)[0], e: React.MouseEvent) => {
     e.stopPropagation();
@@ -202,44 +157,83 @@ export function NewDispatches({
     });
   };
 
-  const activeShade = OFFICIAL_SHADES[activeIndex] || OFFICIAL_SHADES[0];
-
   return (
-    <section id="system" className="py-16 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
+    <section id="system" className="pt-0 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-8 lg:px-12 xl:px-16 w-full select-none">
       {/* Editorial Heading - Center Aligned */}
-      <Reveal className="text-center max-w-7xl mx-auto mb-8 sm:mb-10 lg:mb-12">
-        <h2 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
-          EXPLORE YOUR SHADE
-        </h2>
-      </Reveal>
+      {/* The banner carries the visible title — keep the section heading for screen readers / SEO only */}
+      <h2 className="sr-only">Explore your shade</h2>
 
-      {/* 1. Pure Circle Shades Slider - Exactly 5 items visible on laptop and desktop with zero peek */}
-      <Reveal className="relative w-full max-w-[1720px] mx-auto overflow-hidden" amount={0.2} delay={0.15}>
+      {/* Banner (left) + Shades slider (right) from 768px up (tablets & every laptop); stacked on phones */}
+      {/* One continuous full-bleed band: negative margins cancel the section's side padding */}
+      <div className="-mx-4 sm:-mx-8 lg:-mx-12 xl:-mx-16 bg-[#F6F6F6] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] items-stretch">
+        {/* "Find Your Perfect Shade" brand banner (display only — no link).
+            Never cropped: shown at its natural 4:3 size and anchored to the bottom of the cell. If the
+            slider side is taller, the extra space appears above the title in the banner's own #F6F6F6,
+            so the join stays invisible. */}
+        <Reveal amount={0.2} className="h-full">
+          <div className="w-full h-full flex flex-col justify-end bg-[#F6F6F6]">
+            <Image
+              src="/brand-assets/banners/find-your-perfect-shade.jpg"
+              alt="Find your perfect shade"
+              width={1200}
+              height={900}
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 42vw"
+              className="block w-full h-auto"
+            />
+          </div>
+        </Reveal>
+
+        {/* Slider side — shares the band's background; side padding is just wide enough for the arrows */}
+        <div className="group/slider min-w-0 flex flex-col justify-center md:justify-end px-9 md:px-10 pt-2 pb-0 md:pt-5 md:pb-0">
+      {/* 1. Pure Circle Shades Slider - 5 items on tablet, 3 beside the banner on desktop */}
+      <Reveal className="relative w-full max-w-[1720px] mx-auto group [--arrow-y:50%] sm:[--arrow-y:50%] md:[--arrow-y:76px] xl:[--arrow-y:92px] 2xl:[--arrow-y:calc(28px+clamp(150px,10.5vw,210px)/2)]" amount={0.2} delay={0.15}>
+        {/* Left arrow — only appears once the slider has moved away from the first shade */}
+        <button
+          type="button"
+          onClick={scrollPrev}
+          tabIndex={scrollState.atStart ? -1 : 0}
+          aria-hidden={scrollState.atStart}
+          className={`absolute -left-0.5 -translate-x-full top-[var(--arrow-y)] -translate-y-1/2 z-30 h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-white/95 text-obsidian border border-ash/40 hover:bg-obsidian hover:text-white hover:border-obsidian flex items-center justify-center active:scale-95 transition-all duration-300 shadow-[0_6px_20px_rgba(0,0,0,0.15)] cursor-pointer ${
+            scrollState.atStart ? "opacity-0 pointer-events-none" : "opacity-100 lg:opacity-0 lg:pointer-events-none lg:group-hover/slider:opacity-100 lg:group-hover/slider:pointer-events-auto lg:focus-visible:opacity-100 lg:focus-visible:pointer-events-auto"
+          }`}
+          aria-label="Previous shade"
+        >
+          <ChevronLeft className="w-4 h-4 pointer-events-none" />
+        </button>
+
+        {/* Right arrow — hidden once the last shade is in view */}
+        <button
+          type="button"
+          onClick={scrollNext}
+          tabIndex={scrollState.atEnd ? -1 : 0}
+          aria-hidden={scrollState.atEnd}
+          className={`absolute -right-0.5 translate-x-full top-[var(--arrow-y)] -translate-y-1/2 z-30 h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-white/95 text-obsidian border border-ash/40 hover:bg-obsidian hover:text-white hover:border-obsidian flex items-center justify-center active:scale-95 transition-all duration-300 shadow-[0_6px_20px_rgba(0,0,0,0.15)] cursor-pointer ${
+            scrollState.atEnd ? "opacity-0 pointer-events-none" : "opacity-100 lg:opacity-0 lg:pointer-events-none lg:group-hover/slider:opacity-100 lg:group-hover/slider:pointer-events-auto lg:focus-visible:opacity-100 lg:focus-visible:pointer-events-auto"
+          }`}
+          aria-label="Next shade"
+        >
+          <ChevronRight className="w-4 h-4 pointer-events-none" />
+        </button>
+
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex gap-4 sm:gap-6 md:gap-4 lg:gap-6 xl:gap-8 overflow-x-auto scroll-smooth pb-6 pt-3 no-scrollbar snap-x snap-mandatory items-start px-4 sm:px-6 md:px-0"
+          className="flex gap-3 sm:gap-4 md:gap-4 lg:gap-3 xl:gap-6 overflow-x-auto scroll-smooth pb-3 md:pb-0 pt-3 no-scrollbar snap-x snap-mandatory items-stretch"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {OFFICIAL_SHADES.map((item, idx) => {
             const circleSrc = SHADE_CLEAN_CIRCLES[item.id] || item.swatchImage;
-            const isActive = activeIndex === idx;
 
             return (
               <div
                 key={item.id}
-                onClick={() => scrollToIndex(idx)}
-                className={`group flex-none w-[170px] sm:w-[200px] md:w-[calc((100%-4rem)/5)] lg:w-[calc((100%-6rem)/5)] xl:w-[calc((100%-8rem)/5)] snap-center flex flex-col items-center text-center transition-all duration-300 cursor-pointer py-2 px-1 ${
-                  isActive ? "opacity-100" : "opacity-85 hover:opacity-100"
-                }`}
+                className="group flex-none w-[calc((100%-1.5rem)/3)] sm:w-[calc((100%-2rem)/3)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-2.25rem)/4)] xl:w-[calc((100%-4.5rem)/4)] snap-start flex flex-col items-center text-center transition-all duration-300 py-2 md:pb-0 px-1"
               >
 
                 {/* Pure Circular Hair Shade Swatch - Clean Transparent Circle */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className={`relative block w-32 h-32 sm:w-36 sm:h-36 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 2xl:w-48 2xl:h-48 my-2 rounded-full overflow-hidden transition-all duration-500 ease-out group-hover:scale-105 ${
-                    isActive ? "scale-105 shadow-[0_20px_36px_rgba(0,0,0,0.22)]" : "shadow-[0_14px_30px_rgba(0,0,0,0.16)]"
-                  }`}
+                  className="relative block w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-24 lg:h-24 xl:w-32 xl:h-32 2xl:w-[clamp(150px,10.5vw,210px)] 2xl:h-[clamp(150px,10.5vw,210px)] my-2 rounded-full overflow-hidden transition-all duration-500 ease-out group-hover:scale-105 shadow-[0_18px_24px_-14px_rgba(0,0,0,0.35)] group-hover:shadow-[0_24px_30px_-16px_rgba(0,0,0,0.42)]"
                 >
                   <Image
                     src={circleSrc}
@@ -251,17 +245,16 @@ export function NewDispatches({
                   />
                 </Link>
 
-                {/* Typography below Circle */}
+                {/* Typography below Circle — name takes only the lines it needs; the price is pushed
+                    down (mt-auto) so prices and buttons still line up across cards */}
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
-                  className="mt-3 block group/link w-full px-1"
+                  className="mt-3 flex-1 flex flex-col group/link w-full px-1"
                 >
-                  <div className="h-8 sm:h-9 flex flex-col justify-start items-center">
-                    <h3 className="font-montserrat font-semibold text-[11px] sm:text-xs xl:text-xs tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors whitespace-normal leading-tight text-center">
-                      {item.name} System
-                    </h3>
-                  </div>
-                  <p className="font-montserrat font-semibold text-xs text-obsidian mt-1 sm:mt-1.5">
+                  <h3 className="font-montserrat font-semibold text-[10px] sm:text-[11px] md:text-xs lg:text-[11px] xl:text-xs 2xl:text-[13px] tracking-wide sm:tracking-wider uppercase text-obsidian group-hover/link:underline transition-colors whitespace-normal leading-tight text-center">
+                    {item.name}
+                  </h3>
+                  <p className="font-montserrat font-semibold text-xs 2xl:text-sm text-obsidian mt-auto pt-1.5">
                     ${item.price} AUD
                   </p>
                 </Link>
@@ -275,7 +268,7 @@ export function NewDispatches({
                       setSuitabilityShade(item);
                       setIsSuitabilityOpen(true);
                     }}
-                    className="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-2xs hover:scale-105 active:scale-95 cursor-pointer opacity-100 pointer-events-auto md:opacity-0 md:pointer-events-none md:translate-y-1 md:group-hover:opacity-100 md:group-hover:pointer-events-auto md:group-hover:translate-y-0"
+                    className="inline-flex items-center justify-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 2xl:px-5 2xl:py-2 rounded-full bg-obsidian hover:bg-black text-white text-[9px] sm:text-[10px] 2xl:text-[11px] font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
                   >
                     <span>CHECK MATCH</span>
                   </button>
@@ -283,7 +276,7 @@ export function NewDispatches({
                   <Link
                     href={`/product?shade=${item.id.replace("shade-", "")}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="text-[10px] font-mono font-medium tracking-widest uppercase text-obsidian/45 hover:text-obsidian border-b border-obsidian/20 hover:border-obsidian transition-colors pb-0.5"
+                    className="text-[9px] sm:text-[10px] 2xl:text-[11px] font-mono font-medium tracking-wider sm:tracking-widest uppercase text-obsidian/45 hover:text-obsidian border-b border-obsidian/20 hover:border-obsidian transition-colors pb-0.5"
                   >
                     VIEW PRODUCT
                   </Link>
@@ -294,68 +287,28 @@ export function NewDispatches({
         </div>
       </Reveal>
 
-      {/* Progress Bar Line Indicator */}
-      <div className="w-full max-w-lg mx-auto h-[2px] bg-black/10 rounded-full overflow-hidden mt-8 sm:mt-10">
-        <div
-          className="h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
-          style={{
-            width: `${((activeIndex + 1) / OFFICIAL_SHADES.length) * 100}%`,
-            backgroundColor: activeShade.hex || "#111827",
-          }}
-        />
+        </div>
       </div>
 
-      {/* Slider Footer Navigation Bar (Step Counter + Dots + Arrow Controls) */}
-      <div className="flex items-center justify-between mt-6 sm:mt-7 px-1 max-w-4xl mx-auto">
-        {/* Step Indicator */}
-        <span className="text-[11px] font-mono tracking-widest uppercase text-obsidian font-semibold">
-          SHADE <SwapText value={activeIndex + 1} /> OF {OFFICIAL_SHADES.length}
-        </span>
-
-        {/* Dynamic Pagination Pill Dots (Desktop & Tablets) */}
-        <div className="hidden sm:flex items-center gap-1.5 sm:gap-2">
-          {OFFICIAL_SHADES.map((item, idx) => {
-            const isActive = activeIndex === idx;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => scrollToIndex(idx)}
-                className="h-2 rounded-full transition-all duration-300"
-                style={{
-                  width: isActive ? "24px" : "7px",
-                  backgroundColor: item.hex || "#111827",
-                  opacity: isActive ? 1 : 0.35,
-                }}
-                aria-label={`Jump to shade ${item.code}`}
-              />
-            );
-          })}
-        </div>
-
-        {/* Prev / Next Chevrons */}
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={scrollPrev}
-            className="h-8 w-8 rounded-md bg-white border border-ash/80 hover:bg-obsidian hover:text-white text-obsidian flex items-center justify-center active:scale-95 transition-all shadow-2xs cursor-pointer"
-            aria-label="Previous shade"
-          >
-            <ChevronLeft className="w-4 h-4 pointer-events-none" />
-          </button>
-          <button
-            type="button"
-            onClick={scrollNext}
-            className="h-8 w-8 rounded-md bg-white border border-ash/80 hover:bg-obsidian hover:text-white text-obsidian flex items-center justify-center active:scale-95 transition-all shadow-2xs cursor-pointer"
-            aria-label="Next shade"
-          >
-            <ChevronRight className="w-4 h-4 pointer-events-none" />
-          </button>
+      {/* Progress indicator — its own full-bleed strip under the band, same #F6F6F6, centred on the page */}
+      <div className="-mx-4 sm:-mx-8 lg:-mx-12 xl:-mx-16 bg-[#F6F6F6] px-6 pt-3 pb-5 md:pt-6 md:pb-8">
+        <div
+          role="progressbar"
+          aria-label="Shade slider position"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(scrollState.progress * 100)}
+          className="w-full max-w-xs sm:max-w-sm mx-auto h-[2px] bg-obsidian/10 rounded-full overflow-hidden"
+        >
+          <div
+            className="h-full bg-obsidian rounded-full transition-[width] duration-300 ease-out"
+            style={{ width: `${scrollState.progress * 100}%` }}
+          />
         </div>
       </div>
 
       {/* 2. Header for the 4 Product Cards Grid (Target for Shades nav button) */}
-      <div id="shades" className="mt-16 sm:mt-24 lg:mt-28 scroll-mt-[120px]">
+      <div id="shades" className="mt-12 sm:mt-16 lg:mt-20 scroll-mt-[120px]">
         <Reveal className="text-center max-w-xl mx-auto mb-8 sm:mb-10 lg:mb-12">
           <h3 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian tracking-wider uppercase leading-tight">
             NEW ARRIVALS

@@ -57,16 +57,16 @@ export function BehindTheScience() {
   return (
     // md+: the section is taller than the screen, so the frame pins below the navbar and the whole
     // video stays in view (filling the screen) for a while before the page moves on.
-    // Phones: a normal 16:9 banner that opens as it scrolls in.
+    // Phones: an edge-to-edge 16:9 banner (no frame, square corners) that opens as it scrolls in.
     <section
       ref={sectionRef}
       id="engineering"
-      className="relative w-full select-none py-12 sm:py-16 md:py-0 px-4 sm:px-8 md:px-0 md:h-[calc(170svh-116px)] bg-midnight"
+      className="relative w-full select-none md:h-[calc(170svh-116px)] bg-midnight"
     >
       {/* Heading kept for screen readers / SEO only — the video carries the section visually */}
       <h2 className="sr-only">The System</h2>
 
-      <div className="md:sticky md:top-[116px] w-full aspect-video md:aspect-auto md:h-[calc(100svh-116px)] overflow-hidden rounded-xl md:rounded-none">
+      <div className="md:sticky md:top-[116px] w-full aspect-video md:aspect-auto md:h-[calc(100svh-116px)] overflow-hidden">
         {/* The window */}
         <motion.div
           className="relative w-full h-full overflow-hidden bg-black will-change-transform shadow-2xl"
@@ -88,10 +88,9 @@ export function BehindTheScience() {
                 muted
                 playsInline
                 preload="none"
-                poster="/system-exploded-poster.jpg"
                 className="w-full h-full object-cover bg-black"
               >
-                <source src="/system-exploded-hd.mp4" type="video/mp4" />
+                <source src="/brand-assets/videos/colourpig-system.mp4" type="video/mp4" />
               </video>
             </motion.div>
 

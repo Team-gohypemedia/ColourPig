@@ -13,16 +13,17 @@ export function PressTicker() {
 
   return (
     <div className="w-full bg-midnight border-y border-white/10 py-7 sm:py-9 px-4 sm:px-6 overflow-hidden">
-      <div className="max-w-[1600px] mx-auto flex flex-wrap items-center justify-around gap-6 sm:gap-8 text-center">
+      {/* Wraps on mobile/tablet; a single row of 5 equal columns from laptop (lg) up */}
+      <div className="max-w-[1600px] mx-auto flex flex-wrap items-center justify-around gap-6 sm:gap-8 lg:grid lg:grid-cols-5 lg:items-start lg:gap-4 xl:gap-6 text-center">
         {publications.map((p, idx) => (
-          <div key={idx} className="group space-y-1 transition-transform hover:-translate-y-0.5">
+          <div key={idx} className="group space-y-1 min-w-0 transition-transform hover:-translate-y-0.5">
             <div className="flex items-center justify-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              <span className="font-headline font-bold text-base sm:text-lg tracking-widest uppercase text-white">
+              <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-white" />
+              <span className="font-headline font-bold text-base sm:text-lg lg:text-sm xl:text-base tracking-widest lg:tracking-wider uppercase text-white whitespace-nowrap">
                 {p.name}
               </span>
             </div>
-            <p className="text-xs font-montserrat text-white/80 tracking-wide italic font-medium">
+            <p className="text-xs lg:text-[11px] xl:text-xs font-montserrat text-white/80 tracking-wide lg:tracking-normal italic font-medium">
               &ldquo;{p.quote}&rdquo;
             </p>
           </div>

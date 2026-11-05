@@ -5,10 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Star,
-  ShieldCheck,
   Truck,
   RotateCcw,
-  Sparkles,
   Heart,
   ShoppingBag,
   ChevronRight,
@@ -24,7 +22,6 @@ import {
   Info,
   CheckCircle2,
   Droplets,
-  Wind,
   Play,
   Maximize2,
 } from "lucide-react";
@@ -34,6 +31,7 @@ import {
   ShadeProduct,
 } from "@/data/shades";
 import { useStore } from "@/context/store-context";
+import { ShadeHighlights } from "@/components/product/shade-highlights";
 
 interface ProductDetailViewProps {
   initialShadeId?: string;
@@ -64,30 +62,6 @@ const KIT_OPTIONS = [
     priceInr: 3299,
     originalInr: 4699,
     tag: "BEST VALUE",
-  },
-];
-
-const LOOKBOOK_STYLES = [
-  {
-    id: "look-1",
-    title: "Deep Brunette Velvet",
-    shade: "Shade No.4 • Medium Brown",
-    image: "/images/model-brunette.jpg",
-    description: "Multi-dimensional depth with zero brassy fade.",
-  },
-  {
-    id: "look-2",
-    title: "Luminous Sunlit Blonde",
-    shade: "Shade No.7 • Medium Blonde",
-    image: "/images/model-ash-blond.jpg",
-    description: "Seamless blend between natural root and lightened ends.",
-  },
-  {
-    id: "look-3",
-    title: "Dimensional Auburn Depth",
-    shade: "Shade No.5 • Light Brown",
-    image: "/images/model-auburn.jpg",
-    description: "High-shine warmth with 100% resistant grey coverage.",
   },
 ];
 
@@ -249,6 +223,7 @@ export function ProductDetailView({
 
   // Video element ref
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
 
   // Gallery media items dynamically constructed from shade & brand assets
   const galleryImages = [
@@ -365,7 +340,7 @@ export function ProductDetailView({
                       alt={img.alt}
                       fill
                       sizes="80px"
-                      className={"object-cover object-center"}
+                      className={"object-contain object-center p-1"}
                     />
                     {isVid ? (
                       <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center text-white p-1 transition-colors group-hover:bg-black/30">
@@ -385,9 +360,22 @@ export function ProductDetailView({
             </div>
 
             {/* Main High-Resolution Showcase Frame */}
-            <div className={`flex-1 relative aspect-[3/4] sm:aspect-[4/5] max-h-[720px] rounded-2xl overflow-hidden bg-white border border-ash/30 shadow-sm flex items-center justify-center group`}>
+            <div className={`flex-1 relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#EAEAEA] border border-ash/30 shadow-sm flex items-center justify-center group`}>
               {activeItem.type === "video" ? (
-                <div className="relative w-full h-full flex items-center justify-center bg-[#070D12] p-2 sm:p-4">
+                <div
+                  onClick={() => {
+                    if (videoRef.current) {
+                      if (videoRef.current.paused) {
+                        videoRef.current.play();
+                        setIsVideoPlaying(true);
+                      } else {
+                        videoRef.current.pause();
+                        setIsVideoPlaying(false);
+                      }
+                    }
+                  }}
+                  className="relative w-full h-full flex items-center justify-center cursor-pointer select-none"
+                >
                   <video
                     ref={videoRef}
                     key={activeItem.src}
@@ -397,9 +385,15 @@ export function ProductDetailView({
                     loop
                     muted
                     playsInline
-                    controls
-                    className="w-full h-full object-contain object-center"
+                    className="w-full h-full object-contain object-center pointer-events-auto"
                   />
+                  {!isVideoPlaying && (
+                    <div className="absolute inset-0 bg-black/25 flex items-center justify-center pointer-events-none transition-opacity">
+                      <div className="w-14 h-14 rounded-full bg-white/95 text-obsidian flex items-center justify-center shadow-xl">
+                        <Play className="w-6 h-6 fill-current ml-0.5" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <Image
@@ -409,9 +403,7 @@ export function ProductDetailView({
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 700px"
-                  className={
-                    "object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
-                  }
+                  className="object-contain object-center transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               )}
 
@@ -447,8 +439,8 @@ export function ProductDetailView({
             
             {/* Header: Title, Category & Reviews */}
             <div className="space-y-2 border-b border-ash/25 pb-5">
-              <h1 className="font-headline font-bold text-2xl lg:text-[36px] text-obsidian uppercase tracking-wider leading-tight">
-                COLOURPIG PERMANENT ROOT SYSTEM — {selectedShade.name}
+              <h1 className="font-headline font-bold text-[22px] sm:text-2xl lg:text-[28px] text-obsidian uppercase tracking-wider leading-tight">
+                {selectedShade.name}
               </h1>
 
               {/* Rating & Review Counter Row */}
@@ -478,16 +470,13 @@ export function ProductDetailView({
             {/* Pricing Row */}
             <div className="space-y-1.5 border-b border-ash/25 pb-5">
               <div className="flex items-baseline gap-3">
-                <span
-                  className="text-2xl sm:text-3xl font-mono !font-normal font-[400] text-obsidian"
-                  style={{ fontWeight: 400 }}
-                >
+                <span className="text-lg sm:text-xl lg:text-2xl font-montserrat font-semibold text-obsidian">
                   {store.formatPrice(selectedKit.priceInr)}
                 </span>
-                <span className="text-sm sm:text-base font-mono text-ash line-through">
+                <span className="text-sm font-montserrat font-medium text-ash line-through">
                   {store.formatPrice(selectedKit.originalInr)}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#374151]/20 border border-[#374151]/40 text-[#4e8721] font-mono text-xs font-normal">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#374151]/10 border border-[#374151]/30 text-[#2e6b12] font-montserrat font-semibold text-xs">
                   Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} (28% OFF)
                 </span>
               </div>
@@ -507,7 +496,7 @@ export function ProductDetailView({
                     {selectedShade.code} {selectedShade.name.replace(/No\.\S+\s*/, "")}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-[#374151] font-semibold">
+                <span className="text-[11px] font-mono text-[#374151] font-semibold">
                   100% BLEND MATCH
                 </span>
               </div>
@@ -524,7 +513,7 @@ export function ProductDetailView({
                   >
                     <Check className="w-4 h-4 text-white drop-shadow-md stroke-[3]" />
                   </span>
-                  <span className="text-[10px] sm:text-[11px] font-mono font-medium text-obsidian tracking-tight">
+                  <span className="text-[11px] font-mono font-medium text-obsidian tracking-tight">
                     {selectedShade.code}
                   </span>
                 </div>
@@ -555,7 +544,7 @@ export function ProductDetailView({
                           <span className="text-xs font-montserrat font-bold text-obsidian uppercase">
                             {kit.name}
                           </span>
-                          <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-platinum/60 text-obsidian border border-ash/20">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-platinum/60 text-obsidian border border-ash/20">
                             {kit.tag}
                           </span>
                         </div>
@@ -565,13 +554,10 @@ export function ProductDetailView({
                       </div>
 
                       <div className="text-right shrink-0 ml-3">
-                        <span
-                          className="text-xs sm:text-sm font-mono !font-normal font-[400] text-obsidian block"
-                          style={{ fontWeight: 400 }}
-                        >
+                        <span className="text-sm font-montserrat font-semibold text-obsidian block">
                           {store.formatPrice(kit.priceInr)}
                         </span>
-                        <span className="text-[10px] font-mono text-ash line-through">
+                        <span className="text-[11px] font-montserrat font-medium text-ash line-through">
                           {store.formatPrice(kit.originalInr)}
                         </span>
                       </div>
@@ -589,7 +575,7 @@ export function ProductDetailView({
                   In Stock: Ready for immediate dispatch
                 </span>
               </div>
-              <span className="text-[10px] text-obsidian">Ships in 24 hrs</span>
+              <span className="text-[11px] text-obsidian">Ships in 24 hrs</span>
             </div>
 
             {/* 4. Quantity Pill & Primary Call To Action Buttons */}
@@ -632,7 +618,7 @@ export function ProductDetailView({
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex-1 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-[11px] sm:text-xs md:text-sm font-bold tracking-wider sm:tracking-widest uppercase flex items-center justify-center gap-1.5 sm:gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer"
+                  className="flex-1 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-xs font-bold tracking-wider sm:tracking-widest uppercase flex items-center justify-center gap-1.5 sm:gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer"
                 >
                   <Lock className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">BUY IT NOW — {store.formatPrice(selectedKit.priceInr * quantity)}</span>
@@ -676,25 +662,25 @@ export function ProductDetailView({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 pt-4 border-t border-ash/25 text-center">
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
                 <CheckCircle2 className="w-4 h-4 mx-auto text-[#374151]" />
-                <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
+                <span className="text-[10px] font-mono font-bold text-obsidian block uppercase">
                   100% GREY COVER
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
                 <Droplets className="w-4 h-4 mx-auto text-[#374151]" />
-                <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
+                <span className="text-[10px] font-mono font-bold text-obsidian block uppercase">
                   AMMONIA FREE
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
                 <Truck className="w-4 h-4 mx-auto text-[#374151]" />
-                <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
+                <span className="text-[10px] font-mono font-bold text-obsidian block uppercase">
                   FREE DISPATCH
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-white border border-ash/25 space-y-1">
                 <RotateCcw className="w-4 h-4 mx-auto text-[#374151]" />
-                <span className="text-[9px] font-mono font-bold text-obsidian block uppercase">
+                <span className="text-[10px] font-mono font-bold text-obsidian block uppercase">
                   30-DAY TRIAL
                 </span>
               </div>
@@ -704,10 +690,9 @@ export function ProductDetailView({
             <div className="p-3.5 rounded-xl border border-dashed border-obsidian/40 bg-white flex items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-obsidian">
-                  <Sparkles className="w-3.5 h-3.5 text-[#374151]" />
                   <span>EXTRA 10% OFF PREPAID ORDERS</span>
                 </div>
-                <p className="text-[10px] font-mono text-obsidian">
+                <p className="text-[11px] font-mono text-obsidian">
                   Use coupon code at final dispatch checkout
                 </p>
               </div>
@@ -715,7 +700,7 @@ export function ProductDetailView({
               <button
                 type="button"
                 onClick={handleCopyCode}
-                className="py-1.5 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs"
+                className="py-1.5 px-3 rounded-lg bg-obsidian hover:bg-black text-white text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs"
               >
                 {copiedCode ? <Check className="w-3 h-3 text-[#374151]" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedCode ? "COPIED!" : "COLOUR10"}</span>
@@ -732,7 +717,6 @@ export function ProductDetailView({
                   className="w-full p-4 text-left flex items-center justify-between text-xs font-headline font-bold text-obsidian uppercase"
                 >
                   <span className="flex items-center gap-2">
-                    <Wind className="w-3.5 h-3.5 text-obsidian" />
                     <span>How The Air-Driven System Works</span>
                   </span>
                   <ChevronDown
@@ -761,7 +745,6 @@ export function ProductDetailView({
                   className="w-full p-4 text-left flex items-center justify-between text-xs font-headline font-bold text-obsidian uppercase"
                 >
                   <span className="flex items-center gap-2">
-                    <Droplets className="w-3.5 h-3.5 text-obsidian" />
                     <span>The 4-Step In-Shower Ritual</span>
                   </span>
                   <ChevronDown
@@ -790,7 +773,6 @@ export function ProductDetailView({
                   className="w-full p-4 text-left flex items-center justify-between text-xs font-headline font-bold text-obsidian uppercase"
                 >
                   <span className="flex items-center gap-2">
-                    <ShieldCheck className="w-3.5 h-3.5 text-obsidian" />
                     <span>Clean Salon Formulation &amp; Safety</span>
                   </span>
                   <ChevronDown
@@ -819,7 +801,6 @@ export function ProductDetailView({
                   className="w-full p-4 text-left flex items-center justify-between text-xs font-headline font-bold text-obsidian uppercase"
                 >
                   <span className="flex items-center gap-2">
-                    <Truck className="w-3.5 h-3.5 text-obsidian" />
                     <span>Shipping, Allocation &amp; 30-Day Guarantee</span>
                   </span>
                   <ChevronDown
@@ -845,39 +826,8 @@ export function ProductDetailView({
         </div>
       </section>
 
-      {/* 4. "DESIGNED FOR YOUR TRUE SHADE" — Editorial Lookbook Section */}
-      <section className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 py-14 sm:py-20">
-        <div className="text-center max-w-4xl mx-auto mb-10 overflow-hidden px-2">
-          <h2 className="font-headline font-bold text-xs xs:text-sm sm:text-2xl md:text-3xl lg:text-4xl text-obsidian tracking-wide sm:tracking-wider uppercase whitespace-nowrap">
-            DESIGNED FOR YOUR TRUE SHADE
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {LOOKBOOK_STYLES.map((look) => (
-            <div
-              key={look.id}
-              className="group relative rounded-2xl overflow-hidden bg-white border border-ash/30 shadow-sm flex flex-col"
-            >
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
-                <Image
-                  src={look.image}
-                  alt={look.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <h3 className="font-headline font-bold text-base sm:text-lg uppercase">
-                    {look.title}
-                  </h3>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 4. SHADE HIGHLIGHTS — per-shade A+ brand assets (before/after, comparison, family) */}
+      <ShadeHighlights key={selectedShade.id} shade={selectedShade} />
 
       {/* 5. "YOU MIGHT ALSO LIKE" (Related 4-Card Grid matching Reference) */}
       <section className="w-full bg-white border-y border-ash/30 py-14 sm:py-20">

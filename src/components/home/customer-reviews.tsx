@@ -101,10 +101,12 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
   }, [initialScroll]);
 
   return (
-    <div className="relative w-full mt-6">
+    <div className="relative w-full mt-6 group">
       {/* Scrollable Track */}
       <div
-        className="flex w-full overflow-x-auto scroll-smooth snap-x snap-mandatory scroll-px-4 sm:scroll-px-8 [scrollbar-width:none] py-6 px-4 sm:px-8"
+        // Phones/tablets: side padding = half the free space, so every card (incl. first & last) can snap
+        // to the exact centre. Laptop+: original left-aligned 4/5-card layout.
+        className="flex w-full overflow-x-auto scroll-smooth snap-x snap-mandatory lg:scroll-px-8 [scrollbar-width:none] py-6 px-[calc(50%-9rem)] sm:px-[calc(50%-10rem)] lg:px-8"
         ref={carouselRef}
         onScroll={checkScrollability}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -120,7 +122,7 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, delay: 0.07 * index, ease: EASE }}
                 key={`card-${index}`}
-                className="shrink-0 snap-start lg:w-[calc((100%-4.5rem)/4)] 2xl:w-[calc((100%-6rem)/5)]"
+                className="shrink-0 snap-center lg:snap-start lg:w-[calc((100%-4.5rem)/4)] 2xl:w-[calc((100%-6rem)/5)]"
               >
                 {React.cloneElement(item, {
                   onCardClose: () => handleCardClose(index),
@@ -131,27 +133,28 @@ export const Carousel = ({ items, initialScroll = 0 }: iCarouselProps) => {
         </div>
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-end gap-2.5 mt-6 sm:mt-8 px-4 sm:px-8 w-full">
-        <button
-          className="relative z-40 h-10 w-10 rounded-full bg-obsidian text-white flex items-center justify-center disabled:opacity-30 hover:bg-steel active:scale-95 transition-all shadow-md"
-          onClick={handleScrollLeft}
-          disabled={mounted ? !canScrollLeft : true}
-          suppressHydrationWarning
-          aria-label="Previous review"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-        <button
-          className="relative z-40 h-10 w-10 rounded-full bg-obsidian text-white flex items-center justify-center disabled:opacity-30 hover:bg-steel active:scale-95 transition-all shadow-md"
-          onClick={handleScrollRight}
-          disabled={mounted ? !canScrollRight : false}
-          suppressHydrationWarning
-          aria-label="Next review"
-        >
-          <ArrowRight className="h-5 w-5" />
-        </button>
-      </div>
+      {/* Navigation Arrows: Positioned on Both Corners in the Vertical Middle of the Cards */}
+      <button
+        type="button"
+        className="absolute left-1 sm:left-2 lg:left-1 top-1/2 -translate-y-1/2 z-30 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-obsidian/90 backdrop-blur-xs text-white border border-white/20 flex items-center justify-center disabled:opacity-20 disabled:cursor-not-allowed hover:bg-obsidian hover:scale-105 active:scale-95 transition-all shadow-[0_8px_25px_rgba(0,0,0,0.25)] cursor-pointer"
+        onClick={handleScrollLeft}
+        disabled={mounted ? !canScrollLeft : true}
+        suppressHydrationWarning
+        aria-label="Previous review"
+      >
+        <ArrowLeft className="h-5 w-5" />
+      </button>
+
+      <button
+        type="button"
+        className="absolute right-1 sm:right-2 lg:right-1 top-1/2 -translate-y-1/2 z-30 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-obsidian/90 backdrop-blur-xs text-white border border-white/20 flex items-center justify-center disabled:opacity-20 disabled:cursor-not-allowed hover:bg-obsidian hover:scale-105 active:scale-95 transition-all shadow-[0_8px_25px_rgba(0,0,0,0.25)] cursor-pointer"
+        onClick={handleScrollRight}
+        disabled={mounted ? !canScrollRight : false}
+        suppressHydrationWarning
+        aria-label="Next review"
+      >
+        <ArrowRight className="h-5 w-5" />
+      </button>
     </div>
   );
 };
@@ -316,7 +319,7 @@ export const TestimonialCard = ({
 
           {/* Center: Quote Preview */}
           <div className="py-2 flex-1 flex items-center justify-center">
-            <p className="text-obsidian font-headline text-sm sm:text-base font-semibold leading-relaxed italic line-clamp-6 px-1">
+            <p className="text-obsidian font-headline text-sm sm:text-base font-normal leading-relaxed italic line-clamp-6 px-1">
               &ldquo;
               {testimonial.description.length > 180
                 ? `${testimonial.description.slice(0, 180)}...`

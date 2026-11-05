@@ -12,8 +12,31 @@
      public/fonts/pp-neue-montreal/PPNeueMontreal-Italic.woff2  (400 italic)
      public/fonts/pp-neue-montreal/PPNeueMontreal-Medium.woff2  (500)
      public/fonts/pp-neue-montreal/PPNeueMontreal-Bold.woff2    (700)
-   Intel One Mono is open source and self-hosted via next/font (layout.tsx).
+   Intel One Mono is open source (SIL OFL) and self-hosted below from
+   public/fonts/intel-one-mono/ (latin subset, 400/500/700).
    ========================================================================== */
+
+@font-face {
+  font-family: 'Intel One Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/intel-one-mono/IntelOneMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Intel One Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/intel-one-mono/IntelOneMono-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Intel One Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/intel-one-mono/IntelOneMono-Bold.woff2') format('woff2');
+}
 
 @font-face {
   font-family: 'PP Agrandir';
@@ -88,7 +111,7 @@
     /* Brand font stacks */
     --font-primary: 'PP Agrandir', 'Helvetica Neue', Arial, sans-serif;
     --font-secondary: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-    --font-helping: var(--font-intel-mono), 'Intel One Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --font-helping: 'Intel One Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
   body {
