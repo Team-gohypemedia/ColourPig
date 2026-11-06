@@ -7,7 +7,7 @@ export interface CartItem {
   id: string;
   name: string;
   variant: string;
-  price: number; // in INR by default (e.g. 2499)
+  price: number; // in INR by default (e.g. 1932)
   originalPrice?: number;
   inStock: number;
   image: string;
@@ -89,8 +89,8 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
     id: "rec-item-1",
     name: "Colourpig Refill Pod No.0/0 Clear Gloss",
     variant: "Universal Gloss & Translucent Blending",
-    price: 2499,
-    originalPrice: 3499,
+    price: 1932,
+    originalPrice: 2772,
     image: "/images/products/cards/shade_card_1.jpg",
     inStock: 5,
     shadeCode: "No.0/0",
@@ -100,8 +100,8 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
     id: "rec-item-2",
     name: "Colourpig Starter System | No.1 Jet Black",
     variant: "Pure Mineral Jet • Full Root Coverage",
-    price: 2499,
-    originalPrice: 3499,
+    price: 1932,
+    originalPrice: 2772,
     image: "/Black/Black.jpg",
     inStock: 4,
     shadeCode: "No.1",
@@ -111,8 +111,8 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
     id: "rec-item-3",
     name: "Colourpig Refill Pod No.3 Dark Brown",
     variant: "Dark Espresso Brown Formula",
-    price: 2499,
-    originalPrice: 3499,
+    price: 1932,
+    originalPrice: 2772,
     image: "/Brown/Brown.jpg",
     inStock: 3,
     shadeCode: "No.3",
@@ -380,9 +380,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const addToCart = (
     item: Partial<CartItem> & { name: string; price: number; image: string }
   ) => {
-    // Standardize price: if < 200 (was 89 USD) -> 2499 INR
+    // Standardize price: if < 200 (was 69 AUD) -> 1932 INR
     const standardPrice =
-      item.price && item.price > 200 ? item.price : 2499;
+      item.price && item.price > 200 ? item.price : 1932;
 
     const canonicalId = getCanonicalCartId(item);
 
@@ -480,8 +480,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   const addToWishlist = (item: WishlistItem) => {
-    // Standardize price: if < 200 (was 89 USD) -> 2499 INR
-    const standardPrice = item.price && item.price > 200 ? item.price : 2499;
+    // Standardize price: if < 200 (was 69 AUD) -> 1932 INR
+    const standardPrice = item.price && item.price > 200 ? item.price : 1932;
 
     let resolvedShadeHex = item.shadeHex;
     if (!resolvedShadeHex && (item.shadeCode || item.id)) {

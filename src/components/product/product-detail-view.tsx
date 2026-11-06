@@ -43,24 +43,24 @@ const KIT_OPTIONS = [
     id: "starter-system",
     name: "Complete Starter System",
     subtitle: "Includes Ergonomic Dispenser + 50ml Precision Pod",
-    priceInr: 2499,
-    originalInr: 3499,
+    priceInr: 1932,
+    originalInr: 2772,
     tag: "MOST POPULAR",
   },
   {
     id: "refill-duo",
     name: "Refill Pod Duo (2x 50ml)",
     subtitle: "For returning users — Pods only",
-    priceInr: 1899,
-    originalInr: 2499,
+    priceInr: 1372,
+    originalInr: 1932,
     tag: "SUBSCRIBE & SAVE",
   },
   {
     id: "deluxe-ritual-set",
     name: "Annual Ritual Set (3x Pods + Dispenser)",
     subtitle: "Full year root care + complimentary applicator tool",
-    priceInr: 3299,
-    originalInr: 4699,
+    priceInr: 2772,
+    originalInr: 3920,
     tag: "BEST VALUE",
   },
 ];
@@ -70,8 +70,8 @@ const RECENTLY_VIEWED = [
     id: "shade-3",
     name: "Colourpig System No.3 Dark Brown",
     category: "Dark Espresso • Reusable System",
-    priceInr: 2499,
-    originalInr: 3499,
+    priceInr: 1932,
+    originalInr: 2772,
     image: "/Brown/Brown.jpg",
     shadeCode: "No.3",
     shadeHex: "#241E1C",
@@ -80,8 +80,8 @@ const RECENTLY_VIEWED = [
     id: "shade-5",
     name: "Colourpig System No.5 Light Brown",
     category: "Warm Amber • Reusable System",
-    priceInr: 2499,
-    originalInr: 3499,
+    priceInr: 1932,
+    originalInr: 2772,
     image: "/Light Brown/LightBrown01.jpg",
     shadeCode: "No.5",
     shadeHex: "#624F44",
@@ -90,8 +90,8 @@ const RECENTLY_VIEWED = [
     id: "shade-7",
     name: "Colourpig System No.7 Medium Blonde",
     category: "Warm Golden • Reusable System",
-    priceInr: 2499,
-    originalInr: 3499,
+    priceInr: 1932,
+    originalInr: 2772,
     image: "/Medium Blonde/MediumBlonde.jpg",
     shadeCode: "No.7",
     shadeHex: "#BE966C",
@@ -100,8 +100,8 @@ const RECENTLY_VIEWED = [
     id: "shade-1",
     name: "Colourpig System No.1 Pure Black",
     category: "Deep Mineral Jet • Full Coverage",
-    priceInr: 2499,
-    originalInr: 3499,
+    priceInr: 1932,
+    originalInr: 2772,
     image: "/Black/Black.jpg",
     shadeCode: "No.1",
     shadeHex: "#2D2C2D",
@@ -477,7 +477,7 @@ export function ProductDetailView({
                   {store.formatPrice(selectedKit.originalInr)}
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-[#374151]/10 border border-[#374151]/30 text-[#2e6b12] font-montserrat font-semibold text-xs">
-                  Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} (28% OFF)
+                  Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} ({Math.round(((selectedKit.originalInr - selectedKit.priceInr) / selectedKit.originalInr) * 100)}% OFF)
                 </span>
               </div>
               <p className="text-[11px] font-mono text-obsidian">
@@ -898,7 +898,7 @@ export function ProductDetailView({
                       {prod.name}
                     </p>
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      $89 AUD
+                      $69 AUD
                     </p>
                   </Link>
 

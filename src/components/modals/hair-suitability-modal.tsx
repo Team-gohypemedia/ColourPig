@@ -234,7 +234,7 @@ export function HairSuitabilityModal({
       id: `${selectedShade.id}-starter-system`,
       name: `Colourpig Starter System | ${selectedShade.name}`,
       variant: `${selectedShade.undertone} • Match Verified`,
-      price: 2499,
+      price: 1932,
       image: selectedShade.cardImage,
       shadeCode: selectedShade.code,
       shadeHex: selectedShade.hex,
