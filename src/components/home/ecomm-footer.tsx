@@ -163,13 +163,13 @@ export function EcommFooter() {
 
               {/* Email */}
               <a
-                href="mailto:concierge@colourpig.com"
+                href="mailto:hello@colourpig.com"
                 className="flex items-center gap-3 group hover:text-white transition-colors"
               >
                 <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-platinum group-hover:border-platinum/40 group-hover:bg-white/10 transition-all flex-shrink-0">
                   <Mail className="w-3.5 h-3.5" />
                 </div>
-                <span className="font-mono text-xs">concierge@colourpig.com</span>
+                <span className="font-mono text-xs">hello@colourpig.com</span>
               </a>
             </div>
 
