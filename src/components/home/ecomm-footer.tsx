@@ -197,8 +197,8 @@ export function EcommFooter() {
         </div>
 
         {/* Massive Hollow Outlined Brand Typography matching reference bottom banner */}
-        <div className="mt-2 sm:mt-3 overflow-hidden w-full select-none pointer-events-none flex justify-center">
-          <span className="font-headline font-black uppercase tracking-tight text-transparent leading-[0.85] text-[13.5vw] sm:text-[14.5vw] whitespace-nowrap [-webkit-text-stroke:1.5px_rgba(206,209,208,0.22)] sm:[-webkit-text-stroke:2px_rgba(206,209,208,0.28)] transition-all">
+        <div className="mt-1 sm:mt-2 pt-1 sm:pt-1.5 pb-0 overflow-hidden w-full select-none pointer-events-none flex justify-center">
+          <span className="font-headline font-black uppercase tracking-tight text-transparent leading-[0.92] text-[13.5vw] sm:text-[14.5vw] whitespace-nowrap [-webkit-text-stroke:1.5px_rgba(206,209,208,0.22)] sm:[-webkit-text-stroke:2px_rgba(206,209,208,0.28)] transition-all block">
             COLOURPIG
           </span>
         </div>
