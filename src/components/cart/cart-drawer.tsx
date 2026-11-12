@@ -18,6 +18,10 @@ export function CartDrawer() {
     addToCart,
     recommendations,
     formatPrice,
+    checkout,
+    isCheckingOut,
+    cartNotice,
+    dismissCartNotice,
   } = useStore();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -98,6 +102,23 @@ export function CartDrawer() {
               }}
               onWheel={(e) => e.stopPropagation()}
             >
+              {/* Notice: sold-out item or checkout problem */}
+              {cartNotice && (
+                <div
+                  role="alert"
+                  className="flex items-start justify-between gap-3 p-3 rounded-xl border border-rose-200 bg-rose-50 text-rose-900"
+                >
+                  <p className="text-xs font-mono leading-relaxed">{cartNotice}</p>
+                  <button
+                    onClick={dismissCartNotice}
+                    className="shrink-0 text-rose-900/70 hover:text-rose-900 transition-colors"
+                    aria-label="Dismiss message"
+                  >
+                    <X className="w-3.5 h-3.5 stroke-[2]" />
+                  </button>
+                </div>
+              )}
+
               {/* Cart Items List */}
               {cart.length === 0 ? (
                 <div className="py-16 text-center space-y-4">
@@ -232,6 +253,7 @@ export function CartDrawer() {
               )}
 
               {/* 4. Cross-sell: "You may also like" */}
+              {recommendations.length > 0 && (
               <div className="pt-2 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs sm:text-sm font-headline font-bold tracking-wider uppercase text-obsidian">
@@ -305,6 +327,7 @@ export function CartDrawer() {
                   ))}
                 </div>
               </div>
+              )}
 
               {/* Bottom spacing buffer for seamless scroll clearance */}
               <div className="h-4" />
@@ -342,13 +365,12 @@ export function CartDrawer() {
 
                   {/* Right: Checkout in ColourPig Theme Color (Obsidian Black) */}
                   <button
-                    onClick={() => {
-                      alert("Proceeding to secure checkout...");
-                    }}
-                    className="w-full py-3.5 px-3 rounded-xl bg-obsidian hover:bg-black text-white text-[11px] font-mono font-bold tracking-widest uppercase flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
+                    onClick={checkout}
+                    disabled={isCheckingOut}
+                    className="w-full py-3.5 px-3 rounded-xl bg-obsidian hover:bg-black text-white text-[11px] font-mono font-bold tracking-widest uppercase flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-wait"
                   >
                     <Lock className="w-3.5 h-3.5" />
-                    <span>CHECKOUT</span>
+                    <span>{isCheckingOut ? "PLEASE WAIT…" : "CHECKOUT"}</span>
                   </button>
                 </div>
               </div>

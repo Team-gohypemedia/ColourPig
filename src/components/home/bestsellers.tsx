@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart } from "lucide-react";
 import { useStore } from "@/context/store-context";
+import { useLiveCards } from "@/context/catalog-context";
 import { STARTER_KIT_PRICE } from "@/data/pricing";
 import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
@@ -70,6 +71,8 @@ interface BestsellersProps {
 
 export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
   const store = useStore();
+  // Today's price and product photo for each card (from Shopify when connected)
+  const items = useLiveCards(BESTSELLER_ITEMS);
 
   const handleToggleWishlist = (item: (typeof BESTSELLER_ITEMS)[0], e: React.MouseEvent) => {
     e.preventDefault();
@@ -78,7 +81,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
       id: item.id,
       name: item.name,
       category: item.category,
-      price: STARTER_KIT_PRICE,
+      price: item.price,
       image: item.image,
       shadeCode: item.shadeCode,
       shadeHex: item.shadeHex,
@@ -96,7 +99,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
 
       {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid (Full-width End-to-End on Desktop) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-6 xl:gap-8 w-full max-w-[1720px] mx-auto">
-        {BESTSELLER_ITEMS.map((item, idx) => (
+        {items.map((item, idx) => (
           <RevealCard
             key={item.id}
             index={idx}
@@ -174,7 +177,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
                       id: `${item.id}-system`,
                       name: item.name,
                       variant: item.category,
-                      price: STARTER_KIT_PRICE,
+                      price: item.price,
                       image: item.image,
                       shadeCode: item.shadeCode,
                       shadeHex: item.shadeHex,

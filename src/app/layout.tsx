@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ScrollToTop } from "@/components/navigation/scroll-to-top";
+import { CatalogProvider } from "@/context/catalog-context";
+import { getCatalog } from "@/lib/shopify/catalog";
 
 // All brand fonts (PP Agrandir, PP Neue Montreal, Intel One Mono) are self-hosted
 // via @font-face in globals.css — files live in public/fonts/.
@@ -20,18 +22,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Shades, prices, images and availability — from Shopify, refreshed every minute
+  const catalog = await getCatalog();
+
   return (
     <html lang="en" className="antialiased">
       <body className="bg-obsidian text-platinum font-body selection:bg-steel selection:text-white">
-        <SmoothScrollProvider>
-          {children}
-          <ScrollToTop />
-        </SmoothScrollProvider>
+        <CatalogProvider catalog={catalog}>
+          <SmoothScrollProvider>
+            {children}
+            <ScrollToTop />
+          </SmoothScrollProvider>
+        </CatalogProvider>
       </body>
     </html>
   );

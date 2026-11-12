@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, ShoppingBag, Check } from "lucide-react";
 import { useStore } from "@/context/store-context";
+import { useLiveCards } from "@/context/catalog-context";
 import { STARTER_KIT_PRICE } from "@/data/pricing";
 
 export interface CollectionItem {
@@ -198,11 +199,15 @@ export function CollectionView() {
   const [selectedColour, setSelectedColour] = useState<string>("all");
   const [addedItemNotice, setAddedItemNotice] = useState<string | null>(null);
 
+  // Today's price and product photo for each card (from Shopify when connected)
+  const collectionItems = useLiveCards(COLLECTION_ITEMS);
+  const alsoLikeItems = useLiveCards(YOU_MIGHT_ALSO_LIKE_ITEMS);
+
   // Filter products by hair colour
   const filteredItems = useMemo(() => {
-    if (selectedColour === "all") return COLLECTION_ITEMS;
-    return COLLECTION_ITEMS.filter((item) => item.colorFamily === selectedColour);
-  }, [selectedColour]);
+    if (selectedColour === "all") return collectionItems;
+    return collectionItems.filter((item) => item.colorFamily === selectedColour);
+  }, [selectedColour, collectionItems]);
 
   const handleQuickAdd = (item: CollectionItem, e: React.MouseEvent) => {
     e.preventDefault();
@@ -436,7 +441,7 @@ export function CollectionView() {
 
           {/* 4 Cards Editorial Grid matching reference screenshot */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {YOU_MIGHT_ALSO_LIKE_ITEMS.map((item) => {
+            {alsoLikeItems.map((item) => {
               const inWishlist = store.isInWishlist(item.id);
 
               return (

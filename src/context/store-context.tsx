@@ -1,7 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useRef } from "react";
-import { OFFICIAL_SHADES } from "@/data/shades";
+import React, { createContext, useContext, useState, useEffect, useMemo, useRef } from "react";
+import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { CatalogKit, CatalogShade, findShade } from "@/data/catalog";
+import { useCatalog } from "@/context/catalog-context";
 import {
   KitId,
   STARTER_KIT_PRICE,
@@ -13,13 +15,15 @@ export interface CartItem {
   id: string;
   name: string;
   variant: string;
-  price: number; // unit price in AUD (e.g. 69.95)
+  price: number; // unit price in the store currency (e.g. 69.95)
   originalPrice?: number;
   inStock: number;
   image: string;
   quantity: number;
   shadeCode?: string;
   shadeHex?: string;
+  /** Chosen subscribe & save delivery plan (Shopify selling plan id) */
+  sellingPlanId?: string;
 }
 
 export interface WishlistItem {
@@ -57,6 +61,13 @@ interface StoreContextType {
   updateCartQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
 
+  // Checkout (Shopify)
+  checkout: () => Promise<void>;
+  isCheckingOut: boolean;
+  /** Message shown in the bag, e.g. a sold-out item or a checkout problem */
+  cartNotice: string | null;
+  dismissCartNotice: () => void;
+
   // Wishlist
   wishlist: WishlistItem[];
   wishlistCount: number;
@@ -78,8 +89,8 @@ interface StoreContextType {
   // Recommendations
   recommendations: RecommendationItem[];
 
-  // Price display (AUD only)
-  formatPrice: (amountInAud: number) => string;
+  // Price display (store currency)
+  formatPrice: (amount: number) => string;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -167,18 +178,21 @@ function getItemPrice(item: { id?: string; name?: string; variant?: string }): n
  * to guarantee that the same shade and kit option added from any page or section
  * resolves to the exact same item and increments quantity (+1) rather than duplicating.
  */
-export function getCanonicalCartId(item: {
-  id?: string;
-  name?: string;
-  variant?: string;
-  shadeCode?: string;
-  price?: number;
-}): string {
+export function getCanonicalCartId(
+  item: {
+    id?: string;
+    name?: string;
+    variant?: string;
+    shadeCode?: string;
+    price?: number;
+  },
+  shades: ShadeProduct[] = OFFICIAL_SHADES
+): string {
   let shadeId: string | null = null;
 
   const rawCode = (item.shadeCode || "").toLowerCase().replace(/^(no\.?|#)/, "").trim();
   if (rawCode) {
-    const match = OFFICIAL_SHADES.find(
+    const match = shades.find(
       (s) =>
         s.code.toLowerCase().replace(/^(no\.?|#)/, "").trim() === rawCode ||
         s.id.toLowerCase().replace("shade-", "") === rawCode ||
@@ -189,7 +203,7 @@ export function getCanonicalCartId(item: {
 
   if (!shadeId && item.id) {
     const rawId = item.id.toLowerCase();
-    const match = OFFICIAL_SHADES.find(
+    const match = shades.find(
       (s) =>
         rawId.includes(s.id) ||
         rawId.includes(`shade-${s.code.toLowerCase().replace(/^(no\.?|#)/, "")}`) ||
@@ -203,7 +217,7 @@ export function getCanonicalCartId(item: {
 
   if (!shadeId && item.name) {
     const rawName = item.name.toLowerCase();
-    const match = OFFICIAL_SHADES.find(
+    const match = shades.find(
       (s) =>
         rawName.includes(s.name.toLowerCase()) ||
         rawName.includes(s.code.toLowerCase()) ||
@@ -254,12 +268,47 @@ function deduplicateCartItems(items: CartItem[]): CartItem[] {
 }
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
+  const catalog = useCatalog();
+  const isShopify = catalog.source === "shopify";
+
+  /** The catalog shade and kit a cart-like item refers to, if the catalog sells it. */
+  const lookupKit = (item: {
+    id?: string;
+    name?: string;
+    variant?: string;
+    shadeCode?: string;
+  }): { shade: CatalogShade; kit: CatalogKit; subscribe: boolean } | null => {
+    const canonicalId = getCanonicalCartId(item, catalog.shades);
+    const shade = catalog.shades.find((s) => canonicalId.startsWith(`${s.id}-`));
+    if (!shade) return null;
+    const { kitId, subscribe } = resolveKit(item);
+    const kit = shade.kits.find((k) => k.id === kitId);
+    if (!kit) return null;
+    return { shade, kit, subscribe: subscribe && kit.subscribePrice !== undefined };
+  };
+
+  /** Current unit price (and full price, for subscriptions) of a cart item. */
+  const priceItem = (item: CartItem): { price: number; fullPrice: number } => {
+    const info = lookupKit(item);
+    if (!info) {
+      return { price: getItemPrice(item), fullPrice: getKitOption(resolveKit(item).kitId).price };
+    }
+    const { kit, subscribe } = info;
+    const planPrice = kit.sellingPlans.find((p) => p.id === item.sellingPlanId)?.price ?? kit.subscribePrice;
+    return { price: subscribe && planPrice !== undefined ? planPrice : kit.price, fullPrice: kit.price };
+  };
+
+  /** Starter Kit price of the shade a favourite refers to. */
+  const starterPriceFor = (item: { id: string; shadeCode?: string }) =>
+    (findShade(catalog.shades, item.shadeCode) ?? findShade(catalog.shades, item.id))?.price ?? STARTER_KIT_PRICE;
+
   const [cart, setCart] = useState<CartItem[]>(INITIAL_CART_ITEMS);
+  const [cartNotice, setCartNotice] = useState<string | null>(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const isInitialMount = useRef(true);
   const [wishlist, setWishlist] = useState<WishlistItem[]>(INITIAL_WISHLIST_ITEMS);
   const isWishlistInitialMount = useRef(true);
-  const [recommendations] = useState<RecommendationItem[]>(INITIAL_RECOMMENDATIONS);
 
   // Helper to safely write cart to localStorage
   const saveCartToStorage = (items: CartItem[]) => {
@@ -406,23 +455,32 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
   const closeMenu = () => setIsMenuOpen(false);
 
-  const formatPrice = (amountInAud: number) => `$${amountInAud.toFixed(2)} AUD`;
+  const formatPrice = (amount: number) => `$${amount.toFixed(2)} ${catalog.currencyCode}`;
 
   const addToCart = (
     item: Partial<CartItem> & { name: string; price: number; image: string }
   ) => {
-    // Price always comes from the price list, never from the caller
-    const standardPrice = getItemPrice(item);
-    // Full (non-subscription) price, shown struck through for subscribe & save items
-    const fullPrice = getKitOption(resolveKit(item).kitId).price;
+    // When connected to Shopify, only add what Shopify will actually sell
+    const info = lookupKit(item);
+    if (isShopify && !info?.kit.available) {
+      setCartNotice(
+        info ? `${item.name} is sold out right now.` : `${item.name} is not available right now.`
+      );
+      openCart();
+      return;
+    }
+    setCartNotice(null);
 
-    const canonicalId = getCanonicalCartId(item);
+    const canonicalId = getCanonicalCartId(item, catalog.shades);
+    // Price always comes from the catalog, never from the caller.
+    // fullPrice is shown struck through for subscribe & save items.
+    const { price: standardPrice, fullPrice } = priceItem({ ...item, id: canonicalId } as CartItem);
 
     // Resolve shade details if not provided
     let resolvedShadeHex = item.shadeHex;
     let resolvedShadeCode = item.shadeCode;
 
-    const match = OFFICIAL_SHADES.find(
+    const match = catalog.shades.find(
       (s) =>
         canonicalId.startsWith(s.id) ||
         (resolvedShadeCode && s.code.toLowerCase() === resolvedShadeCode.toLowerCase()) ||
@@ -452,6 +510,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
               ...p,
               id: canonicalId,
               quantity: p.quantity + addQty,
+              sellingPlanId: item.sellingPlanId ?? p.sellingPlanId,
             };
           }
           return p;
@@ -469,6 +528,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           quantity: addQty,
           shadeCode: resolvedShadeCode,
           shadeHex: resolvedShadeHex,
+          sellingPlanId: item.sellingPlanId,
         };
         updated = [...prev, newItem];
       }
@@ -511,13 +571,59 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     saveCartToStorage([]);
   };
 
+  const dismissCartNotice = () => setCartNotice(null);
+
+  /** Sends the bag to Shopify and redirects to its secure checkout. */
+  const checkout = async () => {
+    if (isCheckingOut || cart.length === 0) return;
+    if (!isShopify) {
+      setCartNotice("Checkout is not connected to Shopify yet.");
+      return;
+    }
+
+    const lines: { variantId: string; quantity: number; sellingPlanId?: string }[] = [];
+    for (const item of cart) {
+      const info = lookupKit(item);
+      if (!info?.kit.variantId) {
+        setCartNotice(`${item.name} is no longer available. Remove it to continue.`);
+        return;
+      }
+      const { kit, subscribe } = info;
+      const plan = kit.sellingPlans.find((p) => p.id === item.sellingPlanId) ?? kit.sellingPlans[0];
+      lines.push({
+        variantId: info.kit.variantId,
+        quantity: item.quantity * kit.unitsPerKit,
+        sellingPlanId: subscribe ? plan?.id : undefined,
+      });
+    }
+
+    setIsCheckingOut(true);
+    setCartNotice(null);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lines }),
+      });
+      const data: { checkoutUrl?: string; error?: string } = await res.json();
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return; // keep the button busy while the browser navigates
+      }
+      setCartNotice(data.error || "Checkout is unavailable right now. Please try again.");
+    } catch {
+      setCartNotice("Checkout is unavailable right now. Please try again.");
+    }
+    setIsCheckingOut(false);
+  };
+
   const addToWishlist = (item: WishlistItem) => {
     // Favourites are always Starter Kits
-    const standardPrice = STARTER_KIT_PRICE;
+    const standardPrice = starterPriceFor(item);
 
     let resolvedShadeHex = item.shadeHex;
     if (!resolvedShadeHex && (item.shadeCode || item.id)) {
-      const match = OFFICIAL_SHADES.find(
+      const match = catalog.shades.find(
         (s) =>
           (item.shadeCode && s.code.toLowerCase() === item.shadeCode.toLowerCase()) ||
           s.id === item.id ||
@@ -588,6 +694,35 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const wishlistCount = wishlist.length;
 
+  // What the UI sees: saved items with today's catalog prices
+  const pricedCart = useMemo(
+    () =>
+      cart.map((item) => {
+        const { price, fullPrice } = priceItem(item);
+        return { ...item, price, originalPrice: price < fullPrice ? fullPrice : undefined };
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cart, catalog]
+  );
+
+  const pricedWishlist = useMemo(
+    () => wishlist.map((item) => ({ ...item, price: starterPriceFor(item), originalPrice: undefined })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [wishlist, catalog]
+  );
+
+  // Suggested add-ons, limited to what can be bought right now
+  const recommendations = useMemo(
+    () =>
+      INITIAL_RECOMMENDATIONS.flatMap((rec) => {
+        const info = lookupKit(rec);
+        if (!info) return isShopify ? [] : [rec];
+        return info.kit.available ? [{ ...rec, price: info.kit.price, image: info.shade.cardImage }] : [];
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [catalog]
+  );
+
   // Prevent body scroll when any drawer is open
   useEffect(() => {
     if (isCartOpen || isWishlistOpen || isMenuOpen) {
@@ -603,7 +738,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   return (
     <StoreContext.Provider
       value={{
-        cart,
+        cart: pricedCart,
         cartCount,
         isCartOpen,
         openCart,
@@ -613,7 +748,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         updateCartQuantity,
         clearCart,
 
-        wishlist,
+        checkout,
+        isCheckingOut,
+        cartNotice,
+        dismissCartNotice,
+
+        wishlist: pricedWishlist,
         wishlistCount,
         isWishlistOpen,
         openWishlist,

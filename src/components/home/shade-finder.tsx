@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
-import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { ShadeProduct } from "@/data/shades";
+import { findShade } from "@/data/catalog";
+import { useCatalog } from "@/context/catalog-context";
 import { motion, transform, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useHasMounted } from "@/components/motion/motion-primitives";
 
@@ -17,7 +19,10 @@ export function ShadeFinder({
 }: {
   onAddToCart?: (shade: ShadeItem) => void;
 }) {
-  const [selectedShade, setSelectedShade] = useState<ShadeProduct>(OFFICIAL_SHADES[3]); // Default No.4 Medium Brown
+  const { shades } = useCatalog();
+  const [selectedShade, setSelectedShade] = useState<ShadeProduct>(
+    () => findShade(shades, "shade-4") ?? shades[0] // Default No.4 Medium Brown
+  );
   const [sliderPos, setSliderPos] = useState(50); // percentage 0 - 100
   const [isDragging, setIsDragging] = useState(false);
   const [added, setAdded] = useState(false);
@@ -358,7 +363,7 @@ export function ShadeFinder({
 
             {/* 3x3 Grid */}
             <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
-              {OFFICIAL_SHADES.map((shade) => {
+              {shades.map((shade) => {
                 const isSelected = selectedShade.id === shade.id;
                 return (
                   <div

@@ -26,15 +26,9 @@ import {
   Maximize2,
 } from "lucide-react";
 import { SnoutIcon, ColourpigLogo } from "@/components/brand/logo";
-import {
-  OFFICIAL_SHADES,
-  ShadeProduct,
-} from "@/data/shades";
-import {
-  KitOption,
-  STARTER_KIT_PRICE,
-  getKitOptionsForShade,
-} from "@/data/pricing";
+import { KitOption, STARTER_KIT_PRICE } from "@/data/pricing";
+import { CatalogShade, findShade } from "@/data/catalog";
+import { useCatalog } from "@/context/catalog-context";
 import { useStore } from "@/context/store-context";
 import { ShadeHighlights } from "@/components/product/shade-highlights";
 
@@ -115,30 +109,25 @@ const TESTIMONIALS = [
   },
 ];
 
-function resolveShadeFromParam(param: string): ShadeProduct {
+// Colour-family shortcuts accepted in the URL (?shade=brown)
+const SHADE_ALIASES: Record<string, string> = {
+  black: "shade-1",
+  "2": "shade-1",
+  "shade-2": "shade-1",
+  brown: "shade-4",
+  blonde: "shade-7",
+  clear: "shade-0-0",
+  "0": "shade-0-0",
+  "no.0": "shade-0-0",
+};
+
+function resolveShadeFromParam(param: string, shades: CatalogShade[]): CatalogShade {
   const clean = (param || "shade-4").trim().toLowerCase();
-
-  // Color aliases
-  if (clean === "black" || clean === "1" || clean === "shade-1" || clean === "no.1" || clean === "shade-2" || clean === "2") {
-    return OFFICIAL_SHADES.find((s) => s.id === "shade-1") || OFFICIAL_SHADES[1];
-  }
-  if (clean === "brown" || clean === "4" || clean === "shade-4" || clean === "no.4") {
-    return OFFICIAL_SHADES.find((s) => s.id === "shade-4") || OFFICIAL_SHADES[3];
-  }
-  if (clean === "blonde" || clean === "7" || clean === "shade-7" || clean === "no.7") {
-    return OFFICIAL_SHADES.find((s) => s.id === "shade-7") || OFFICIAL_SHADES[6];
-  }
-  if (clean === "clear" || clean === "0/0" || clean === "0-0" || clean === "shade-0-0" || clean === "no.0/0") {
-    return OFFICIAL_SHADES.find((s) => s.id === "shade-0-0") || OFFICIAL_SHADES[0];
-  }
-
   return (
-    OFFICIAL_SHADES.find((s) => s.id === clean) ||
-    OFFICIAL_SHADES.find((s) => s.id === `shade-${clean}`) ||
-    OFFICIAL_SHADES.find((s) => s.code.toLowerCase() === clean) ||
-    OFFICIAL_SHADES.find((s) => s.code.toLowerCase() === `no.${clean}`) ||
-    OFFICIAL_SHADES.find((s) => s.name.toLowerCase().includes(clean)) ||
-    OFFICIAL_SHADES[3]
+    findShade(shades, SHADE_ALIASES[clean] ?? clean) ||
+    shades.find((s) => s.name.toLowerCase().includes(clean)) ||
+    findShade(shades, "shade-4") ||
+    shades[0]
   );
 }
 
@@ -147,10 +136,11 @@ export function ProductDetailView({
   initialImage,
 }: ProductDetailViewProps) {
   const store = useStore();
+  const catalog = useCatalog();
 
   // Selected Shade state
-  const [selectedShade, setSelectedShade] = useState<ShadeProduct>(() => {
-    const base = resolveShadeFromParam(initialShadeId);
+  const [selectedShade, setSelectedShade] = useState<CatalogShade>(() => {
+    const base = resolveShadeFromParam(initialShadeId, catalog.shades);
     if (initialImage) {
       return { ...base, cardImage: initialImage };
     }
@@ -159,12 +149,12 @@ export function ProductDetailView({
 
   // Sync state when initialShadeId or initialImage prop changes
   useEffect(() => {
-    const target = resolveShadeFromParam(initialShadeId);
+    const target = resolveShadeFromParam(initialShadeId, catalog.shades);
     if (target) {
       setSelectedShade(initialImage ? { ...target, cardImage: initialImage } : target);
       setActiveImageIdx(0);
     }
-  }, [initialShadeId, initialImage]);
+  }, [initialShadeId, initialImage, catalog.shades]);
 
   // Smooth scroll directly to Customer Reviews section
   const scrollToReviews = (e: React.MouseEvent) => {
@@ -180,15 +170,27 @@ export function ProductDetailView({
     }
   };
 
-  // Selected Kit Option (some shades, e.g. Clear, only come as a Starter Kit)
-  const kitOptions = getKitOptionsForShade(selectedShade.id);
+  // Selected Kit Option: the kits this shade is sold in (from the catalog)
+  const kitOptions = selectedShade.kits;
   const [selectedKitId, setSelectedKitId] = useState<KitOption["id"]>("starter-system");
   const selectedKit = kitOptions.find((k) => k.id === selectedKitId) ?? kitOptions[0];
+  const soldOut = !selectedKit.available;
 
   // Subscribe & save (only offered on kits that have a subscription price)
   const [subscribe, setSubscribe] = useState(false);
   const isSubscribed = subscribe && selectedKit.subscribePrice !== undefined;
-  const unitPrice = isSubscribed ? selectedKit.subscribePrice! : selectedKit.price;
+
+  // Delivery frequency for subscriptions (Shopify selling plans)
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const selectedPlan =
+    selectedKit.sellingPlans.find((p) => p.id === selectedPlanId) ?? selectedKit.sellingPlans[0];
+  const unitPrice = isSubscribed ? selectedPlan?.price ?? selectedKit.subscribePrice! : selectedKit.price;
+
+  // "Recently viewed" cards with today's price and product photo
+  const recentlyViewed = RECENTLY_VIEWED.map((prod) => {
+    const live = findShade(catalog.shades, prod.id);
+    return live ? { ...prod, price: live.price, image: live.cardImage } : prod;
+  });
 
   // Quantity
   const [quantity, setQuantity] = useState(1);
@@ -255,6 +257,7 @@ export function ProductDetailView({
       variant: `Shade ${selectedShade.code} • ${selectedKit.subtitle}`,
       price: unitPrice,
       originalPrice: isSubscribed ? selectedKit.price : undefined,
+      sellingPlanId: isSubscribed ? selectedPlan?.id : undefined,
       image: selectedShade.cardImage,
       quantity,
       shadeCode: selectedShade.code,
@@ -538,6 +541,11 @@ export function ProductDetailView({
                         <p className="text-[11px] font-mono text-obsidian">
                           {kit.subtitle}
                         </p>
+                        {!kit.available && (
+                          <p className="text-[11px] font-mono font-bold uppercase tracking-wider text-rose-700">
+                            Sold out
+                          </p>
+                        )}
                       </div>
 
                       <div className="text-right shrink-0 ml-3">
@@ -586,17 +594,50 @@ export function ProductDetailView({
                   })}
                 </div>
               )}
+
+              {/* Delivery frequency: only when subscribed and more than one plan exists */}
+              {isSubscribed && selectedKit.sellingPlans.length > 1 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {selectedKit.sellingPlans.map((plan) => {
+                    const isActive = selectedPlan?.id === plan.id;
+                    return (
+                      <button
+                        key={plan.id}
+                        type="button"
+                        onClick={() => setSelectedPlanId(plan.id)}
+                        aria-pressed={isActive}
+                        className={`px-3 py-1.5 rounded-full border text-[11px] font-mono font-semibold transition-all cursor-pointer ${
+                          isActive
+                            ? "border-obsidian bg-obsidian text-white"
+                            : "border-ash/30 bg-white text-obsidian hover:border-ash/70"
+                        }`}
+                      >
+                        {plan.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* 3. In-Stock Indicator & Live Urgency */}
             <div className="flex items-center justify-between text-xs font-mono text-obsidian pt-1">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#374151] animate-pulse" />
-                <span className="text-obsidian font-semibold">
-                  In Stock: Ready for immediate dispatch
-                </span>
-              </div>
-              <span className="text-[11px] text-obsidian">Ships in 24 hrs</span>
+              {soldOut ? (
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-rose-600" />
+                  <span className="text-rose-700 font-semibold">Sold out in this shade and format</span>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#374151] animate-pulse" />
+                    <span className="text-obsidian font-semibold">
+                      In Stock: Ready for immediate dispatch
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-obsidian">Ships in 24 hrs</span>
+                </>
+              )}
             </div>
 
             {/* 4. Quantity Pill & Primary Call To Action Buttons */}
@@ -627,10 +668,11 @@ export function ProductDetailView({
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="flex-1 py-3.5 px-4 rounded-xl border border-ash/30 bg-white hover:bg-black/5 text-obsidian font-mono text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-2xs"
+                  disabled={soldOut}
+                  className="flex-1 py-3.5 px-4 rounded-xl border border-ash/30 bg-white hover:bg-black/5 text-obsidian font-mono text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>ADD TO BAG</span>
+                  <span>{soldOut ? "SOLD OUT" : "ADD TO BAG"}</span>
                 </button>
               </div>
 
@@ -639,10 +681,13 @@ export function ProductDetailView({
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex-1 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-xs font-bold tracking-wider sm:tracking-widest uppercase flex items-center justify-center gap-1.5 sm:gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer"
+                  disabled={soldOut}
+                  className="flex-1 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-xs font-bold tracking-wider sm:tracking-widest uppercase flex items-center justify-center gap-1.5 sm:gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-obsidian"
                 >
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">BUY IT NOW — {store.formatPrice(unitPrice * quantity)}</span>
+                  <span className="truncate">
+                    {soldOut ? "SOLD OUT" : `BUY IT NOW — ${store.formatPrice(unitPrice * quantity)}`}
+                  </span>
                 </button>
 
                 {/* Favorite / Wishlist Button next to Buy It Now */}
@@ -653,7 +698,7 @@ export function ProductDetailView({
                       id: selectedShade.id,
                       name: `Colourpig Starter System (${selectedShade.name})`,
                       category: selectedShade.category,
-                      price: STARTER_KIT_PRICE,
+                      price: selectedShade.price,
                       image: selectedShade.cardImage,
                       shadeCode: selectedShade.code,
                       shadeHex: selectedShade.hex,
@@ -729,6 +774,32 @@ export function ProductDetailView({
 
             {/* 7. Accordion Breakdown Tabs (How it works, Ritual, Ingredients, Shipping) */}
             <div className="border-t border-ash/25 pt-4 space-y-2">
+              {/* Product description, managed in Shopify */}
+              {catalog.product?.descriptionHtml && (
+                <div className="border border-ash/30 rounded-xl bg-white overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion("description")}
+                    className="w-full p-4 text-left flex items-center justify-between text-xs font-headline font-bold text-obsidian uppercase"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>About {catalog.product.title}</span>
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        openAccordion === "description" ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {openAccordion === "description" && (
+                    <div
+                      className="px-4 pb-4 pt-1 text-xs font-mono text-obsidian space-y-2 border-t border-ash/15 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:space-y-1 [&_strong]:font-bold"
+                      dangerouslySetInnerHTML={{ __html: catalog.product.descriptionHtml }}
+                    />
+                  )}
+                </div>
+              )}
+
               {/* Tab 1 */}
               <div className="border border-ash/30 rounded-xl bg-white overflow-hidden">
                 <button
@@ -859,7 +930,7 @@ export function ProductDetailView({
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
-            {RECENTLY_VIEWED.map((prod) => (
+            {recentlyViewed.map((prod) => (
               <div
                 key={prod.id}
                 className="group flex flex-col"

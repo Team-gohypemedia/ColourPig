@@ -19,14 +19,16 @@ import { BehindTheScience } from "@/components/home/behind-the-science";
 import { CustomerReviews } from "@/components/home/customer-reviews";
 import { EcommFooter } from "@/components/home/ecomm-footer";
 
-import { OFFICIAL_SHADES } from "@/data/shades";
 import { STARTER_KIT_PRICE } from "@/data/pricing";
+import { findShade } from "@/data/catalog";
+import { useCatalog } from "@/context/catalog-context";
 
 function HomeContent() {
   const { addToCart } = useStore();
+  const { shades } = useCatalog();
 
   const handleAddToCart = (shade: ShadeItem) => {
-    const foundShade = OFFICIAL_SHADES.find((s) => s.code === shade.code);
+    const foundShade = findShade(shades, shade.code);
     const imagePath = foundShade?.cardImage || "/Medium Brown/Medium Brown.00000.png";
 
     const shadeId = foundShade?.id || `shade-${shade.code.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}`;
@@ -35,7 +37,7 @@ function HomeContent() {
       id: `${shadeId}-starter-system`,
       name: `Colourpig Starter System | ${shade.name}`,
       variant: `${shade.undertone} • Complete Starter System`,
-      price: STARTER_KIT_PRICE,
+      price: foundShade?.price ?? STARTER_KIT_PRICE,
       image: imagePath,
       shadeCode: shade.code,
       shadeHex: shade.hex,

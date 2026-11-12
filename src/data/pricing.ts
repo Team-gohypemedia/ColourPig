@@ -1,7 +1,10 @@
 /**
- * Single source of truth for Colourpig pricing.
- * All amounts are in AUD (dollars, with cents). Display conversion to other
- * currencies happens in `formatPrice` inside the store context.
+ * Kit definitions and fallback prices (AUD, dollars with cents).
+ *
+ * When Shopify is connected, kit names, prices and availability come from
+ * Shopify (see src/lib/shopify/catalog.ts); the prices below are only used
+ * when the site runs without a Shopify connection. The subtitle and tag of
+ * each kit are site copy and always come from here.
  */
 
 export type KitId = "starter-system" | "refill-single" | "refill-3-pack" | "annual-pass";

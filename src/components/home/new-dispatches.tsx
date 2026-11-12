@@ -6,8 +6,9 @@ import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
-import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { ShadeProduct } from "@/data/shades";
 import { STARTER_KIT_PRICE } from "@/data/pricing";
+import { useCatalog, useLiveCards } from "@/context/catalog-context";
 import { HairSuitabilityModal } from "@/components/modals/hair-suitability-modal";
 import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
@@ -102,6 +103,9 @@ export function NewDispatches({
   onAddToCart?: (shade: ShadeItem) => void;
 }) {
   const store = useStore();
+  // Shades, prices and product photos come from the catalog (Shopify when connected)
+  const { shades } = useCatalog();
+  const newArrivals = useLiveCards(NEW_ARRIVALS);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [isSuitabilityOpen, setIsSuitabilityOpen] = useState(false);
   const [suitabilityShade, setSuitabilityShade] = useState<ShadeProduct | null>(null);
@@ -151,7 +155,7 @@ export function NewDispatches({
       id: item.id,
       name: item.name,
       category: item.category,
-      price: STARTER_KIT_PRICE,
+      price: item.price,
       image: item.image,
       shadeCode: item.shadeCode,
       shadeHex: item.shadeHex,
@@ -222,7 +226,7 @@ export function NewDispatches({
           className="flex gap-3 sm:gap-4 md:gap-4 lg:gap-3 xl:gap-6 overflow-x-auto scroll-smooth pb-3 md:pb-0 pt-3 no-scrollbar snap-x snap-mandatory items-stretch"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {OFFICIAL_SHADES.map((item, idx) => {
+          {shades.map((item, idx) => {
             const circleSrc = SHADE_CLEAN_CIRCLES[item.id] || item.swatchImage;
 
             return (
@@ -318,7 +322,7 @@ export function NewDispatches({
 
         {/* 2-Card on Mobile, 4-Card on Desktop Editorial Product Grid (Full Width End-to-End on Desktop) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-6 xl:gap-8 items-start w-full max-w-[1720px] mx-auto">
-          {NEW_ARRIVALS.map((item, idx) => (
+          {newArrivals.map((item, idx) => (
             <RevealCard
               key={item.id}
               index={idx}
@@ -394,7 +398,7 @@ export function NewDispatches({
                         id: `shade-${item.shadeCode.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}-starter-system`,
                         name: `Colourpig Starter System | ${item.name.replace(/ System$/i, "")}`,
                         variant: item.category,
-                        price: STARTER_KIT_PRICE,
+                        price: item.price,
                         image: item.image,
                         shadeCode: item.shadeCode,
                         shadeHex: item.shadeHex,

@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { X, Check, AlertTriangle, ShoppingBag, ArrowRight, Sparkles } from "lucide-react";
-import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { ShadeProduct } from "@/data/shades";
+import { findShade } from "@/data/catalog";
+import { useCatalog } from "@/context/catalog-context";
 import { useStore } from "@/context/store-context";
-import { STARTER_KIT_PRICE } from "@/data/pricing";
 
 interface HairSuitabilityModalProps {
   isOpen: boolean;
@@ -60,9 +61,10 @@ const levels = (n: number) => `${n} level${n === 1 ? "" : "s"}`;
 function getVerdict(
   shade: ShadeProduct,
   base: (typeof NATURAL_BASES)[number] | null,
-  gray: GrayId | null
+  gray: GrayId | null,
+  shades: ShadeProduct[]
 ): Verdict | null {
-  const best = base ? OFFICIAL_SHADES.find((s) => s.id === base.bestShadeId) : undefined;
+  const best = base ? shades.find((s) => s.id === base.bestShadeId) : undefined;
   const suggestion = best && best.id !== shade.id ? best : undefined;
 
   // Clear has no pigment: root colour doesn't matter, grey amount decides everything
@@ -198,7 +200,10 @@ export function HairSuitabilityModal({
   initialShade,
 }: HairSuitabilityModalProps) {
   const store = useStore();
-  const [selectedShade, setSelectedShade] = useState<ShadeProduct>(initialShade || OFFICIAL_SHADES[3]);
+  const { shades } = useCatalog();
+  const [selectedShade, setSelectedShade] = useState<ShadeProduct>(
+    () => initialShade || findShade(shades, "shade-4") || shades[0]
+  );
   // Start unanswered: the user tells us about their hair, we never assume it matches
   const [naturalBase, setNaturalBase] = useState<string | null>(null);
   const [grayLevel, setGrayLevel] = useState<GrayId | null>(null);
@@ -228,14 +233,17 @@ export function HairSuitabilityModal({
 
   const base = useMemo(() => NATURAL_BASES.find((b) => b.id === naturalBase) || null, [naturalBase]);
   const isClear = selectedShade.id === CLEAR_ID;
-  const verdict = useMemo(() => getVerdict(selectedShade, base, grayLevel), [selectedShade, base, grayLevel]);
+  const verdict = useMemo(
+    () => getVerdict(selectedShade, base, grayLevel, shades),
+    [selectedShade, base, grayLevel, shades]
+  );
 
   const handleAddToCart = () => {
     store.addToCart({
       id: `${selectedShade.id}-starter-system`,
       name: `Colourpig Starter System | ${selectedShade.name}`,
       variant: `${selectedShade.undertone} • Match Verified`,
-      price: STARTER_KIT_PRICE,
+      price: selectedShade.price,
       image: selectedShade.cardImage,
       shadeCode: selectedShade.code,
       shadeHex: selectedShade.hex,
@@ -293,7 +301,7 @@ export function HairSuitabilityModal({
 
           <div className="mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-1 px-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-obsidian shrink-0 mr-1">Shade</span>
-            {OFFICIAL_SHADES.map((s) => {
+            {shades.map((s) => {
               const active = s.id === selectedShade.id;
               return (
                 <button
