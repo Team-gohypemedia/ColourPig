@@ -31,6 +31,7 @@ import { CatalogShade, findShade } from "@/data/catalog";
 import { useCatalog } from "@/context/catalog-context";
 import { useStore } from "@/context/store-context";
 import { ShadeHighlights } from "@/components/product/shade-highlights";
+import { ShadeExplorer } from "@/components/home/shade-explorer";
 
 interface ProductDetailViewProps {
   initialShadeId?: string;
@@ -208,8 +209,12 @@ export function ProductDetailView({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
 
-  // Gallery media items dynamically constructed from shade & brand assets
-  const galleryImages = [
+  // Gallery: the shade's photos and videos from Shopify, else built from local brand assets
+  const shopifyGallery = selectedShade.gallery?.map((item) => ({
+    ...item,
+    tag: item.type === "video" ? "PRODUCT VIDEO" : "",
+  }));
+  const galleryImages = shopifyGallery ?? [
     {
       type: "image" as const,
       src: selectedShade.cardImage,
@@ -239,7 +244,20 @@ export function ProductDetailView({
       : []),
   ];
 
+  // Description of the selected shade from Shopify (falls back to the shared product copy)
+  const productDescription = selectedShade.descriptionHtml
+    ? { title: selectedShade.productTitle ?? selectedShade.name, html: selectedShade.descriptionHtml }
+    : catalog.product?.descriptionHtml
+      ? { title: catalog.product.title, html: catalog.product.descriptionHtml }
+      : null;
+
   const activeItem = galleryImages[Math.min(activeImageIdx, galleryImages.length - 1)] || galleryImages[0];
+
+  // Size the frame to the shade's Shopify media (square photos and videos) so nothing
+  // is cropped; local fallback assets are 4:5 portraits.
+  const firstMedia = selectedShade.gallery?.[0];
+  const squareMedia =
+    !!firstMedia?.width && !!firstMedia.height && Math.abs(firstMedia.width / firstMedia.height - 1) < 0.05;
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText("COLOUR10");
@@ -301,7 +319,9 @@ export function ProductDetailView({
           <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4 sm:gap-6 lg:sticky lg:top-24">
             
             {/* Vertical Thumbnail Rail (Desktop) / Horizontal Rail (Mobile) */}
-            <div className="flex sm:flex-col gap-2.5 sm:gap-3 overflow-x-auto sm:overflow-y-auto sm:max-h-[620px] custom-drawer-scrollbar py-1 shrink-0">
+            {/* From tablet up the wrapper takes the frame's height, and the rail scrolls inside it */}
+            <div className="relative shrink-0 sm:w-[84px]">
+            <div className="flex sm:flex-col gap-2.5 sm:gap-3 overflow-x-auto sm:overflow-x-visible sm:overflow-y-auto sm:absolute sm:inset-0 custom-drawer-scrollbar py-1 sm:px-0.5">
               {galleryImages.map((img, idx) => {
                 const isSelected = activeImageIdx === idx;
                 const isVid = img.type === "video";
@@ -312,7 +332,7 @@ export function ProductDetailView({
                   <button
                     key={idx}
                     onClick={() => setActiveImageIdx(idx)}
-                    className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white shadow-2xs group cursor-pointer ${
+                    className={`relative ${squareMedia ? "w-16 h-16 sm:w-20 sm:h-20" : "w-16 h-20 sm:w-20 sm:h-24"} rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white shadow-2xs group cursor-pointer ${
                       isSelected
                         ? "border-obsidian shadow-sm scale-102"
                         : "border-ash/30 hover:border-ash/70 opacity-80 hover:opacity-100"
@@ -342,9 +362,10 @@ export function ProductDetailView({
                 );
               })}
             </div>
+            </div>
 
             {/* Main High-Resolution Showcase Frame */}
-            <div className={`flex-1 relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#EAEAEA] border border-ash/30 shadow-sm flex items-center justify-center group`}>
+            <div className={`flex-1 w-full sm:w-auto sm:self-start relative ${squareMedia ? "aspect-square" : "aspect-[4/5]"} rounded-2xl overflow-hidden bg-[#EAEAEA] border border-ash/30 shadow-sm flex items-center justify-center group`}>
               {activeItem.type === "video" ? (
                 <div
                   onClick={() => {
@@ -775,7 +796,7 @@ export function ProductDetailView({
             {/* 7. Accordion Breakdown Tabs (How it works, Ritual, Ingredients, Shipping) */}
             <div className="border-t border-ash/25 pt-4 space-y-2">
               {/* Product description, managed in Shopify */}
-              {catalog.product?.descriptionHtml && (
+              {productDescription && (
                 <div className="border border-ash/30 rounded-xl bg-white overflow-hidden">
                   <button
                     type="button"
@@ -783,7 +804,7 @@ export function ProductDetailView({
                     className="w-full p-4 text-left flex items-center justify-between text-xs font-headline font-bold text-obsidian uppercase"
                   >
                     <span className="flex items-center gap-2">
-                      <span>About {catalog.product.title}</span>
+                      <span>About {productDescription.title}</span>
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform ${
@@ -794,7 +815,7 @@ export function ProductDetailView({
                   {openAccordion === "description" && (
                     <div
                       className="px-4 pb-4 pt-1 text-xs font-mono text-obsidian space-y-2 border-t border-ash/15 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:space-y-1 [&_strong]:font-bold"
-                      dangerouslySetInnerHTML={{ __html: catalog.product.descriptionHtml }}
+                      dangerouslySetInnerHTML={{ __html: productDescription.html }}
                     />
                   )}
                 </div>
@@ -919,6 +940,11 @@ export function ProductDetailView({
 
       {/* 4. SHADE HIGHLIGHTS — per-shade A+ brand assets (before/after, comparison, family) */}
       <ShadeHighlights key={selectedShade.id} shade={selectedShade} />
+
+      {/* "Not sure of your number?" banner + every shade (same band as the home page) */}
+      <section className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 select-none">
+        <ShadeExplorer />
+      </section>
 
       {/* 5. "YOU MIGHT ALSO LIKE" (Related 4-Card Grid matching Reference) */}
       <section className="w-full bg-white border-y border-ash/30 py-14 sm:py-20">

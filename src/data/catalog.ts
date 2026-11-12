@@ -27,10 +27,27 @@ export interface CatalogKit extends KitOption {
   sellingPlans: SellingPlanOption[];
 }
 
+export interface GalleryItem {
+  type: "image" | "video";
+  /** Image URL, or the video file URL */
+  src: string;
+  alt: string;
+  /** Still frame shown before a video plays */
+  poster?: string;
+  /** Pixel size reported by Shopify, used to size the gallery frame */
+  width?: number;
+  height?: number;
+}
+
 export interface CatalogShade extends ShadeProduct {
   /** True when at least one kit of this shade can be bought */
   available: boolean;
   kits: CatalogKit[];
+  /** Photos and videos for this shade, in Shopify's order (absent on local data) */
+  gallery?: GalleryItem[];
+  /** Product title and description for this shade, managed in Shopify */
+  productTitle?: string;
+  descriptionHtml?: string;
 }
 
 export interface Catalog {

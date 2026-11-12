@@ -4,9 +4,10 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Plus, Trash2, Lock, ShoppingBag } from "lucide-react";
+import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
 import { useStore, CartItem } from "@/context/store-context";
+import { CheckoutComingSoon } from "@/components/cart/checkout-coming-soon";
 
 export function CartDrawer() {
   const {
@@ -18,14 +19,17 @@ export function CartDrawer() {
     addToCart,
     recommendations,
     formatPrice,
-    checkout,
-    isCheckingOut,
     cartNotice,
     dismissCartNotice,
   } = useStore();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  // Plain-text bag summary sent with "checkout coming soon" enquiries
+  const orderSummary = [
+    ...cart.map((item) => `${item.quantity} × ${item.name}${item.variant ? ` (${item.variant})` : ""} — ${formatPrice(item.price * item.quantity)}`),
+    `Subtotal: ${formatPrice(subtotal)}`,
+  ].join("\n");
 
   const getProductShadeLink = (item: CartItem) => {
     if (item.shadeCode) {
@@ -349,29 +353,10 @@ export function CartDrawer() {
                   </span>
                 </div>
 
-                <p className="text-[10px] sm:text-[11px] text-obsidian font-mono">
-                  Taxes &amp; shipping calculated at checkout.
-                </p>
-
-                {/* Two buttons side-by-side */}
-                <div className="grid grid-cols-2 gap-3 pt-1">
-                  {/* Left: Continue Shopping (Light Platinum) */}
-                  <button
-                    onClick={closeCart}
-                    className="w-full py-3.5 px-3 rounded-xl border border-ash/30 bg-platinum/30 hover:bg-platinum/60 text-obsidian text-[11px] font-mono font-bold tracking-widest uppercase flex items-center justify-center transition-colors"
-                  >
-                    CONTINUE
-                  </button>
-
-                  {/* Right: Checkout in ColourPig Theme Color (Obsidian Black) */}
-                  <button
-                    onClick={checkout}
-                    disabled={isCheckingOut}
-                    className="w-full py-3.5 px-3 rounded-xl bg-obsidian hover:bg-black text-white text-[11px] font-mono font-bold tracking-widest uppercase flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-wait"
-                  >
-                    <Lock className="w-3.5 h-3.5" />
-                    <span>{isCheckingOut ? "PLEASE WAIT…" : "CHECKOUT"}</span>
-                  </button>
+                {/* Online checkout isn't open yet: contact email + enquiry form instead of Checkout.
+                    To reopen Shopify checkout, swap this back for a button calling useStore().checkout. */}
+                <div className="border-t border-ash/20 pt-3.5">
+                  <CheckoutComingSoon orderSummary={orderSummary} onContinue={closeCart} />
                 </div>
               </div>
             )}

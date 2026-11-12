@@ -72,7 +72,8 @@ interface BestsellersProps {
 export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
   const store = useStore();
   // Today's price and product photo for each card (from Shopify when connected)
-  const items = useLiveCards(BESTSELLER_ITEMS);
+  // The 3rd card autoplays its shade's video; the rest show photos
+  const items = useLiveCards(BESTSELLER_ITEMS, { videoAt: 2 });
 
   const handleToggleWishlist = (item: (typeof BESTSELLER_ITEMS)[0], e: React.MouseEvent) => {
     e.preventDefault();

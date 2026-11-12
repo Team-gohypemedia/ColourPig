@@ -27,15 +27,24 @@ interface ShadeCard {
 
 /**
  * Overlays the catalog's current Starter Kit price onto hand-curated product
- * cards. When connected to Shopify the card photo also comes from Shopify,
- * and cards for shades Shopify no longer lists are dropped.
+ * cards. When connected to Shopify the card shows the product's first Shopify
+ * image, and cards for shades Shopify no longer lists are dropped.
+ *
+ * `videoAt` picks the one card in the grid that autoplays its shade's video
+ * (from Shopify when connected, else the card's local video); every other
+ * card shows its photo.
  */
-export function useLiveCards<T extends ShadeCard>(cards: T[]): T[] {
+export function useLiveCards<T extends ShadeCard & { video?: string }>(
+  cards: T[],
+  { videoAt }: { videoAt?: number } = {}
+): T[] {
   const { shades, source } = useCatalog();
-  return cards.flatMap((card) => {
+  return cards.flatMap((card, index) => {
     const shade =
       findShade(shades, card.shadeId) ?? findShade(shades, card.id) ?? findShade(shades, card.shadeCode);
     if (!shade) return source === "shopify" ? [] : [card];
-    return [{ ...card, price: shade.price, image: source === "shopify" ? shade.cardImage : card.image }];
+    const fromShopify = source === "shopify";
+    const video = index === videoAt ? (fromShopify ? shade.video : card.video) : undefined;
+    return [{ ...card, price: shade.price, image: fromShopify ? shade.cardImage : card.image, video }];
   });
 }

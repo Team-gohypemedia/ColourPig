@@ -20,6 +20,8 @@ export interface CollectionItem {
   shadeHex: string;
   price: number;
   image: string;
+  /** Autoplaying video shown in place of the photo (set by useLiveCards) */
+  video?: string;
   rating: number;
   reviews: number;
 }
@@ -200,7 +202,8 @@ export function CollectionView() {
   const [addedItemNotice, setAddedItemNotice] = useState<string | null>(null);
 
   // Today's price and product photo for each card (from Shopify when connected)
-  const collectionItems = useLiveCards(COLLECTION_ITEMS);
+  // The 5th card autoplays its shade's video; the rest show photos
+  const collectionItems = useLiveCards(COLLECTION_ITEMS, { videoAt: 4 });
   const alsoLikeItems = useLiveCards(YOU_MIGHT_ALSO_LIKE_ITEMS);
 
   // Filter products by hair colour
@@ -366,13 +369,25 @@ export function CollectionView() {
                     href={getProductHref(item)}
                     className="block w-full h-full relative"
                   >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
-                    />
+                    {item.video ? (
+                      <video
+                        src={item.video}
+                        poster={item.image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover object-center"
+                      />
+                    ) : (
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out sm:group-hover:scale-105"
+                      />
+                    )}
                   </Link>
 
                   {/* Top-Right Circular Wishlist Button */}
