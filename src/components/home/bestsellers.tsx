@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Heart } from "lucide-react";
 import { useStore } from "@/context/store-context";
+import { STARTER_KIT_PRICE } from "@/data/pricing";
 import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
 const BESTSELLER_ITEMS = [
@@ -16,7 +17,7 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.4",
     shadeName: "Medium Brown",
     shadeHex: "#4E4136",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "MOST POPULAR",
     pantoneColor: "#374151",
     image: "/Medium Brown/MediumBrown.jpg",
@@ -29,7 +30,7 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.7",
     shadeName: "Medium Blonde",
     shadeHex: "#BE966C",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "HIGH DEMAND",
     pantoneColor: "#374151",
     image: "/Medium Blonde/MediumBlonde.jpg",
@@ -43,7 +44,7 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.1",
     shadeName: "Black",
     shadeHex: "#2D2C2D",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "INTENSE PIGMENT",
     pantoneColor: "#374151",
     image: "/Black/Black.jpg",
@@ -56,7 +57,7 @@ const BESTSELLER_ITEMS = [
     shadeCode: "No.0/0",
     shadeName: "Clear",
     shadeHex: "#F2EFF0",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "MULTI-USE",
     pantoneColor: "#374151",
     image: "/Clear/Clear.jpg",
@@ -77,7 +78,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
       id: item.id,
       name: item.name,
       category: item.category,
-      price: 1932,
+      price: STARTER_KIT_PRICE,
       image: item.image,
       shadeCode: item.shadeCode,
       shadeHex: item.shadeHex,
@@ -160,7 +161,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
                     {item.name}
                   </p>
                   <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                    ${item.price} AUD
+                    {store.formatPrice(item.price)}
                   </p>
                 </Link>
 
@@ -173,7 +174,7 @@ export function Bestsellers({ onAddToCart }: BestsellersProps = {}) {
                       id: `${item.id}-system`,
                       name: item.name,
                       variant: item.category,
-                      price: 1932,
+                      price: STARTER_KIT_PRICE,
                       image: item.image,
                       shadeCode: item.shadeCode,
                       shadeHex: item.shadeHex,

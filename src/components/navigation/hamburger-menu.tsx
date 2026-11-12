@@ -12,7 +12,6 @@ import {
   Sparkles,
   MessageCircle,
   User,
-  Globe,
 } from "lucide-react";
 import { ColourpigLogo, SnoutIcon } from "@/components/brand/logo";
 import { useStore } from "@/context/store-context";
@@ -26,8 +25,6 @@ export function HamburgerMenu() {
     openWishlist,
     cartCount,
     wishlistCount,
-    currency,
-    setCurrency,
   } = useStore();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -213,48 +210,8 @@ export function HamburgerMenu() {
               <div className="h-4" />
             </div>
 
-            {/* 5. Footer: Currency & Concierge Actions */}
+            {/* 5. Footer: Concierge Actions */}
             <div className="p-5 sm:p-6 border-t border-ash/25 bg-white flex-shrink-0 space-y-3 z-20">
-              {/* Currency Selector */}
-              <div className="flex items-center justify-between text-xs font-mono text-obsidian">
-                <span className="flex items-center gap-1.5">
-                  <Globe className="w-3.5 h-3.5 text-ash" />
-                  <span>CURRENCY</span>
-                </span>
-                <div className="inline-flex rounded-lg border border-ash/30 p-0.5 bg-platinum/25">
-                  <button
-                    onClick={() => setCurrency("AUD")}
-                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
-                      currency === "AUD"
-                        ? "bg-white text-obsidian shadow-2xs"
-                        : "text-obsidian hover:text-obsidian"
-                    }`}
-                  >
-                    AUD ($)
-                  </button>
-                  <button
-                    onClick={() => setCurrency("USD")}
-                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
-                      currency === "USD"
-                        ? "bg-white text-obsidian shadow-2xs"
-                        : "text-obsidian hover:text-obsidian"
-                    }`}
-                  >
-                    USD ($)
-                  </button>
-                  <button
-                    onClick={() => setCurrency("INR")}
-                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition-colors ${
-                      currency === "INR"
-                        ? "bg-white text-obsidian shadow-2xs"
-                        : "text-obsidian hover:text-obsidian"
-                    }`}
-                  >
-                    INR (₹)
-                  </button>
-                </div>
-              </div>
-
               {/* WhatsApp Shade Specialist Chat */}
               <a
                 href="https://wa.me/?text=Hello%20ColourPig%20Concierge,%20I%20need%20help%20choosing%20my%20hair%20shade."

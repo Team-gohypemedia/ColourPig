@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { X, Check, AlertTriangle, ShoppingBag, ArrowRight, Sparkles } from "lucide-react";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
 import { useStore } from "@/context/store-context";
+import { STARTER_KIT_PRICE } from "@/data/pricing";
 
 interface HairSuitabilityModalProps {
   isOpen: boolean;
@@ -234,7 +235,7 @@ export function HairSuitabilityModal({
       id: `${selectedShade.id}-starter-system`,
       name: `Colourpig Starter System | ${selectedShade.name}`,
       variant: `${selectedShade.undertone} • Match Verified`,
-      price: 1932,
+      price: STARTER_KIT_PRICE,
       image: selectedShade.cardImage,
       shadeCode: selectedShade.code,
       shadeHex: selectedShade.hex,
@@ -449,7 +450,7 @@ export function HairSuitabilityModal({
         <div className="px-5 sm:px-6 pt-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] bg-[#F9FAFA] border-t border-ash/20 flex items-center justify-between gap-3 shrink-0">
           <div className="min-w-0">
             <span className="block text-sm font-bold truncate">{selectedShade.name} System</span>
-            <span className="block text-xs font-mono text-obsidian">${selectedShade.price} AUD</span>
+            <span className="block text-xs font-mono text-obsidian">${selectedShade.price.toFixed(2)} AUD</span>
           </div>
           <button
             type="button"

@@ -7,6 +7,7 @@ import { ArrowRight, ShoppingBag, Heart, ChevronLeft, ChevronRight } from "lucid
 import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";
 import { OFFICIAL_SHADES, ShadeProduct } from "@/data/shades";
+import { STARTER_KIT_PRICE } from "@/data/pricing";
 import { HairSuitabilityModal } from "@/components/modals/hair-suitability-modal";
 import { Reveal, RevealCard, RevealImage, RevealLabel } from "@/components/motion/motion-primitives";
 
@@ -44,7 +45,7 @@ const NEW_ARRIVALS = [
     shadeCode: "No.3",
     shadeName: "Brown",
     shadeHex: "#241E1C",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "Deep Velvet",
     pantoneColor: "#374151",
     pantoneCode: "123C",
@@ -58,7 +59,7 @@ const NEW_ARRIVALS = [
     shadeCode: "No.5",
     shadeName: "Light Brown",
     shadeHex: "#624F44",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "Warm Luminous",
     pantoneColor: "#374151",
     pantoneCode: "165C",
@@ -72,7 +73,7 @@ const NEW_ARRIVALS = [
     shadeCode: "No.6",
     shadeName: "Dark Blonde",
     shadeHex: "#755A42",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "Caramel Depth",
     pantoneColor: "#374151",
     pantoneCode: "299C",
@@ -86,7 +87,7 @@ const NEW_ARRIVALS = [
     shadeCode: "No.8",
     shadeName: "Light Blonde",
     shadeHex: "#D2A982",
-    price: 69,
+    price: STARTER_KIT_PRICE,
     tag: "Sunlit Clarity",
     pantoneColor: "#374151",
     pantoneCode: "2572C",
@@ -150,7 +151,7 @@ export function NewDispatches({
       id: item.id,
       name: item.name,
       category: item.category,
-      price: 1932,
+      price: STARTER_KIT_PRICE,
       image: item.image,
       shadeCode: item.shadeCode,
       shadeHex: item.shadeHex,
@@ -255,7 +256,7 @@ export function NewDispatches({
                     {item.name}
                   </h3>
                   <p className="font-montserrat font-semibold text-xs 2xl:text-sm text-obsidian mt-auto pt-1.5">
-                    ${item.price} AUD
+                    {store.formatPrice(item.price)}
                   </p>
                 </Link>
 
@@ -380,7 +381,7 @@ export function NewDispatches({
                       {item.name}
                     </p>
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      ${item.price} AUD
+                      {store.formatPrice(item.price)}
                     </p>
                   </Link>
 
@@ -393,7 +394,7 @@ export function NewDispatches({
                         id: `shade-${item.shadeCode.toLowerCase().replace(/^(no\.?|#)/, "").replace("/", "-")}-starter-system`,
                         name: `Colourpig Starter System | ${item.name.replace(/ System$/i, "")}`,
                         variant: item.category,
-                        price: 1932,
+                        price: STARTER_KIT_PRICE,
                         image: item.image,
                         shadeCode: item.shadeCode,
                         shadeHex: item.shadeHex,

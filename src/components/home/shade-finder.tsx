@@ -424,7 +424,7 @@ export function ShadeFinder({
                 className="font-mono text-xs sm:text-sm !font-normal font-[400] text-obsidian shrink-0"
                 style={{ fontWeight: 400 }}
               >
-                ${selectedShade.price}
+                ${selectedShade.price.toFixed(2)}
               </span>
             </div>
 

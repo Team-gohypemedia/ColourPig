@@ -100,7 +100,7 @@ export function CartMini({
                           className="font-mono text-xs !font-normal font-[400] ml-2"
                           style={{ fontWeight: 400 }}
                         >
-                          ${item.price * item.quantity}
+                          ${(item.price * item.quantity).toFixed(2)}
                         </span>
                       </div>
 

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, ShoppingBag, Check } from "lucide-react";
 import { useStore } from "@/context/store-context";
+import { STARTER_KIT_PRICE } from "@/data/pricing";
 
 export interface CollectionItem {
   id: string;
@@ -16,8 +17,7 @@ export interface CollectionItem {
   colorFamily: "brown" | "blonde" | "black" | "clear";
   shadeCode: string;
   shadeHex: string;
-  priceUsd: number;
-  priceInr: number;
+  price: number;
   image: string;
   rating: number;
   reviews: number;
@@ -35,8 +35,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "brown",
     shadeCode: "No.4",
     shadeHex: "#4E4136",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Medium Brown/MediumBrown.jpg",
     rating: 4.9,
     reviews: 310,
@@ -50,8 +49,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "blonde",
     shadeCode: "No.7",
     shadeHex: "#BE966C",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Medium Blonde/MediumBlonde.jpg",
     rating: 4.9,
     reviews: 215,
@@ -65,8 +63,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "black",
     shadeCode: "No.1",
     shadeHex: "#2D2C2D",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Black/Black.jpg",
     rating: 5.0,
     reviews: 242,
@@ -80,8 +77,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "clear",
     shadeCode: "No.0/0",
     shadeHex: "#F2EFF0",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Clear/Clear.jpg",
     rating: 4.9,
     reviews: 118,
@@ -95,8 +91,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "brown",
     shadeCode: "No.3",
     shadeHex: "#241E1C",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Brown/Brown.jpg",
     rating: 4.9,
     reviews: 195,
@@ -110,8 +105,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "brown",
     shadeCode: "No.5",
     shadeHex: "#624F44",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Light Brown/LightBrown01.jpg",
     rating: 4.8,
     reviews: 167,
@@ -125,8 +119,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "blonde",
     shadeCode: "No.6",
     shadeHex: "#755A42",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Dark Blonde/DarkBlonde.jpg",
     rating: 4.9,
     reviews: 182,
@@ -140,8 +133,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "blonde",
     shadeCode: "No.8",
     shadeHex: "#D2A982",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Light Blonde/LightBlonde.jpg",
     rating: 4.8,
     reviews: 149,
@@ -155,8 +147,7 @@ const COLLECTION_ITEMS: CollectionItem[] = [
     colorFamily: "blonde",
     shadeCode: "No.9",
     shadeHex: "#E3C8AD",
-    priceUsd: 69,
-    priceInr: 1932,
+    price: STARTER_KIT_PRICE,
     image: "/Very Light Brown/Very Light Blonde.00000.png",
     rating: 5.0,
     reviews: 188,
@@ -168,9 +159,7 @@ const YOU_MIGHT_ALSO_LIKE_ITEMS = [
     id: "shade-3",
     name: "COLOURPIG SYSTEM NO.3 DARK BROWN",
     category: "Dark Espresso • Reusable System",
-    priceInr: 1932,
-    originalInr: 2772,
-    priceUsd: 69,
+    price: STARTER_KIT_PRICE,
     image: "/Brown/Brown.jpg",
     shadeCode: "No.3",
     shadeHex: "#241E1C",
@@ -179,9 +168,7 @@ const YOU_MIGHT_ALSO_LIKE_ITEMS = [
     id: "shade-5",
     name: "COLOURPIG SYSTEM NO.5 LIGHT BROWN",
     category: "Warm Amber • Reusable System",
-    priceInr: 1932,
-    originalInr: 2772,
-    priceUsd: 69,
+    price: STARTER_KIT_PRICE,
     image: "/Light Brown/LightBrown01.jpg",
     shadeCode: "No.5",
     shadeHex: "#624F44",
@@ -190,9 +177,7 @@ const YOU_MIGHT_ALSO_LIKE_ITEMS = [
     id: "shade-7",
     name: "COLOURPIG SYSTEM NO.7 MEDIUM BLONDE",
     category: "Warm Golden • Reusable System",
-    priceInr: 1932,
-    originalInr: 2772,
-    priceUsd: 69,
+    price: STARTER_KIT_PRICE,
     image: "/Medium Blonde/MediumBlonde.jpg",
     shadeCode: "No.7",
     shadeHex: "#BE966C",
@@ -201,9 +186,7 @@ const YOU_MIGHT_ALSO_LIKE_ITEMS = [
     id: "shade-1",
     name: "COLOURPIG SYSTEM NO.1 PURE BLACK",
     category: "Deep Mineral Jet • Full Coverage",
-    priceInr: 1932,
-    originalInr: 2772,
-    priceUsd: 69,
+    price: STARTER_KIT_PRICE,
     image: "/Black/Black.jpg",
     shadeCode: "No.1",
     shadeHex: "#2D2C2D",
@@ -229,7 +212,7 @@ export function CollectionView() {
       id: `${item.id}-system`,
       name: item.name,
       variant: item.category,
-      price: item.priceInr,
+      price: item.price,
       image: item.image,
       shadeCode: item.shadeCode,
       shadeHex: item.shadeHex,
@@ -247,7 +230,7 @@ export function CollectionView() {
       id: item.id,
       name: item.name,
       category: item.category,
-      price: item.priceInr,
+      price: item.price,
       image: item.image,
       shadeCode: item.shadeCode,
       shadeHex: item.shadeHex,
@@ -419,7 +402,7 @@ export function CollectionView() {
 
                     {/* Line 2: Price */}
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      ${item.priceUsd} AUD
+                      {store.formatPrice(item.price)}
                     </p>
                   </Link>
 
@@ -483,7 +466,7 @@ export function CollectionView() {
                           id: item.id,
                           name: item.name,
                           category: item.category,
-                          price: item.priceInr,
+                          price: item.price,
                           image: item.image,
                           shadeCode: item.shadeCode,
                           shadeHex: item.shadeHex,
@@ -522,10 +505,7 @@ export function CollectionView() {
                     {/* Line 3: Price with Strikethrough (matching reference screenshot) */}
                     <div className="flex items-baseline gap-2 mt-0.5">
                       <span className="text-xs sm:text-sm font-montserrat font-semibold text-obsidian">
-                        {store.formatPrice(item.priceInr)}
-                      </span>
-                      <span className="text-[10px] font-montserrat text-ash line-through">
-                        {store.formatPrice(item.originalInr)}
+                        {store.formatPrice(item.price)}
                       </span>
                     </div>
                   </Link>
@@ -540,7 +520,7 @@ export function CollectionView() {
                         id: `${item.id}-system`,
                         name: item.name,
                         variant: item.category,
-                        price: item.priceInr,
+                        price: item.price,
                         image: item.image,
                         shadeCode: item.shadeCode,
                         shadeHex: item.shadeHex,

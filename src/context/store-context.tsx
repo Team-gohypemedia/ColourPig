@@ -2,12 +2,18 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { OFFICIAL_SHADES } from "@/data/shades";
+import {
+  KitId,
+  STARTER_KIT_PRICE,
+  getKitOption,
+  getKitPrice,
+} from "@/data/pricing";
 
 export interface CartItem {
   id: string;
   name: string;
   variant: string;
-  price: number; // in INR by default (e.g. 1932)
+  price: number; // unit price in AUD (e.g. 69.95)
   originalPrice?: number;
   inStock: number;
   image: string;
@@ -32,7 +38,7 @@ export interface RecommendationItem {
   name: string;
   variant: string;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   image: string;
   inStock: number;
   shadeCode?: string;
@@ -72,10 +78,8 @@ interface StoreContextType {
   // Recommendations
   recommendations: RecommendationItem[];
 
-  // Currency
-  currency: "AUD" | "USD" | "INR";
-  setCurrency: (c: "AUD" | "USD" | "INR") => void;
-  formatPrice: (amountInInr: number) => string;
+  // Price display (AUD only)
+  formatPrice: (amountInAud: number) => string;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -87,10 +91,9 @@ const INITIAL_WISHLIST_ITEMS: WishlistItem[] = [];
 const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   {
     id: "rec-item-1",
-    name: "Colourpig Refill Pod No.0/0 Clear Gloss",
+    name: "Colourpig Starter Kit | No.0/0 Clear Gloss",
     variant: "Universal Gloss & Translucent Blending",
-    price: 1932,
-    originalPrice: 2772,
+    price: STARTER_KIT_PRICE,
     image: "/images/products/cards/shade_card_1.jpg",
     inStock: 5,
     shadeCode: "No.0/0",
@@ -100,8 +103,7 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
     id: "rec-item-2",
     name: "Colourpig Starter System | No.1 Jet Black",
     variant: "Pure Mineral Jet • Full Root Coverage",
-    price: 1932,
-    originalPrice: 2772,
+    price: STARTER_KIT_PRICE,
     image: "/Black/Black.jpg",
     inStock: 4,
     shadeCode: "No.1",
@@ -109,10 +111,9 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
   },
   {
     id: "rec-item-3",
-    name: "Colourpig Refill Pod No.3 Dark Brown",
+    name: "Colourpig Refill (Single) | No.3 Dark Brown",
     variant: "Dark Espresso Brown Formula",
-    price: 1932,
-    originalPrice: 2772,
+    price: getKitPrice("refill-single"),
     image: "/Brown/Brown.jpg",
     inStock: 3,
     shadeCode: "No.3",
@@ -122,6 +123,44 @@ const INITIAL_RECOMMENDATIONS: RecommendationItem[] = [
 
 const CART_STORAGE_KEY = "colourpig_cart_items_v1";
 const WISHLIST_STORAGE_KEY = "colourpig_favorites_items_v1";
+
+// Checked in this order so "refill-3-pack" wins over a looser "refill" match
+const KIT_IDS: KitId[] = ["refill-3-pack", "refill-single", "annual-pass", "starter-system"];
+
+/**
+ * Works out which kit (and whether it is a subscribe & save purchase) an item refers to.
+ * Prefers an explicit kit id inside the item id, then falls back to the item's wording.
+ */
+export function resolveKit(item: {
+  id?: string;
+  name?: string;
+  variant?: string;
+}): { kitId: KitId; subscribe: boolean } {
+  const id = (item.id || "").toLowerCase();
+  const text = `${item.name || ""} ${item.variant || ""}`.toLowerCase();
+  const subscribe = id.endsWith("-subscribe") || text.includes("subscribe");
+
+  let kitId = KIT_IDS.find((k) => id.includes(k));
+  if (!kitId) {
+    const combined = `${id} ${text}`;
+    if (combined.includes("annual") || combined.includes("ritual pack")) {
+      kitId = "annual-pass";
+    } else if (combined.includes("refill")) {
+      kitId = /3-pack|3 pack|3x/.test(combined) ? "refill-3-pack" : "refill-single";
+    } else {
+      kitId = "starter-system";
+    }
+  }
+
+  // Only refills can be subscribed to
+  return { kitId, subscribe: subscribe && getKitOption(kitId).subscribePrice !== undefined };
+}
+
+/** Authoritative AUD unit price for a cart item, derived from its kit. */
+function getItemPrice(item: { id?: string; name?: string; variant?: string }): number {
+  const { kitId, subscribe } = resolveKit(item);
+  return getKitPrice(kitId, subscribe);
+}
 
 /**
  * Resolves a uniform canonical cart product ID (e.g. shade-7-starter-system, shade-1-refill-duo)
@@ -173,16 +212,10 @@ export function getCanonicalCartId(item: {
     if (match) shadeId = match.id;
   }
 
-  const combined = `${item.id || ""} ${item.name || ""} ${item.variant || ""}`.toLowerCase();
-  let kitType = "starter-system";
-  if (combined.includes("refill") || combined.includes("pod") || item.price === 1899) {
-    kitType = "refill-duo";
-  } else if (combined.includes("annual") || combined.includes("pass") || item.price === 4499) {
-    kitType = "annual-pass";
-  }
+  const { kitId, subscribe } = resolveKit(item);
 
   if (shadeId) {
-    return `${shadeId}-${kitType}`;
+    return `${shadeId}-${kitId}${subscribe ? "-subscribe" : ""}`;
   }
 
   return (
@@ -204,9 +237,14 @@ function deduplicateCartItems(items: CartItem[]): CartItem[] {
     if (existing) {
       existing.quantity = (existing.quantity || 1) + (item.quantity || 1);
     } else {
+      // Re-price from the current price list (also migrates legacy INR-priced carts)
+      const price = getItemPrice(item);
+      const fullPrice = getKitOption(resolveKit(item).kitId).price;
       merged.set(cid, {
         ...item,
         id: cid,
+        price,
+        originalPrice: price < fullPrice ? fullPrice : undefined,
         quantity: item.quantity || 1,
       });
     }
@@ -268,9 +306,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         if (storedWishlist) {
           const parsed = JSON.parse(storedWishlist);
           if (Array.isArray(parsed)) {
-            const valid = parsed.filter(
-              (item) => item && typeof item === "object" && item.id && item.name
-            );
+            const valid = parsed
+              .filter((item) => item && typeof item === "object" && item.id && item.name)
+              .map((item: WishlistItem) => ({
+                ...item,
+                price: STARTER_KIT_PRICE,
+                originalPrice: undefined,
+              }));
             setWishlist(valid);
           }
         }
@@ -342,7 +384,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currency, setCurrency] = useState<"AUD" | "USD" | "INR">("AUD");
 
   const openCart = () => {
     setIsCartOpen(true);
@@ -365,24 +406,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
   const closeMenu = () => setIsMenuOpen(false);
 
-  const formatPrice = (amountInInr: number) => {
-    if (currency === "AUD") {
-      const audAmount = Math.round(amountInInr / 28);
-      return `$${audAmount} AUD`;
-    }
-    if (currency === "USD") {
-      const usdAmount = Math.round(amountInInr / 28);
-      return `$${usdAmount} USD`;
-    }
-    return `₹${amountInInr.toLocaleString("en-IN")}`;
-  };
+  const formatPrice = (amountInAud: number) => `$${amountInAud.toFixed(2)} AUD`;
 
   const addToCart = (
     item: Partial<CartItem> & { name: string; price: number; image: string }
   ) => {
-    // Standardize price: if < 200 (was 69 AUD) -> 1932 INR
-    const standardPrice =
-      item.price && item.price > 200 ? item.price : 1932;
+    // Price always comes from the price list, never from the caller
+    const standardPrice = getItemPrice(item);
+    // Full (non-subscription) price, shown struck through for subscribe & save items
+    const fullPrice = getKitOption(resolveKit(item).kitId).price;
 
     const canonicalId = getCanonicalCartId(item);
 
@@ -431,7 +463,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           name: item.name,
           variant: item.variant || "Standard Kit • 50ml",
           price: standardPrice,
-          originalPrice: item.originalPrice,
+          originalPrice: standardPrice < fullPrice ? fullPrice : undefined,
           inStock: item.inStock || 4,
           image: item.image,
           quantity: addQty,
@@ -480,8 +512,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   const addToWishlist = (item: WishlistItem) => {
-    // Standardize price: if < 200 (was 69 AUD) -> 1932 INR
-    const standardPrice = item.price && item.price > 200 ? item.price : 1932;
+    // Favourites are always Starter Kits
+    const standardPrice = STARTER_KIT_PRICE;
 
     let resolvedShadeHex = item.shadeHex;
     if (!resolvedShadeHex && (item.shadeCode || item.id)) {
@@ -598,8 +630,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         closeMenu,
 
         recommendations,
-        currency,
-        setCurrency,
         formatPrice,
       }}
     >

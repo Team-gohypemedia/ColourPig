@@ -30,6 +30,11 @@ import {
   OFFICIAL_SHADES,
   ShadeProduct,
 } from "@/data/shades";
+import {
+  KitOption,
+  STARTER_KIT_PRICE,
+  getKitOptionsForShade,
+} from "@/data/pricing";
 import { useStore } from "@/context/store-context";
 import { ShadeHighlights } from "@/components/product/shade-highlights";
 
@@ -38,40 +43,12 @@ interface ProductDetailViewProps {
   initialImage?: string;
 }
 
-const KIT_OPTIONS = [
-  {
-    id: "starter-system",
-    name: "Complete Starter System",
-    subtitle: "Includes Ergonomic Dispenser + 50ml Precision Pod",
-    priceInr: 1932,
-    originalInr: 2772,
-    tag: "MOST POPULAR",
-  },
-  {
-    id: "refill-duo",
-    name: "Refill Pod Duo (2x 50ml)",
-    subtitle: "For returning users — Pods only",
-    priceInr: 1372,
-    originalInr: 1932,
-    tag: "SUBSCRIBE & SAVE",
-  },
-  {
-    id: "deluxe-ritual-set",
-    name: "Annual Ritual Set (3x Pods + Dispenser)",
-    subtitle: "Full year root care + complimentary applicator tool",
-    priceInr: 2772,
-    originalInr: 3920,
-    tag: "BEST VALUE",
-  },
-];
-
 const RECENTLY_VIEWED = [
   {
     id: "shade-3",
     name: "Colourpig System No.3 Dark Brown",
     category: "Dark Espresso • Reusable System",
-    priceInr: 1932,
-    originalInr: 2772,
+    price: STARTER_KIT_PRICE,
     image: "/Brown/Brown.jpg",
     shadeCode: "No.3",
     shadeHex: "#241E1C",
@@ -80,8 +57,7 @@ const RECENTLY_VIEWED = [
     id: "shade-5",
     name: "Colourpig System No.5 Light Brown",
     category: "Warm Amber • Reusable System",
-    priceInr: 1932,
-    originalInr: 2772,
+    price: STARTER_KIT_PRICE,
     image: "/Light Brown/LightBrown01.jpg",
     shadeCode: "No.5",
     shadeHex: "#624F44",
@@ -90,8 +66,7 @@ const RECENTLY_VIEWED = [
     id: "shade-7",
     name: "Colourpig System No.7 Medium Blonde",
     category: "Warm Golden • Reusable System",
-    priceInr: 1932,
-    originalInr: 2772,
+    price: STARTER_KIT_PRICE,
     image: "/Medium Blonde/MediumBlonde.jpg",
     shadeCode: "No.7",
     shadeHex: "#BE966C",
@@ -100,8 +75,7 @@ const RECENTLY_VIEWED = [
     id: "shade-1",
     name: "Colourpig System No.1 Pure Black",
     category: "Deep Mineral Jet • Full Coverage",
-    priceInr: 1932,
-    originalInr: 2772,
+    price: STARTER_KIT_PRICE,
     image: "/Black/Black.jpg",
     shadeCode: "No.1",
     shadeHex: "#2D2C2D",
@@ -206,8 +180,15 @@ export function ProductDetailView({
     }
   };
 
-  // Selected Kit Option
-  const [selectedKit, setSelectedKit] = useState(KIT_OPTIONS[0]);
+  // Selected Kit Option (some shades, e.g. Clear, only come as a Starter Kit)
+  const kitOptions = getKitOptionsForShade(selectedShade.id);
+  const [selectedKitId, setSelectedKitId] = useState<KitOption["id"]>("starter-system");
+  const selectedKit = kitOptions.find((k) => k.id === selectedKitId) ?? kitOptions[0];
+
+  // Subscribe & save (only offered on kits that have a subscription price)
+  const [subscribe, setSubscribe] = useState(false);
+  const isSubscribed = subscribe && selectedKit.subscribePrice !== undefined;
+  const unitPrice = isSubscribed ? selectedKit.subscribePrice! : selectedKit.price;
 
   // Quantity
   const [quantity, setQuantity] = useState(1);
@@ -266,14 +247,14 @@ export function ProductDetailView({
 
   const handleAddToCart = () => {
     store.addToCart({
-      id: `${selectedShade.id}-${selectedKit.id}`,
+      id:`${selectedShade.id}-${selectedKit.id}${isSubscribed ? "-subscribe" : ""}`,
       name:
         selectedKit.id === "starter-system"
           ? `Colourpig Starter System | ${selectedShade.name}`
-          : `Colourpig ${selectedKit.name} | ${selectedShade.name}`,
+          : `Colourpig ${selectedKit.name}${isSubscribed ? " (Subscribe & Save)" : ""} | ${selectedShade.name}`,
       variant: `Shade ${selectedShade.code} • ${selectedKit.subtitle}`,
-      price: selectedKit.priceInr,
-      originalPrice: selectedKit.originalInr,
+      price: unitPrice,
+      originalPrice: isSubscribed ? selectedKit.price : undefined,
       image: selectedShade.cardImage,
       quantity,
       shadeCode: selectedShade.code,
@@ -471,14 +452,18 @@ export function ProductDetailView({
             <div className="space-y-1.5 border-b border-ash/25 pb-5">
               <div className="flex items-baseline gap-3">
                 <span className="text-lg sm:text-xl lg:text-2xl font-montserrat font-semibold text-obsidian">
-                  {store.formatPrice(selectedKit.priceInr)}
+                  {store.formatPrice(unitPrice)}
                 </span>
-                <span className="text-sm font-montserrat font-medium text-ash line-through">
-                  {store.formatPrice(selectedKit.originalInr)}
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#374151]/10 border border-[#374151]/30 text-[#2e6b12] font-montserrat font-semibold text-xs">
-                  Save {store.formatPrice(selectedKit.originalInr - selectedKit.priceInr)} ({Math.round(((selectedKit.originalInr - selectedKit.priceInr) / selectedKit.originalInr) * 100)}% OFF)
-                </span>
+                {isSubscribed && (
+                  <>
+                    <span className="text-sm font-montserrat font-medium text-ash line-through">
+                      {store.formatPrice(selectedKit.price)}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#374151]/10 border border-[#374151]/30 text-[#2e6b12] font-montserrat font-semibold text-xs">
+                      Save {store.formatPrice(selectedKit.price - unitPrice)} ({Math.round(((selectedKit.price - unitPrice) / selectedKit.price) * 100)}% OFF)
+                    </span>
+                  </>
+                )}
               </div>
               <p className="text-[11px] font-mono text-obsidian">
                 Inclusive of all taxes • Free express climate-controlled delivery
@@ -527,12 +512,12 @@ export function ProductDetailView({
               </span>
 
               <div className="space-y-2">
-                {KIT_OPTIONS.map((kit) => {
+                {kitOptions.map((kit) => {
                   const isSelected = selectedKit.id === kit.id;
                   return (
                     <button
                       key={kit.id}
-                      onClick={() => setSelectedKit(kit)}
+                      onClick={() => setSelectedKitId(kit.id)}
                       className={`w-full p-3.5 rounded-xl border text-left transition-all flex items-center justify-between ${
                         isSelected
                           ? "border-obsidian bg-white shadow-xs"
@@ -544,9 +529,11 @@ export function ProductDetailView({
                           <span className="text-xs font-montserrat font-bold text-obsidian uppercase">
                             {kit.name}
                           </span>
-                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-platinum/60 text-obsidian border border-ash/20">
-                            {kit.tag}
-                          </span>
+                          {kit.tag && (
+                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-platinum/60 text-obsidian border border-ash/20">
+                              {kit.tag}
+                            </span>
+                          )}
                         </div>
                         <p className="text-[11px] font-mono text-obsidian">
                           {kit.subtitle}
@@ -555,16 +542,50 @@ export function ProductDetailView({
 
                       <div className="text-right shrink-0 ml-3">
                         <span className="text-sm font-montserrat font-semibold text-obsidian block">
-                          {store.formatPrice(kit.priceInr)}
+                          {store.formatPrice(kit.price)}
                         </span>
-                        <span className="text-[11px] font-montserrat font-medium text-ash line-through">
-                          {store.formatPrice(kit.originalInr)}
-                        </span>
+                        {kit.subscribePrice !== undefined && (
+                          <span className="text-[11px] font-montserrat font-medium text-obsidian">
+                            {store.formatPrice(kit.subscribePrice)} subscribed
+                          </span>
+                        )}
                       </div>
                     </button>
                   );
                 })}
               </div>
+
+              {/* Purchase type: only for kits with a subscribe & save price */}
+              {selectedKit.subscribePrice !== undefined && (
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  {[
+                    { value: false, label: "One-time purchase", price: selectedKit.price },
+                    { value: true, label: "Subscribe & save", price: selectedKit.subscribePrice },
+                  ].map((opt) => {
+                    const isActive = isSubscribed === opt.value;
+                    return (
+                      <button
+                        key={opt.label}
+                        type="button"
+                        onClick={() => setSubscribe(opt.value)}
+                        aria-pressed={isActive}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          isActive
+                            ? "border-obsidian bg-white shadow-xs"
+                            : "border-ash/30 bg-white hover:bg-white/80"
+                        }`}
+                      >
+                        <span className="block text-[11px] font-mono font-bold uppercase tracking-wider text-obsidian">
+                          {opt.label}
+                        </span>
+                        <span className="block text-sm font-montserrat font-semibold text-obsidian">
+                          {store.formatPrice(opt.price)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* 3. In-Stock Indicator & Live Urgency */}
@@ -621,7 +642,7 @@ export function ProductDetailView({
                   className="flex-1 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl bg-obsidian hover:bg-black text-white font-mono text-xs font-bold tracking-wider sm:tracking-widest uppercase flex items-center justify-center gap-1.5 sm:gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer"
                 >
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">BUY IT NOW — {store.formatPrice(selectedKit.priceInr * quantity)}</span>
+                  <span className="truncate">BUY IT NOW — {store.formatPrice(unitPrice * quantity)}</span>
                 </button>
 
                 {/* Favorite / Wishlist Button next to Buy It Now */}
@@ -632,8 +653,7 @@ export function ProductDetailView({
                       id: selectedShade.id,
                       name: `Colourpig Starter System (${selectedShade.name})`,
                       category: selectedShade.category,
-                      price: selectedKit.priceInr,
-                      originalPrice: selectedKit.originalInr,
+                      price: STARTER_KIT_PRICE,
                       image: selectedShade.cardImage,
                       shadeCode: selectedShade.code,
                       shadeHex: selectedShade.hex,
@@ -867,7 +887,7 @@ export function ProductDetailView({
                         id: prod.id,
                         name: prod.name,
                         category: prod.category,
-                        price: prod.priceInr,
+                        price: prod.price,
                         image: prod.image,
                         shadeCode: prod.shadeCode,
                         shadeHex: prod.shadeHex,
@@ -898,7 +918,7 @@ export function ProductDetailView({
                       {prod.name}
                     </p>
                     <p className="font-montserrat font-semibold text-xs sm:text-[13px] text-obsidian">
-                      $69 AUD
+                      {store.formatPrice(prod.price)}
                     </p>
                   </Link>
 
@@ -911,7 +931,7 @@ export function ProductDetailView({
                         id: `${prod.id}-starter-system`,
                         name: `Colourpig Starter System | ${prod.name}`,
                         variant: prod.category,
-                        price: prod.priceInr,
+                        price: prod.price,
                         image: prod.image,
                         shadeCode: prod.shadeCode,
                         shadeHex: prod.shadeHex,

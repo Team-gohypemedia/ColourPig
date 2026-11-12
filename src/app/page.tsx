@@ -20,6 +20,7 @@ import { CustomerReviews } from "@/components/home/customer-reviews";
 import { EcommFooter } from "@/components/home/ecomm-footer";
 
 import { OFFICIAL_SHADES } from "@/data/shades";
+import { STARTER_KIT_PRICE } from "@/data/pricing";
 
 function HomeContent() {
   const { addToCart } = useStore();
@@ -34,8 +35,7 @@ function HomeContent() {
       id: `${shadeId}-starter-system`,
       name: `Colourpig Starter System | ${shade.name}`,
       variant: `${shade.undertone} • Complete Starter System`,
-      price: 1932,
-      originalPrice: 2772,
+      price: STARTER_KIT_PRICE,
       image: imagePath,
       shadeCode: shade.code,
       shadeHex: shade.hex,
