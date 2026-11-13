@@ -14,54 +14,38 @@ const MARQUEE_ITEMS = [
   {
     type: "text",
     color: "#E5E5E5",
+    text: "NO MIXING",
+  },
+  {
+    type: "text",
+    color: "#E5E5E5",
+    text: "REUSABLE",
+  },
+  {
+    type: "text",
+    color: "#E5E5E5",
     text: "AIR DRIVEN DISPENSER",
   },
   {
     type: "text",
     color: "#E5E5E5",
-    text: "NO MIXING • NO MESS",
+    text: "9 NATURAL BASE SHADES",
   },
   {
     type: "text",
     color: "#E5E5E5",
-    text: "PERMANENT SYSTEM",
-  },
-  {
-    type: "text",
-    color: "#E5E5E5",
-    text: "REUSABLE CANISTER HARDWARE",
-  },
-  {
-    type: "text",
-    color: "#E5E5E5",
-    text: "NORMAN & BROWN SYDNEY",
-  },
-  {
-    type: "text",
-    color: "#E5E5E5",
-    text: "30-MINUTE DEVELOPMENT",
-  },
-  {
-    type: "text",
-    color: "#E5E5E5",
-    text: "SALON GRADE PIGMENTS",
-  },
-  {
-    type: "text",
-    color: "#E5E5E5",
-    text: "DUAL-CHAMBER DELIVERY",
-  },
-  {
-    type: "text",
-    color: "#E5E5E5",
-    text: "PANTONE COLOUR SCIENCE",
+    text: "100% GREY COVERAGE",
   },
 ];
+
+// The list is short, so repeat it within each set to keep the ticker
+// wider than large screens and avoid a visible gap in the loop.
+const TICKER_ITEMS = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
 
 export function ColorfulMarquee() {
   const renderItemSet = (keyPrefix: string) => (
     <div key={keyPrefix} className="flex items-center gap-6 sm:gap-10 shrink-0 pr-6 sm:pr-10">
-      {MARQUEE_ITEMS.map((item, idx) => (
+      {TICKER_ITEMS.map((item, idx) => (
         <React.Fragment key={`${keyPrefix}-${idx}`}>
           <div className="flex items-center shrink-0">
             {item.type === "lockup" ? (
