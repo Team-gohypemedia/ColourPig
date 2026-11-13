@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import { useStore } from "@/context/store-context";
 import { useCatalog } from "@/context/catalog-context";
+import { swatchThumbnail } from "@/data/shades";
 import { FindShadeBanner } from "@/components/home/find-shade-banner";
 import { Reveal } from "@/components/motion/motion-primitives";
 
@@ -16,18 +17,6 @@ import { Reveal } from "@/components/motion/motion-primitives";
    the product page. It is full-bleed: its negative side margins cancel the
    parent's px-4 sm:px-8 lg:px-12 xl:px-16 padding.
    ========================================================================== */
-
-const SHADE_CLEAN_CIRCLES: Record<string, string> = {
-  "shade-0-0": "/images/products/swatches/clean/circle_shade_1.png",
-  "shade-1": "/images/products/swatches/clean/circle_shade_2.png",
-  "shade-3": "/images/products/swatches/clean/circle_shade_3.png",
-  "shade-4": "/images/products/swatches/clean/circle_shade_4.png",
-  "shade-5": "/images/products/swatches/clean/circle_shade_5.png",
-  "shade-6": "/images/products/swatches/clean/circle_shade_6.png",
-  "shade-7": "/images/products/swatches/clean/circle_shade_7.png",
-  "shade-8": "/images/products/swatches/clean/circle_shade_8.png",
-  "shade-9": "/images/products/swatches/clean/circle_shade_9.png",
-};
 
 /** How often the shade slider moves on by one shade */
 const AUTO_ADVANCE_MS = 1500;
@@ -158,7 +147,7 @@ export function ShadeExplorer() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {shades.map((item, idx) => {
-            const circleSrc = SHADE_CLEAN_CIRCLES[item.id] || item.swatchImage;
+            const circleSrc = swatchThumbnail(item);
 
             return (
               <div

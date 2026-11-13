@@ -9,6 +9,8 @@ export interface ShadeProduct {
   hex: string;
   price: number;
   swatchImage: string;
+  /** Round swatch thumbnail from Shopify (the colour's "Image" field), when one is set */
+  swatchThumb?: string;
   cardImage: string;
   sideImage?: string;
   backImage?: string;
@@ -325,3 +327,25 @@ export const PACKAGING_SYSTEM_DETAILS = {
     { step: 6, label: "WIPE WITH ME", description: "Gently wipe skin hairline with Stain Remover" },
   ],
 };
+
+/** Hair swatches already cropped to a circle, bundled with the site. */
+const CLEAN_SWATCH_CIRCLES: Record<string, string> = {
+  "shade-0-0": "/images/products/swatches/clean/circle_shade_1.png",
+  "shade-1": "/images/products/swatches/clean/circle_shade_2.png",
+  "shade-3": "/images/products/swatches/clean/circle_shade_3.png",
+  "shade-4": "/images/products/swatches/clean/circle_shade_4.png",
+  "shade-5": "/images/products/swatches/clean/circle_shade_5.png",
+  "shade-6": "/images/products/swatches/clean/circle_shade_6.png",
+  "shade-7": "/images/products/swatches/clean/circle_shade_7.png",
+  "shade-8": "/images/products/swatches/clean/circle_shade_8.png",
+  "shade-9": "/images/products/swatches/clean/circle_shade_9.png",
+};
+
+/**
+ * Round hair-swatch thumbnail for a shade: the bundled tightly-cropped circle,
+ * else the image set on the colour in Shopify (for shades added later), else
+ * the full swatch photo.
+ */
+export function swatchThumbnail(shade: Pick<ShadeProduct, "id" | "swatchImage" | "swatchThumb">): string {
+  return CLEAN_SWATCH_CIRCLES[shade.id] || shade.swatchThumb || shade.swatchImage;
+}

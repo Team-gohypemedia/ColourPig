@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "@/components/ui/image";
+import { ShadeSwatch } from "@/components/product/shade-swatch";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
-import { ShadeProduct } from "@/data/shades";
+import { ShadeProduct, swatchThumbnail } from "@/data/shades";
 import { findShade } from "@/data/catalog";
 import { useCatalog } from "@/context/catalog-context";
 import { motion, transform, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
@@ -381,7 +382,7 @@ export function ShadeFinder({
                     {/* Swatch circular element */}
                     <div className="w-10 h-10 rounded-lg overflow-hidden border border-black/10 relative shadow-inner bg-white">
                       <Image
-                        src={shade.swatchImage}
+                        src={swatchThumbnail(shade)}
                         alt={shade.name}
                         fill
                         sizes="40px"
@@ -412,9 +413,10 @@ export function ShadeFinder({
           <div className="p-3.5 sm:p-4 rounded-md bg-white border border-ash/40 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 min-w-0">
-                <span
-                  className="w-3.5 h-3.5 rounded-full border border-black/10 shadow-xs shrink-0"
-                  style={{ backgroundColor: selectedShade.hex }}
+                <ShadeSwatch
+                  shade={selectedShade}
+                  size={24}
+                  className="w-6 h-6 border border-black/10 shadow-xs"
                 />
                 <div className="truncate">
                   <h4 className="font-montserrat font-bold text-xs sm:text-sm text-obsidian uppercase truncate">

@@ -20,7 +20,7 @@ const CATALOG_QUERY = /* GraphQL */ `
         title
         descriptionHtml
         featuredImage { url altText }
-        options { name optionValues { name swatch { color } } }
+        options { name optionValues { name swatch { color image { previewImage { url } } } } }
         media(first: 30) {
           nodes {
             mediaContentType
@@ -85,7 +85,13 @@ interface ShopifyProduct {
   title: string;
   descriptionHtml: string;
   featuredImage: ShopifyImage | null;
-  options: { name: string; optionValues: { name: string; swatch: { color: string | null } | null }[] }[];
+  options: {
+    name: string;
+    optionValues: {
+      name: string;
+      swatch: { color: string | null; image: { previewImage: { url: string } | null } | null } | null;
+    }[];
+  }[];
   media: { nodes: ShopifyMedia[] };
   variants: { nodes: ShopifyVariant[] };
 }
@@ -188,6 +194,8 @@ interface ShadeContent {
   gallery: GalleryItem[];
   featuredImage?: string;
   hex?: string;
+  /** The image set on the colour swatch in Shopify */
+  swatchThumb?: string;
 }
 
 interface ShadeDraft {
@@ -240,6 +248,11 @@ function buildCatalog(data: CatalogQueryResult): Catalog {
           product.options
             .find((o) => COLOUR_OPTION.test(o.name))
             ?.optionValues.find((v) => v.swatch?.color)?.swatch?.color ?? undefined,
+        swatchThumb:
+          product.options
+            .find((o) => COLOUR_OPTION.test(o.name))
+            ?.optionValues.find((v) => v.swatch?.image?.previewImage?.url)?.swatch?.image?.previewImage?.url ??
+          undefined,
       };
     }
 
@@ -327,6 +340,7 @@ function buildCatalog(data: CatalogQueryResult): Catalog {
       price: starter.price,
       cardImage: cardImage ?? base.cardImage,
       swatchImage: photo(/swatch/i) ?? base.swatchImage,
+      swatchThumb: content?.swatchThumb ?? base.swatchThumb,
       sideImage: photo(/side/i) ?? sharedSide ?? base.sideImage,
       backImage: photo(/back/i) ?? sharedBack ?? base.backImage,
       video: gallery.find((g) => g.type === "video")?.src ?? base.video,

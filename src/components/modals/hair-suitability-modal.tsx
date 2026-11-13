@@ -6,6 +6,7 @@ import { ShadeProduct } from "@/data/shades";
 import { findShade } from "@/data/catalog";
 import { useCatalog } from "@/context/catalog-context";
 import { useStore } from "@/context/store-context";
+import { ShadeSwatch } from "@/components/product/shade-swatch";
 
 interface HairSuitabilityModalProps {
   isOpen: boolean;
@@ -279,10 +280,7 @@ export function HairSuitabilityModal({
         <div className="px-5 sm:px-6 pt-5 pb-4 border-b border-ash/20 shrink-0">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <span
-                className="w-11 h-11 rounded-full shrink-0 ring-1 ring-black/10 shadow-inner"
-                style={{ background: `radial-gradient(circle at 30% 30%, #ffffff55, transparent 55%), ${selectedShade.hex}` }}
-              />
+              <ShadeSwatch shade={selectedShade} size={44} className="w-11 h-11 ring-1 ring-black/10" />
               <div className="min-w-0">
                 <h2 id="match-title" className="font-headline font-bold text-lg leading-tight">
                   Is {selectedShade.name} right for you?
@@ -311,11 +309,16 @@ export function HairSuitabilityModal({
                   title={s.name}
                   aria-label={`Check ${s.name}`}
                   aria-pressed={active}
-                  className={`shrink-0 rounded-full ring-1 ring-black/15 transition-all cursor-pointer ${
-                    active ? "w-7 h-7 ring-2 ring-obsidian ring-offset-2" : "w-5 h-5 hover:scale-110"
+                  className={`shrink-0 rounded-full transition-all cursor-pointer ${
+                    active ? "ring-2 ring-obsidian ring-offset-2" : "hover:scale-110"
                   }`}
-                  style={{ backgroundColor: s.hex }}
-                />
+                >
+                  <ShadeSwatch
+                    shade={s}
+                    size={32}
+                    className={`ring-1 ring-black/15 transition-all ${active ? "w-8 h-8" : "w-6 h-6"}`}
+                  />
+                </button>
               );
             })}
           </div>
@@ -434,7 +437,7 @@ export function HairSuitabilityModal({
                   onClick={() => setSelectedShade(verdict.suggest!)}
                   className="mt-4 w-full flex items-center gap-3 p-2.5 pr-3.5 rounded-xl bg-white border border-black/10 hover:border-obsidian transition-colors cursor-pointer text-left group"
                 >
-                  <span className="w-9 h-9 rounded-full ring-1 ring-black/10 shrink-0" style={{ backgroundColor: verdict.suggest.hex }} />
+                  <ShadeSwatch shade={verdict.suggest} size={36} className="w-9 h-9 ring-1 ring-black/10" />
                   <span className="min-w-0 flex-1">
                     <span className="block text-[10px] font-mono uppercase tracking-wider text-obsidian">
                       {verdict.tone === "switch" ? "We recommend" : "Best match for your roots"}

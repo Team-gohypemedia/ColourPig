@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "@/components/ui/image";
+import { ShadeSwatch } from "@/components/product/shade-swatch";
 import Link from "next/link";
 import {
   Star,
@@ -320,8 +321,9 @@ export function ProductDetailView({
             
             {/* Vertical Thumbnail Rail (Desktop) / Horizontal Rail (Mobile) */}
             {/* From tablet up the wrapper takes the frame's height, and the rail scrolls inside it */}
-            <div className="relative shrink-0 sm:w-[84px]">
-            <div className="flex sm:flex-col gap-2.5 sm:gap-3 overflow-x-auto sm:overflow-x-visible sm:overflow-y-auto sm:absolute sm:inset-0 custom-drawer-scrollbar py-1 sm:px-0.5">
+            {/* 80px thumbnails + 4px left room for the selected scale-up + 14px gutter so the scrollbar never covers them */}
+            <div className="relative shrink-0 sm:w-[98px]">
+            <div className="flex sm:flex-col gap-2.5 sm:gap-3 overflow-x-auto sm:overflow-x-visible sm:overflow-y-auto sm:absolute sm:inset-0 custom-drawer-scrollbar py-1 sm:pl-1 sm:pr-3.5">
               {galleryImages.map((img, idx) => {
                 const isSelected = activeImageIdx === idx;
                 const isVid = img.type === "video";
@@ -516,12 +518,13 @@ export function ProductDetailView({
                   className="relative flex flex-col items-center gap-1.5 px-2 py-1.5 rounded-[14px] border-[2px] border-obsidian bg-black/[0.03] shadow-xs scale-102"
                   title={`${selectedShade.code} - ${selectedShade.name}`}
                 >
-                  <span
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-black/10 shadow-xs flex items-center justify-center relative overflow-hidden"
-                    style={{ backgroundColor: selectedShade.hex }}
+                  <ShadeSwatch
+                    shade={selectedShade}
+                    size={40}
+                    className="w-9 h-9 sm:w-10 sm:h-10 border border-black/10 shadow-xs"
                   >
                     <Check className="w-4 h-4 text-white drop-shadow-md stroke-[3]" />
-                  </span>
+                  </ShadeSwatch>
                   <span className="text-[11px] font-mono font-medium text-obsidian tracking-tight">
                     {selectedShade.code}
                   </span>
