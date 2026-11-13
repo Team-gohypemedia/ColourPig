@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ShadeProduct } from "@/data/shades";
 import { ChevronLeft, ChevronRight } from "lucide-react";

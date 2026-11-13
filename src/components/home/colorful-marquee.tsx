@@ -4,12 +4,9 @@ import React from "react";
 
 const MARQUEE_ITEMS = [
   {
-    type: "lockup",
-    content: (
-      <span className="font-headline font-bold text-base sm:text-lg tracking-wider uppercase">
-        <span className="text-white">GREY TOUCH UP</span>
-      </span>
-    ),
+    type: "text",
+    color: "#E5E5E5",
+    text: "GREY TOUCH UP",
   },
   {
     type: "text",
@@ -48,16 +45,12 @@ export function ColorfulMarquee() {
       {TICKER_ITEMS.map((item, idx) => (
         <React.Fragment key={`${keyPrefix}-${idx}`}>
           <div className="flex items-center shrink-0">
-            {item.type === "lockup" ? (
-              item.content
-            ) : (
-              <span
-                className="font-montserrat font-semibold text-xs sm:text-sm tracking-[0.22em] uppercase whitespace-nowrap transition-transform hover:scale-105"
-                style={{ color: item.color }}
-              >
-                {item.text}
-              </span>
-            )}
+            <span
+              className="font-montserrat font-semibold text-xs sm:text-sm tracking-[0.22em] uppercase whitespace-nowrap transition-transform hover:scale-105"
+              style={{ color: item.color }}
+            >
+              {item.text}
+            </span>
           </div>
           {/* Multi-colored separator star */}
           <span

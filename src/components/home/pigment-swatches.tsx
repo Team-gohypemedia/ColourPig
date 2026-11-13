@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
 import { useHasMounted } from "@/components/motion/motion-primitives";

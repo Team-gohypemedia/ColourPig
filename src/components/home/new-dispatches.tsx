@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import { ArrowRight, ShoppingBag, Heart } from "lucide-react";
 import { ShadeItem } from "@/components/sections/hero-section";
 import { useStore } from "@/context/store-context";

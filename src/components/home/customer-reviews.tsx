@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { EASE, Reveal, useHasMounted } from "@/components/motion/motion-primitives";
 import { ArrowLeft, ArrowRight, Quote, X, Star, CheckCircle } from "lucide-react";

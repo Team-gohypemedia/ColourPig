@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import { Reveal } from "@/components/motion/motion-primitives";
 
 const RITUAL_STEPS = [

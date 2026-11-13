@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart } from "lucide-react";

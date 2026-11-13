@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import { useStore } from "@/context/store-context";
@@ -170,6 +170,7 @@ export function ShadeExplorer() {
                 <Link
                   href={`/product?shade=${item.id.replace("shade-", "")}`}
                   className="relative block w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-24 lg:h-24 xl:w-32 xl:h-32 2xl:w-[clamp(150px,10.5vw,210px)] 2xl:h-[clamp(150px,10.5vw,210px)] my-2 rounded-full overflow-hidden transition-all duration-500 ease-out group-hover:scale-105 shadow-[0_18px_24px_-14px_rgba(0,0,0,0.35)] group-hover:shadow-[0_24px_30px_-16px_rgba(0,0,0,0.42)]"
+                  style={circleSrc ? undefined : { backgroundColor: item.hex }}
                 >
                   <Image
                     src={circleSrc}

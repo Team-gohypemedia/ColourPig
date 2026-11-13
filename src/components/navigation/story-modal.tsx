@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/image";
 import Link from "next/link";
 import { X, Pause, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { SnoutIcon } from "@/components/brand/logo";
